@@ -1,15 +1,21 @@
-# Column
+# Datatable
+    ## Installation
+        ###Buttons Plugin Installation
+            ```
+                composer require yajra/laravel-datatables-buttons:^4.0
+            ```
+
+## Modal
 
 ### Datatable with Model
 In this example, we will create a DataTable service class.
-**Usage:**
 ```
 php artisan datatables:make User --model
 ```
-This will create an `PostsDataTable` class on `app\DataTables` directory.
+**Usage:** This will create an `PostsDataTable` class on `app\DataTables` directory.
+
 ```php
 <?php
-
 namespace App\DataTables;
 
 use App\Post;
@@ -17,6 +23,7 @@ use Yajra\DataTables\Services\DataTable;
 
 class PostsDataTable extends DataTable
 {
+
     /**
      * Build DataTable class.
      *
@@ -25,12 +32,12 @@ class PostsDataTable extends DataTable
     public function dataTable()
     {
         return $this->datatables->eloquent($this->query())
-			->addColumn('intro', 'Hi {{$name}}!', 2) // Add Column with Blade Syntax && Add Column with specific order(2)
-			->addColumn('intro', function(User $user) { return 'Hi ' . $user->name . '!'; }) // Add Column with Closure
-			->addColumn('intro', 'users.datatables.intro') // Add Column with View - Hi {{ $name }}!
-			->addColumns(['foo','bar','buzz'=>"red"]) // Add hidden model columns
+            ->addColumn('intro', 'Hi {{$name}}!', 2) // Add Column with Blade Syntax && Add Column with specific order(2)
+            ->addColumn('intro', function(User $user) { return 'Hi ' . $user->name . '!'; }) // Add Column with Closure
+            ->addColumn('intro', 'users.datatables.intro') // Add Column with View - Hi {{ $name }}!
+            ->addColumns(['foo','bar','buzz'=>"red"]) // Add hidden model columns
 
-			->blacklist(['password']) // Black listing columns - Sorting and searching will not work
+            ->blacklist(['password']) // Black listing columns - Sorting and searching will not work
     }
 
     /**
@@ -50,13 +57,33 @@ class PostsDataTable extends DataTable
      *
      * @return \Yajra\DataTables\Html\Builder
      */
+    protected $actions = ['print', 'excel', 'myCustomAction']; // disabling the csv and pdf action
+
     public function html()
     {
         return $this->builder()
-			->columns($this->getColumns())
-			->ajax('')
-			->addAction(['width' => '80px'])
-			->parameters($this->getBuilderParameters());
+            ->columns($this->getColumns())
+            ->ajax('')
+            ->addAction(['width' => '80px'])
+            ->parameters($this->getBuilderParameters());
+            ->parameters([
+                'dom'          => 'Bfrtip',
+                'buttons'      => [
+                    'export', // export - csv , excel , pdf
+                    'print', // enable exporting to print
+                    'excel', // enable exporting to excel
+                    'csv', // enable exporting to csv
+                    'pdf', // enable exporting to pdf
+                    'reset', // enable reset button
+                    'reload', // enable reload button
+                    'myCustomAction'
+                ],
+            ]);
+    }
+
+    public function myCustomAction()
+    {
+        //...your code here.
     }
 
     /**
@@ -67,10 +94,10 @@ class PostsDataTable extends DataTable
     protected function getColumns()
     {
         return [
-			'id',
-			// add your columns
-			'created_at',
-			'updated_at',
+            'id',
+            // add your columns
+            'created_at',
+            'updated_at',
         ];
     }
 
@@ -87,16 +114,14 @@ class PostsDataTable extends DataTable
 ```
 
 ## Creating a DataTable Scope service class
-
 DataTable scope is class that we can use to limit our database search results based on the defined query scopes.
-
 ```
 php artisan datatables:scope ActiveUser
 ```
-
 This will create an `ActiveUser` class on `app\DataTables\Scopes` directory.
 
 ```php
+<?php
 namespace App\DataTables\Scopes;
 
 use Yajra\DataTables\Contracts\DataTableScopeContract;
@@ -120,29 +145,44 @@ class ActiveUser implements DataTableScopeContract
 ```php
 use DataTables;
 
-Route::get('user-data', function() {
-	$model = App\User::query();
-	return DataTables::eloquent($model)->toJson();
+Route::get('user-data', function(RolesDataTable $dataTable) {
+    $model = App\User::query();
+    return DataTables::eloquent($model)->toJson();
+
+    // or
+
+    return $dataTable->before(function (\Yajra\DataTables\DataTableAbstract $dataTable) {
+       return $dataTable->addColumn('test', 'added inside controller');
+   })
+   ->response(function (\Illuminate\Support\Collection $response) {
+       $response['test'] = 'Append Data';
+       return $response;
+   })
+   ->withHtml(function(\Yajra\DataTables\Html\Builder $builder) {
+        $builder->columns(['id', 'name', 'etc...']);
+   })
+   ->with(['key', 'value'])
+   ->render('path.to.view');
 });
 ```
-## Example Response
 
+## Example Response
 ```json
 {
-	"draw": 2,
-	"recordsTotal": 10,
-	"recordsFiltered": 3,
-	"data": [{
-		"id": 476,
-		"name": "Esmeralda Kulas",
-		"email": "abbott.cali@heaney.info",
-		"created_at": "2016-07-31 23:26:14",
-		"updated_at": "2016-07-31 23:26:14",
-		"deleted_at": null,
-		"superior_id": 0,
-		"foo":"value",
-		"bar":"value",
-		"buzz":"red"
-	}]
+    "draw": 2,
+    "recordsTotal": 10,
+    "recordsFiltered": 3,
+    "data": [{
+        "id": 476,
+        "name": "Esmeralda Kulas",
+        "email": "abbott.cali@heaney.info",
+        "created_at": "2016-07-31 23:26:14",
+        "updated_at": "2016-07-31 23:26:14",
+        "deleted_at": null,
+        "superior_id": 0,
+        "foo":"value",
+        "bar":"value",
+        "buzz":"red"
+    }]
 }
 ```

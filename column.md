@@ -1,9 +1,9 @@
 # Datatable
-    ## Installation
-        ###Buttons Plugin Installation
-            ```
-                composer require yajra/laravel-datatables-buttons:^4.0
-            ```
+## Installation
+###Buttons Plugin Installation
+```
+    composer require yajra/laravel-datatables-buttons:^4.0
+```
 
 ## Modal
 

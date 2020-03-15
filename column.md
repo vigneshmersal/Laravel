@@ -2,6 +2,7 @@
 ## Installation
 ### Buttons Plugin Installation
 ```
+composer require yajra/laravel-datatables
 composer require yajra/laravel-datatables-buttons:^4.0
 php artisan vendor:publish --tag=datatables-buttons
 ```
@@ -32,37 +33,125 @@ php artisan datatables:make User --model
 namespace App\DataTables;
 
 use App\Post;
+use Yajra\DataTables\Html\Button;
+use Yajra\DataTables\Html\Column;
+use Yajra\DataTables\Html\Editor\Editor;
+use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
 class PostsDataTable extends DataTable
 {
-
     /**
      * Build DataTable class.
      *
+     * @param mixed $query Results from query() method.
      * @return \Yajra\DataTables\DataTableAbstract
      */
-    public function dataTable()
+    public function dataTable($query)
     {
-        return $this->datatables->eloquent($this->query())
+        return datatables()->eloquent($query)
             ->addColumn('intro', 'Hi {{$name}}!', 2) // Add Column with Blade Syntax && Add Column with specific order(2)
-            ->addColumn('intro', function(User $user) { return 'Hi ' . $user->name . '!'; }) // Add Column with Closure
-            ->addColumn('intro', 'users.datatables.intro') // Add Column with View - Hi {{ $name }}!
+            ->addColumn('intro', function(User $user) {
+                return $user->posts->map(function($post) { // Eager loading Relationships
+                        return str_limit($post->title, 30, '...');
+                })->implode('<br>');
+            }) // Add Column with Closure
+            ->addColumn('action', 'users.action') // Add Column with View - Hi {{ $name }}!
             ->addColumns(['buzz'=>"red"]) // Add hidden model columns
 
+            ->editColumn('name', 'Hi {{$name}}!')
+
+            ->only(['id','name']) // Get only selected columns
+
+            ->removeColumn('password')
+
+            ->escapeColumns() // Escape all columns for XSS methods
+            ->escapeColumns([]) // Remove escaping of all columns
+            ->escapeColumns([0]) // Escape by output index
+            ->escapeColumns(['name']) // Escape selected fields
+
+            ->rawColumns(['action'])
+
+            ->addIndexColumn([
+                'defaultContent' => '',
+                'data'           => 'DT_RowIndex',
+                'name'           => 'DT_RowIndex',
+                'title'          => '',
+                'render'         => null,
+                'orderable'      => false,
+                'searchable'     => false,
+                'exportable'     => false,
+                'printable'      => true,
+                'footer'         => '',
+            ])
+
+            ->with(['posts' => 100]) // add additional server data on your response { "posts": 100 }
+            ->with('comments', function() use ($model) { return $model->count(); })
+            ->withQuery('count', function($filteredQuery) { return $filteredQuery->count(); })
+
+            ->setRowId('id') // Set the RowID
+            ->setRowId(function ($user) { return $user->id; })
+            ->setRowId('{{$id}}')
+            ->setRowClass(function ($user) { return $user->id % 2 == 0 ? 'success' : 'warning'; })
+            ->setRowClass('{{ $id % 2 == 0 ? "success" : "warning" }}')
+            ->setRowData([
+                'data-id' => function($user) { return 'row-' . $user->id; },
+                'data-name' => 'row-{{$name}}',
+            ])
+            ->setRowAttr([
+                'color' => function($user) { return $user->color; },
+                'color' => '{{$color}}'
+            ])
+
+            ->whitelist(['name', 'email']) // Sorting and searching will only work on columns
+            ->startsWithSearch() // starts with the given keyword
+            ->smart(false) // '%$keyword%'
+
+            ->filterColumn('fullname', function($query, $name) { // filter column for custom search
+                $query->where('name', $name);
+            })
+            ->filter(function ($query) {
+                if (request()->has('name')) {
+                    $query->where('name', 'like', "%" . request('name') . "%");
+                }
+            }, true) // true - Manual Searching with Global Search
+
+            ->makeHidden('posts')
             ->blacklist(['password']) // Black listing columns - Sorting and searching will not work
+
+            ->order(function ($query) {
+                if (request()->has('name')) {
+                    $query->orderBy('name', 'asc');
+                }
+            })
+            ->orderByNullsLast()
+            ->orderColumn('name', '-name $1') // order nulls as last result
+            ->orderColumns(['name', 'email'], '-:column $1') // order by multiple column
+            ->orderColumn('name', function ($query, $order) {
+                $query->orderBy('status', $order);
+            })
+
+            ->setTransformer(new App\Transformers\UserTransformer) // https://github.com/yajra/laravel-datatables-docs/blob/master/response-fractal.md
+            ->setSerializer(new App\Serializers\CustomSerializer)
+
+            ->skipTotalRecords() // improve dataTables response time & skipping the total records count query and settings its value equals to the filtered total records.
+            ->setTotalRecords(100) // manually set the total records count
+            ->setFilteredRecords(100) // manually set the filtered records count
+            ->skipPaging()
     }
 
     /**
-     * Get the query object to be processed by dataTables.
+     * Get query source of dataTable.
      *
-     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder|\Illuminate\Support\Collection
+     * @param \App\User $model
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query()
+    public function query(Post $post)
     {
         $query = Post::query();
         $query = $query->where('id', $this->id); // id get from -> Sending parameter to DataTable class (->with(['key', 'value'])) at router
         return $this->applyScopes($query);
+        return $model->newQuery();
     }
 
     /**
@@ -75,11 +164,55 @@ class PostsDataTable extends DataTable
     public function html()
     {
         return $this->builder()
+            ->postAjax(['url'=>'', 'data'])
+            ->ajax([ // tell where to fetch it's data.
+                'url' => route('users.index'),
+                'type' => 'GET',
+                'data' => 'function(d) { d.key = "value"; }', // pass custom data
+            ])
+            ->setTableId('users-table')
             ->columns($this->getColumns())
-            ->ajax('')
-            ->addAction(['width' => '80px'])
-            ->parameters($this->getBuilderParameters());
-            ->parameters([
+            ->minifiedAjax($url, $script = '', $data = []) // shortening the url
+            ->dom('Bfrtip')
+            ->orderBy(1) // 1 - asc , 2 - desc
+            ->buttons(
+                Button::make('export'),
+                Button::make('print'),
+                Button::make('reset'),
+                Button::make('reload')
+            )
+            ->addCheckbox([
+                'defaultContent' => '<input type="checkbox" ' . $this->html->attributes($attributes) . '/>',
+                'title'          => $this->form->checkbox('', '', false, ['id' => 'dataTablesCheckbox']), // <th>{{$title}}</th>
+                'data'           => 'checkbox', // This is the key from the json response data array.
+                'name'           => 'checkbox',
+                'orderable'      => false,
+                'searchable'     => false,
+                'exportable'     => false,
+                'printable'      => true,
+                'width'          => '10px',
+            ])
+            ->addAction([ // edit option column
+                'width'          => '80px',
+                'defaultContent' => '',
+                'data'           => 'action',
+                'name'           => 'action',
+                'title'          => 'Action',
+                'render'         => null,
+                'orderable'      => false,
+                'searchable'     => false,
+                'exportable'     => false,
+                'printable'      => true,
+                'footer'         => '', // <tfoot></tfoot> , To display the footer using html builder, pass true as 2nd argument on $builder->table([], true) api.
+            ])
+            ->parameters([ // js script
+                'paging'       => true,
+                'searching'    => true,
+                'info'         => false,
+                'searchDelay'  => 350,
+                'language'     => [
+                    'url' => url('js/dataTables/language.json')
+                ]
                 'dom'          => 'Bfrtip',
                 'buttons'      => [
                     'export', // export - csv , excel , pdf
@@ -91,6 +224,7 @@ class PostsDataTable extends DataTable
                     'reload', // enable reload button
                     'myCustomAction'
                 ],
+                'drawCallback' => 'function() { alert("Table Draw Callback") }', // [more](https://github.com/yajra/laravel-datatables-docs/blob/master/html-builder-callbacks.md)
             ]);
     }
 
@@ -107,10 +241,17 @@ class PostsDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'id',
+            Column::make('id')
+                ->name('id')
+                ->data('id')
+                ->title('Id')
+                ->searchable(true)
+                ->orderable(true)
+                ->render('function(){}')
+                ->footer('Id')
+                ->exportable(true)
+                ->printable(true),
             // add your columns
-            'created_at',
-            'updated_at',
         ];
     }
 
@@ -121,7 +262,7 @@ class PostsDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'posts_' . time();
+        return 'posts_' . date('YmdHis');
     }
 }
 ```
@@ -140,11 +281,12 @@ Route::get('users', function(UsersDataTable $dataTable) {
 @extends('app')
 
 @section('content')
-    {!! $dataTable->table() !!}
+    {!! $dataTable->table([
+        'class' => 'table table-bordered'
+    ], true) !!}
 @endsection
 
 @push('scripts')
-https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.0.3/css/buttons.dataTables.min.css">
     <script src="https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js"></script>
     <script src="/vendor/datatables/buttons.server-side.js"></script>
@@ -183,12 +325,15 @@ class ActiveUser implements DataTableScopeContract
 ## Using Directly at Router
 ```php
 use DataTables;
+use Yajra\DataTables\Html\Builder;
 
 Route::get('user-data', function(RolesDataTable $dataTable) {
-    $model = App\User::query();
-    return DataTables::of($model)
-        ->with(['key' => 'value']) // Sending parameter to DataTable class
-        ->make();
+    $users = App\User::query();
+    $resource = App\Http\Resources\UserResource::collection($users); // Using Resource Response
+    return DataTables::of($users)->make();
+
+    $request = $dataTable->getRequest();
+    $html = $builder->columns([]);
 
     // or
 
@@ -214,15 +359,21 @@ $(function() {
         processing: true,
         serverSide: true,
         ajax: '{{ url('index') }}',
+        paging: false,
         columns: [
-            { data: 'id', name: 'id' },
-            { data: 'name', name: 'name' },
-            { data: 'email', name: 'email' }
+            {
+                data: 'posts',
+                name: 'posts.title', // model relationship
+                footer: 'Post'
+            },
         ],
         columnDefs: [{ // add design
             targets: [0, 1, 2],
             className: 'mdl-data-table__cell--non-numeric'
-        }]
+        }],
+        search: {
+            "regex": true
+        }
     });
 });
 ```
@@ -233,19 +384,17 @@ $(function() {
     "draw": 2,
     "recordsTotal": 10,
     "recordsFiltered": 3,
-    "data": [{
-        "id": 476,
-        "name": "Esmeralda Kulas",
-        "email": "abbott.cali@heaney.info",
-        "created_at": "2016-07-31 23:26:14",
-        "buzz":"red"
-    }],
+    "data": [
+        {
+            "id": 476,
+            "name": "Esmeralda Kulas",
+            "email": "abbott.cali@heaney.info",
+            "created_at": "2016-07-31 23:26:14",
+            "buzz":"red"
+        }
+    ],
     "queries": [
         {
-            "query": "select count(*) as aggregate from (select '1' as `row_count` from `users` where `users`.`deleted_at` is null and `users`.`deleted_at` is null) count_row_table",
-            "bindings": [],
-            "time": 1.84
-        }, {
             "query": "select * from `users` where `users`.`deleted_at` is null order by `name` asc limit 10 offset 0",
             "bindings": [],
             "time": 1.8
@@ -256,33 +405,6 @@ $(function() {
         "columns": [
             {
                 "data": "id",
-                "name": "",
-                "searchable": "true",
-                "orderable": "true",
-                "search": {
-                    "value": "",
-                    "regex": "false"
-                }
-            }, {
-                "data": "name",
-                "name": "",
-                "searchable": "true",
-                "orderable": "true",
-                "search": {
-                    "value": "",
-                    "regex": "false"
-                }
-            }, {
-                "data": "email",
-                "name": "",
-                "searchable": "true",
-                "orderable": "true",
-                "search": {
-                    "value": "",
-                    "regex": "false"
-                }
-            }, {
-                "data": "created_at",
                 "name": "",
                 "searchable": "true",
                 "orderable": "true",
@@ -304,4 +426,42 @@ $(function() {
         },
         "_": "1479295888286"
 }
+```
+
+## CONFIGURATIONS
+The configuration file can be found at ``config/datatables.php``
+### Error
+- **NULL:** 'error' => null (or) throw
+- **Response if Null** "error": "Exception Message:\n\nSQLSTATE[42S22]: Column not found: 1054 Unknown column 'xxx' in 'order clause' (SQL: select * from `users` where `users`.`deleted_at` is null order by `xxx` asc limit 10 offset 0)"
+
+### Smart Search
+The sql generated will be like ``column LIKE "%keyword%"`` when set to true.
+```php
+'smart' => true,
+```
+
+### Case Sensitive Search
+Case insensitive will search the keyword in lower case format.
+```php
+'case_insensitive' => true,
+```
+
+### Index Column
+```php
+'index_column' => 'DT_RowIndex',
+```
+
+### Html Builder Config
+Run
+```
+php artisan vendor:publish --tag=datatables-html
+```
+Published config is located at ``config/datatables-html.php``
+```php
+return [
+    'table' => [
+        'class' => 'table',
+        'id' => 'dataTableId'
+    ]
+];
 ```

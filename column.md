@@ -1,5 +1,6 @@
 # [Datatable](https://yajrabox.com/docs/laravel-datatables/master/installation)
 ## Installation
+[https://github.com/yajra/laravel-datatables](https://github.com/yajra/laravel-datatables)
 ### Buttons Plugin Installation
 ```
 composer require yajra/laravel-datatables
@@ -10,14 +11,14 @@ php artisan vendor:publish --tag=datatables-buttons
 ## CSS links
 ```
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-<link  href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
+<link  href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
 ```
 
 ## JS links
 ```
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 ```
 
 ## Modal
@@ -55,7 +56,7 @@ class PostsDataTable extends DataTable
                 return $user->posts->map(function($post) { // Eager loading Relationships
                         return str_limit($post->title, 30, '...');
                 })->implode('<br>');
-            }) // Add Column with Closure
+            })
             ->addColumn('action', 'users.action') // Add Column with View - Hi {{ $name }}!
             ->addColumns(['buzz'=>"red"]) // Add hidden model columns
 

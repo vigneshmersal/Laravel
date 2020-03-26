@@ -251,8 +251,10 @@ class PostsDataTable extends DataTable
                 ->render('function(){}')
                 ->footer('Id')
                 ->exportable(true)
-                ->printable(true),
-            // add your columns
+                ->printable(true)
+                ->width(60)
+                ->addClass('text-center'),
+            Column::computed('action'),
         ];
     }
 

@@ -1,3 +1,4 @@
+https://dbdiagram.io/home
 ## Setup AJAX csrf-token
 ```js
 $.ajaxSetup({

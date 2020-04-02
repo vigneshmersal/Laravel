@@ -1,9 +1,10 @@
 ![OpenTok](https://raw.githubusercontent.com/opentok/learning-opentok-php/master/tokbox-logo.png)
 # Tokbox
 [Opentok Packagist Link](https://packagist.org/packages/opentok/opentok)
+
 [Opentok PHP SDK Reference](https://tokbox.com/developer/sdks/php/reference/namespaces/OpenTok.html)
 
-##Composer Installation
+## Composer Installation
 ```json
 "opentok/opentok" : 4.4.x
 ```
@@ -283,68 +284,86 @@ $(document).ready(function() {
 });
 ```
 
-### Connecting to the session
-```js
-// Initialize Session Object , it will returns an OpenTok Session object
-var session = OT.initSession(apiKey, sessionId);
+### Sample HTML Page
+```php
+<html>
+	<head>
+	    <title> OpenTok Getting Started </title>
+	    <script src="https://static.opentok.com/v2/js/opentok.js"></script>
+	</head>
+	<body>
+	    <div>SessionKey: {{ $session_token }}</div>
 
-// Connect to the Session
-session.connect(token, function(error) {
-	// If the connection is successful, initialize a publisher and publish to the session
-	if (!error) {
-		var publisherOptions = {
-			insertMode: 'append',
-			width: '100%',
-			height: '100%'
-		};
-		var publisher = OT.initPublisher(
-			'publisher', // The target DOM element or ID for placement of the publisher video
-			publisherOptions, // The properties of the publisher
-			function(error) {
-				if (error) {
-					console.log('There was an error initilizing the publisher: ', error.name, error.message);
-					return;
-				}
-				// Once the Publisher object is initialized, we publish to the session
-				session.publish(publisher, function(error) {
-					if (error) {
-						console.log('There was an error publishing: ', error.name, error.message);
-					}
-				});
-			}
-		);
-	} else {
-		console.log('There was an error connecting to the session:', error.name, error.message);
-	}
-});
+	    <div id="videos">
+	        <div id="subscriber"></div>
+	        <div id="publisher"></div>
+	    </div>
 
-// When the client disconnects from the session
-session.on('sessionDisconnected', function(event) {
-  console.log('You were disconnected from the session.', event.reason);
-});
-```
+	    <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
 
-### Subscribing to another client's audio-video stream
-The Session object dispatches a `streamCreated` event when a new stream is created in a session.
+	    <script type="text/javascript">
+		    var token = '{{ $opentok_token }}';
+		    var session_key = '{{ $session_token }}';
+		    var api_key = '{{ $api_key }}';
 
-```js
-// Subscribe to a newly created stream
-session.on('streamCreated', function(event) {
-	var subscriberOptions = {
-		insertMode: 'append',
-		width: '100%',
-		height: '100%'
-	};
-	session.subscribe(
-		event.stream, // The Stream object to which we are subscribing
-		'subscriber', // The target DOM element or ID (optional) for placement of the subscriber video
-		subscriberOptions, // (optional) that customize the appearance of the subscriber view
-		function(error) { // handler function (optional)
-		if (error) {
-			console.log('There was an error publishing: ', error.name, error.message);
-		}
-	});
-});
+		    // connect to open tok api using client side library
+		    var session = OT.initSession(api_key, session_key);
+
+		    // Subscribe to a newly created stream - when other user is connected we want to show them in subscriber div element
+		    session.on('streamCreated', function(event) {
+		        var subscriberOptions = {
+		            insertMode: 'append',
+		            width: '100%',
+		            height: '100%'
+		        };
+		        session.subscribe(
+		            event.stream, // The Stream object to which we are subscribing
+		            'subscriber', // The target DOM element or ID (optional) for placement of the subscriber video
+		            subscriberOptions, // (optional) that customize the appearance of the subscriber view
+		            function(error) { // handler function (optional)
+		                if (error) {
+		                    console.log('There was an error publishing: ', error.name, error.message);
+		                }
+		            }
+		        );
+		    });
+
+		    // Connecting to the session - when first user loads this page we want him to be shown in publisher div element
+		    session.connect(token, function(error) {
+		        if (!error) {
+		            var publisherOptions = {
+		                insertMode: 'append',
+		                width: '100%',
+		                height: '100%'
+		            };
+		            var publisher = OT.initPublisher(
+		                'publisher', // The target DOM element or ID for placement of the publisher video
+		                publisherOptions, // The properties of the publisher
+		                function(error) {
+		                    if (error) {
+		                        console.log('There was an error initilizing the publisher: ', error.name, error.message);
+		                        return;
+		                    }
+		                    // Once the Publisher object is initialized, we publish to the session
+		                    session.publish(publisher, function(error) {
+		                        if (error) {
+		                            console.log('There was an error publishing: ', error.name, error.message);
+		                        }
+		                    });
+		                }
+		            );
+		        } else {
+		            console.log('There was an error connecting to the session:', error.name, error.message);
+		        }
+		    });
+
+		    // When the client disconnects from the session
+		    session.on('sessionDisconnected', function(event) {
+		        console.log('You were disconnected from the session.', event.reason);
+		    });
+	    </script>
+	</body>
+</html>
 ```
 
 ### Recording the session to an archive
@@ -397,4 +416,3 @@ session.on('signal:msg', function(event) {
 	msg.scrollIntoView();
 });
 ```
-

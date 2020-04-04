@@ -57,10 +57,18 @@ class PostsDataTable extends DataTable
                         return str_limit($post->title, 30, '...');
                 })->implode('<br>');
             })
+            ->addColumn('actions', function(User $user) {
+                return "<a class='btn btn-sm bg-info-light' href='".route("user.show", $user)."'>
+                            <i class='fe fe-eye'></i> View
+                        </a>";
+            })
             ->addColumn('action', 'users.action') // Add Column with View - Hi {{ $name }}!
             ->addColumns(['buzz'=>"red"]) // Add hidden model columns
 
             ->editColumn('name', 'Hi {{$name}}!')
+            ->editColumn('created_at', function(User $user) {
+                return Carbon::parse($user->created_at)->format('d-m-Y h:i A');
+            })
 
             ->only(['id','name']) // Get only selected columns
 
@@ -169,18 +177,32 @@ class PostsDataTable extends DataTable
             ->ajax([ // tell where to fetch it's data.
                 'url' => route('users.index'),
                 'type' => 'GET',
-                'data' => 'function(d) { d.key = "value"; }', // pass custom data
+                'headers' => ['X-CSRF-TOKEN' => csrf_token()],
+                'data' => "function(data){ // pass custom data
+                        d.key = 'value';
+                        data.fromDate = $('input#fromDate').val();
+                    }"
             ])
             ->setTableId('users-table')
             ->columns($this->getColumns())
             ->minifiedAjax($url, $script = '', $data = []) // shortening the url
+            ->scrollY(config('admin.scrollY'))
             ->dom('Bfrtip')
             ->orderBy(1) // 1 - asc , 2 - desc
+            ->responsive()
+            ->stateSave()
             ->buttons(
                 Button::make('export'),
                 Button::make('print'),
                 Button::make('reset'),
-                Button::make('reload')
+                Button::make('reload'),
+                Button::makeIfCan('permissions.manage', 'create')->editor('editor')->className('btn-success'),
+                Button::makeIfCan('permissions.manage', 'edit')->editor('editor')->className('btn-warning'),
+                Button::makeIfCan('permissions.manage', 'remove')->editor('editor')->className('btn-danger'),
+                Button::make('colvis')
+                      ->columns(':not(.noVis)')
+                      ->text('<i class="fa fa-eye"></i>'),
+                Button::make('csv')->text('<i class="fa fa-file-csv"></i>'),
             )
             ->addCheckbox([
                 'defaultContent' => '<input type="checkbox" ' . $this->html->attributes($attributes) . '/>',
@@ -211,6 +233,10 @@ class PostsDataTable extends DataTable
                 'searching'    => true,
                 'info'         => false,
                 'searchDelay'  => 350,
+                'pageLength' => 25,
+                'processing' => true,
+                'serverSide' => true,
+                'responsive' => true,
                 'language'     => [
                     'url' => url('js/dataTables/language.json')
                 ]
@@ -252,9 +278,15 @@ class PostsDataTable extends DataTable
                 ->footer('Id')
                 ->exportable(true)
                 ->printable(true)
-                ->width(60)
+                ->width(60)->width('140px')
                 ->addClass('text-center'),
-            Column::computed('action'),
+            Column::make('name')
+                ->render('$.fn.dataTable.render.boolean()')
+                ->className('text-center')
+                ->separator('General Information'),
+            Column::computed('roles_count', 'Roles')
+                ->render('$.fn.dataTable.render.badge("primary")')
+            Column::checkbox('active'),
         ];
     }
 
@@ -275,7 +307,35 @@ class PostsDataTable extends DataTable
 use App\DataTables\UsersDataTable;
 
 Route::get('users', function(UsersDataTable $dataTable) {
+    // single datatable
     return $dataTable->render('users.index');
+
+    (or)
+
+    return $dataTable->withHtml(function (Builder $builder) {
+            $builder->ajax([
+                'type' => 'POST',
+                'headers' => ['X-CSRF-TOKEN' => csrf_token()],
+                'url' => route('users.list'),
+            ])->setTableAttribute('id', 'dt_users');
+        })->render('users.list');
+
+    // multiple datatable
+    return Datatables::renderMultiple([
+        'invitableDoctorsDataTable' => $invitableDoctorsDataTable,
+        'doctorInvitationsDataTable' => $doctorInvitationsDataTable,
+    ], 'users.index');
+
+    // multiple datatable
+    $active = ActiveUsersDataTableHtml::make();
+    $inactive = InactiveUsersDataTableHtml::make();
+
+    return view('users.index', compact('active', 'inactive'));
+
+    // multiple datatable
+    $inactive = InactiveUsersDataTableHtml::make();
+
+    return $dataTable->render('users.index', compact('inactive'));
 });
 ```
 
@@ -294,6 +354,10 @@ Route::get('users', function(UsersDataTable $dataTable) {
     <script src="https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js"></script>
     <script src="/vendor/datatables/buttons.server-side.js"></script>
     {!! $dataTable->scripts() !!}
+
+    reload() {
+        window.LaravelDataTables["user-table"].ajax.reload();
+    }
 @endpush
 ```
 

@@ -52,6 +52,6 @@ function converToTzs($time="",$toTz='',$fromTz='') {
     return $time;
 }
 
-function age_calculation($date) {
+function get_age($date) {
     return date_diff(date_create($date), date_create('today'))->y;
 }

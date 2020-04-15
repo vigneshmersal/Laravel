@@ -27,6 +27,11 @@ class CreateUsersTable extends Migration {
 			$table->string('title');
 			$table->text('body');
 			$table->integer('salary');
+			$table->decimal('price');
+			$table->text('description');
+
+			// API
+			$table->string('api_token', 60)->unique()->nullable();
 
 			$table->integer('status')->default(1);
 
@@ -35,6 +40,8 @@ class CreateUsersTable extends Migration {
 			$table->integer('deleted_by')->nullable();
 			$table->timestamps();
 			$table->datetime('deleted_at')->nullable();
+
+			$table->primary(['user_id']); // change primary key of the table
 		});
 	}
 

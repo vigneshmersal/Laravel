@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\User as UserResource;
 use App\Http\Resources\UserCollection;
 use App\User;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
@@ -52,6 +53,7 @@ class UserController extends Controller
 
         return new UserResource($user);
         return response()->json([ "message" => "student record created" ], 201);
+        // Response::HTTP_CREATED
     }
 
     /**
@@ -103,6 +105,7 @@ class UserController extends Controller
         return response()->json(['message'=>'Deleted!'], 204); // success
         return response()->json([ "message" => "Records deleted!" ], 202); // success
         return response()->json([ "message" => "User not found" ], 404); // fail
+        // Response::HTTP_NO_CONTENT
     }
 }
 ```

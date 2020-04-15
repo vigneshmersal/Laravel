@@ -7,9 +7,9 @@ class AuthController extends AnotherClass
 	public function register(Request $request)
 	{
 		$user = User::create([
-		'name' => $request->name,
-		'email' => $request->email,
-		'password' => bcrypt($request->password),
+			'name' => $request->name,
+			'email' => $request->email,
+			'password' => bcrypt($request->password),
 		]);
 
 		$token = auth()->login($user);

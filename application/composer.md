@@ -1,13 +1,30 @@
 # composer.json
+> composer global require laravel/installer
+
+## Install composer globally
+Windows
+- goto [`getcomposer.org`](https://getcomposer.org/doc/00-intro.md#installation-windows)
+- Download Composer-Setup.exe
+
+Linux
+- goto [`getcomposer.org/download`](https://getcomposer.org/download/)
+- Copy & Paste - 4 lies of PHP Code
+- Check Installed correctly by: `php composer.phar`
+- To add globally by: `mv composer.phar /usr/local/bin/composer`
+- If added globally check by: `composer`
+
 
 ## Create project
 > composer create-project --prefer-dist laravel/laravel blog
+
+## Done everything for us - like composer|migration
+> composer require laracasts/generators --dev
+> composer require laracasts/testdummy --dev
 
 ## Install Passport
 > composer require laravel/passport
 > php artisan migrate
 > php artisan passport:install
-
 
 ## laravel test
 Call By

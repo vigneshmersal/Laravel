@@ -1,3 +1,5 @@
+# Location: C:\Users\Vignesh\.bash_profile
+
 # Some shortcuts for easier navigation & access
 alias ..="cd ../"
 alias ...="cd ../../"
@@ -5,6 +7,7 @@ alias ....="cd ../../../"
 alias .....="cd ../../../../"
 alias h="cd ~"
 alias c="clear"
+
 alias vm="ssh vagrant@127.0.0.1 -p 2222"
 
 #-----Homestead shortcut-----
@@ -43,42 +46,53 @@ alias gsts="git stash save"
 # ----------------------
 # Project
 # ----------------------
-alias doccure="cd D:/dev/doccure"
+alias pos="cd D:/dev/ecpay_pos"
+alias ecpay="cd D:/dev/ecpay_pos"
+alias laundry="cd D:/dev/BestAtDryCleaning"
+alias ki="cd D:/dev/ki-document"
+alias laravel="cd D:/dev/laravel"
 
+alias doccure="cd D:/dev/doccure"
 
 # ----------------------
 # Laravel
 # ----------------------
-alias art="php artisan"
-alias artisan="php artisan"
 alias pa="php artisan"
 
 alias pal="php artisan list"
-alias par="php artisan routes"
 alias pam="php artisan migrate"
-alias pada="php artisan dumpautoload"
 alias pat="php artisan tinker"
 alias pas="php artisan serve"
 
 alias list="php artisan list"
-alias routes="php artisan routes"
 alias migrate="php artisan migrate"
 alias tinker="php artisan tinker"
 alias serve="artisan serve"
 
 alias parl="php artisan route:list"
-alias pamr="php artisan migrate:refresh"
-alias pam:rs="php artisan migrate:refresh --seed"
+alias pasl='php artisan storage:link'
 
-alias fresh="php artisan migrate:fresh"
 alias pamf="php artisan migrate:fresh"
 alias pamfs="php artisan migrate:fresh --seed"
+alias pamr="php artisan migrate:refresh"
+alias pamrs="php artisan migrate:refresh --seed"
 alias pads="php artisan db:seed"
 
 #-----clear-----
 alias cachec="php artisan cache:clear"
 alias routec="php artisan route:clear"
 alias configc="php artisan config:clear"
+alias viewc="php artisan view:clear"
+
+alias ccompiled="php artisan clear-compiled"
+
+#-----app up/down-----
+alias up="php artisan up"
+alias down="php artisan down"
+
+#-----cache-----
+alias rcache="php artisan route:cache"
+alias ccache="php artisan config:cache"
 
 #-----make:-----
 alias mauth="php artisan make:auth"

@@ -18,6 +18,9 @@ class CreateUsersTable extends Migration {
 			$table->string('name');
 			$table->string('slug');
 
+			$table->unsignedInteger('user_id')->index();
+			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
 			$table->string('email')->unique();
 			$table->string('phone')->unique()->nullable();
 			$table->string('password');

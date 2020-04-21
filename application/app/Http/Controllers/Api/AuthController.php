@@ -1,5 +1,5 @@
 <?php
-	use App\User;
+use App\User;
 
 class AuthController extends AnotherClass
 {

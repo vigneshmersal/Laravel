@@ -8,12 +8,16 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 class Handler extends ExceptionHandler
 {
     /**
-     * A list of the exception types that are not reported.
+     * A list of the exception types that should not be reported(logged).
      *
      * @var array
      */
     protected $dontReport = [
-        //
+        \Illuminate\Auth\AuthenticationException::class,
+        \Illuminate\Auth\Access\AuthorizationException::class,
+        \Symfony\Component\HttpKernel\Exception\HttpException::class,
+        \Illuminate\Database\Eloquent\ModelNotFoundException::class,
+        \Illuminate\Validation\ValidationException::class,
     ];
 
     /**
@@ -25,6 +29,17 @@ class Handler extends ExceptionHandler
         'password',
         'password_confirmation',
     ];
+
+    public function isValid($value)
+    {
+        try {
+            // Validate the value...
+        } catch (Throwable $e) {
+            report($e);
+
+            return false;
+        }
+    }
 
     /**
      * Report or log an exception.
@@ -46,11 +61,28 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        // Handling API resource - ModelNotFoundException
+        # Handling custom exception
+        if ($exception instanceof CustomException) {
+            return response()->view('errors.custom', [], 500);
+        }
+
+        # Handling API resource
         if ($exception instanceof ModelNotFoundException && $request->wantsJson()) {
             return response()->json([ 'error' => 'Resource not found' ], 404);
         }
 
         return parent::render($request, $exception);
+    }
+
+    /**
+     * Get the default context variables for logging.
+     * add global data for to every exception's log message
+     * @return array
+     */
+    protected function context()
+    {
+        return array_merge(parent::context(), [
+            'foo' => 'bar',
+        ]);
     }
 }

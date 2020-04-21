@@ -8,6 +8,7 @@
 | DELETE | api/users/{post} | users.destroy | App\Http\Controllers\Api\UserController@destroy
 |--------------------------------------------------------------------------
 | Accept: application/json
+| Content-Type: application/json
 | Authorization: Bearer Jll7q0BSijLOrzaOSm5Dr5hW9cJRZAJKOzvDlxjKCXepwAeZ7JR6YP5zQqnw
 */
 

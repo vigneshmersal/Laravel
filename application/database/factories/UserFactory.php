@@ -39,6 +39,7 @@ $factory->define(User::class, function (Faker $faker) {
         "user_id" => function(){
             return \App\User::all()->random();
         },
+        'user_id' => 'factory:App\User',
 
         'company' => $faker->company,
         "stock" => $faker->randomDigit,

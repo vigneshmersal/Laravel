@@ -11,8 +11,11 @@ $ sudo apt-get install php7.1 php7.1-cli php7.1-common php7.1-json php7.1-opcach
 Navigate in your home directory,
 > cd ~ $ curl -sS https://getcomposer.org/installer -o composer-setup.php
 
-globally on your system
+## Install globally on your system
 > sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+
+update
+> /usr/local/bin/composer self-update
 
 
 

@@ -56,6 +56,7 @@ class Kernel extends HttpKernel
         // register custom middleware
         'adminOnly' => \App\Http\Middleware\AdminOnly::class,
         'prevent-back-history' => \App\Http\Middleware\PreventBackHistory::class,
+        'locale' => \App\Http\Middleware\SetDefaultLocaleForUrls::class,
     ];
 
     /**

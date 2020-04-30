@@ -9,9 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Traits\QueryFilter;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail // vereify by email notify
 {
-    use Notifiable, SoftDeletes;
+    use Notifiable,
+    SoftDeletes; // db - deleted_at column handling
 
     protected $fillable = [
         'name',

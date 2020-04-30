@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration {
 			$table->string('email')->unique();
 			$table->string('phone')->unique()->nullable();
 			$table->string('password');
+			$table->string('remember_token'); // store token, while logging select "remember me" option
 
 			$table->string('role', 100)->default('patient');
 			$table->string('avatar')->nullable();

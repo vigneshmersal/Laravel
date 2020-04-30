@@ -15,6 +15,9 @@ class UserController extends AnotherClass
             // ...
             return $next($request);
         });
+
+        # authorize resource controller
+        $this->authorizeResource(Post::class, 'post');
     }
 
     public function index(Request $request)
@@ -27,6 +30,11 @@ class UserController extends AnotherClass
     public function index1(UserFilters $filters)
     {
         return User::filter($filters)->get();
+    }
+
+    function create()
+    {
+        $this->authorize('create', Post::class);
     }
 
     public function store(Request $request)
@@ -60,7 +68,7 @@ class UserController extends AnotherClass
 
     public function update($id)
     {
-
+        $this->authorize('update', $post);
     }
 
     public function update1(Request $request, $id)

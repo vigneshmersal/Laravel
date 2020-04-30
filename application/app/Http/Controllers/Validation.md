@@ -68,6 +68,8 @@ if ($v->fails()) {
     return redirect('post/create')->withErrors($validator)->withInput();
 }
 
+if($v->passes()) { }
+
 // (or)
 
 Validator::make($request->all(), [
@@ -221,6 +223,8 @@ $var = [
 'title'              => 'required|max:255|unique:posts,title,'.$id,
 'body'               => ['required'],
 'description'        => 'nullable|string|max:255',
+
+'role' 				 => 'required|exists:roles,id',
 
 'price'              => 'numeric',
 'active'             => 'integer|filled',

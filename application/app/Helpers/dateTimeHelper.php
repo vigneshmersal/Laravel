@@ -18,7 +18,7 @@ function daysOfTheWeekInShort($date) { return date('D', strtotime($date)); }
 function dateHumanReadableFormat($date) { return date('M d, Y', strtotime($date)); }
 
 /** Date convert to format Y-m-d */
-function date_ymd($date) { return date("Y-m-d", strtotime($date)); }
+function ymd($date) { return date("Y-m-d", strtotime($date)); }
 
 /** if $day > 7 , will return equivalentday as within [1 to 7] */
 function convertToDayOfTheWeek($day) {

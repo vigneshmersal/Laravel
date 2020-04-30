@@ -10,7 +10,7 @@ alias c="clear"
 
 alias vm="ssh vagrant@127.0.0.1 -p 2222"
 
-#-----Homestead shortcut-----
+# -----Homestead shortcut-----
 function homestead() {
     ( cd ~/laravel/Homestead && vagrant $* )
 }

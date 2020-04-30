@@ -61,25 +61,3 @@ return redirect('form')->withInput(
     $request->except('password')
 );
 ```
-
-## File
-```php
-# Retrieving Uploaded Files
-$file = $request->file('photo');
-$file = $request->photo;
-
-# check request photo exist
-if ($request->hasFile('photo')) { }
-if ($request->file('photo')->isValid()) { } // Validating Successful Uploads
-
-# get path info
-$path = $request->photo->path();
-$extension = $request->photo->extension();
-
-# store a file
-$path = $request->photo->store('images');
-$path = $request->photo->store('images', 's3'); // cloud awazon s3 store
-# Rename and store a file
-$path = $request->photo->storeAs('images', 'filename.jpg');
-$path = $request->photo->storeAs('images', 'filename.jpg', 's3');
-```

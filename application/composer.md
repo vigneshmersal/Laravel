@@ -1,6 +1,10 @@
 # composer.json
 > composer global require laravel/installer
 
+Frontend
+Laravel 6 not supported `2.x-dev` and above.
+> composer require laravel/ui
+
 ## Install composer globally
 Windows
 - goto [`getcomposer.org`](https://getcomposer.org/doc/00-intro.md#installation-windows)
@@ -17,6 +21,9 @@ Linux
 ## Create project
 > composer create-project --prefer-dist laravel/laravel blog
 
+create a new application with all of the authentication scaffolding compiled and installed:
+> laravel new blog --auth
+
 ## Done everything for us - like composer|migration
 > composer require laracasts/generators --dev
 > composer require laracasts/testdummy --dev
@@ -25,6 +32,9 @@ Linux
 > composer require laravel/passport
 > php artisan migrate
 > php artisan passport:install
+
+## Install tinker
+> composer require laravel/tinker
 
 ## laravel test
 Call By

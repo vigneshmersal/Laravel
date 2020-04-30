@@ -1,16 +1,13 @@
 # Laravel Query
 ## Get
 ```php
-find(1);
-findOrFail(1);
-find([1 ,2]);
-
-all();
+find($id); | find([$id1]); | findOrFail($id);
 first();
-get();
-get([$column1, $column2]);
 
-$user = (new User)->newQuery();
+all(); | all([$column1]);
+get(); | get([$column1]);
+
+$user = (new model)->newQuery();
 ```
 
 ## condition
@@ -37,12 +34,23 @@ with('posts.comments');
 ->newCollection();
 ```
 
-## Laravel
+## Save
 ```php
-$this->getKeys($models = "App\User", $this->localKey = "id"); // It will return ids 1,2,...
+$user->fill([
+    'secret' => encrypt($request->secret), // encrypt
+])->save();
 ```
 
 ## DB
+
+```php
+DB::table('table_name')->get()->value('email');
+
+DB::select(
+    DB::raw('SELECT * FROM `users`')
+);
+```
+
 Closure based
 ```php
 DB::transaction(function() {
@@ -64,4 +72,17 @@ try {
 } catch (\Exception | \Throwable $e) {
 	DB::rollback();
 }
+```
+
+## Schema
+
+```php
+# Get table name from model instance
+$instance->getTable();
+
+# Get table columns
+Schema::getcolumnListing($table);
+
+# Check table column exist
+if(Schema::hasColumn($table, $column)) { }
 ```

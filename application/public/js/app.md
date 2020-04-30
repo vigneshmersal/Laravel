@@ -1,3 +1,8 @@
+
+```js
+Vue.component( 'example-component', require('./components/ExampleComponent.vue').default );
+```
+
 # Installing the Front-End Dependencies
 ```js
 axios,

@@ -36,15 +36,3 @@ return response('Hello World', 200)
     ->cookie('name', 'value', $minutes)
 	->cookie( 'name', 'value', $minutes, $path, $domain, $secure, $httpOnly );
 ```
-
-## [file](https://github.com/symfony/symfony/blob/3.0/src/Symfony/Component/HttpFoundation/File/UploadedFile.php)
-```php
-# download
-return response()->download($pathToFile);
-return response()->download($pathToFile, $name, $headers);
-return response()->download($pathToFile)->deleteFileAfterSend();
-
-# display
-return response()->file($pathToFile);
-return response()->file($pathToFile, $headers);
-```

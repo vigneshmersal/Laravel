@@ -17,6 +17,10 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
+# Role & Permission
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
 // Exception
 use Exception;
 InvalidArgumentException;
@@ -26,6 +30,8 @@ use Symfony\Component\HttpKernel\Exception\HttpException,
 use Illuminate\Database\Eloquent\ModelNotFoundException,
 use Illuminate\Validation\ValidationException,
 use Illuminate\Session\TokenMismatchException;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Contracts\Cache\LockTimeoutException;
 ```
 
 ## config/app.php

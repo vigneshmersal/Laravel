@@ -75,13 +75,13 @@ ___
 > `cd [dir]` - change directory
 
 > `ls [options] [fd]` - list files
->> *ls*
->> *ls -l* - content in long format (date,time,permission)
->> *ls -a* - show hidden files
->> *ls -S* - short by size [DESC]
->> *ls > out.txt* - save output in a file
->> *ls -d */* - list only directories
->> *ls -R* - show directory structure
+- *ls*
+- *ls -l* - content in long format (date,time,permission)
+- *ls -a* - show hidden files
+- *ls -S* - short by size [DESC]
+- *ls > out.txt* - save output in a file
+- *ls -d */* - list only directories
+- *ls -R* - show directory structure
 
 > `cp [options] [source] [destination]` - copy files
 >> *cp f1.txt f2.txt* - if the f2 not exist it will create f2 file

@@ -19,19 +19,19 @@ ___
 
 ### Create user
 > `sudo useradd [userName]` - create user
->> *sudo useradd vignesh -m -g users* - `(-m)` create home dir for this user, `(-g)` assign user to `users` group
+- *sudo useradd vignesh -m -g users* - `(-m)` create home dir for this user, `(-g)` assign user to `users` group
 
 ### change password
 > `sudo passwd` - change current user password
->> *sudo passwd vignesh* - change user password
+- *sudo passwd vignesh* - change user password
 
 ### Delete user
 > `sudo userdel [userName]` - delete user
->> *sudo userdel -r vignesh* - `(-r)` remove home dir
+- *sudo userdel -r vignesh* - `(-r)` remove home dir
 
 ### List groups
 > `groups` - list current user groups
->> *cat /etc/group* - list all groups
+- *cat /etc/group* - list all groups
 
 ### Create group
 > `sudo groupadd [name]` - create new group
@@ -41,7 +41,7 @@ ___
 
 ### add/remove user group
 > `sudo gpassswd -a [user] [group]` - *(-a)* adding user to this group,
->> `sudo gpasswd -d [user] [group]` - *(-d)* deleting user to this group
+- `sudo gpasswd -d [user] [group]` - *(-d)* deleting user to this group
 
 > su vignesh
 
@@ -84,40 +84,40 @@ ___
 - *ls -R* - show directory structure
 
 > `cp [options] [source] [destination]` - copy files
->> *cp f1.txt f2.txt* - if the f2 not exist it will create f2 file
->> *cp f1.txt f2.txt dir* - copy files and paste into dir (files will be overwrited if exist)
->> *cp -i f1.txt dir* - (-i interactive mode) Ask overwrite a existing file
->> *cp -R dir1 dir2* - copy dir which contain files (-R recursive) (copy inside files only)
+- *cp f1.txt f2.txt* - if the f2 not exist it will create f2 file
+- *cp f1.txt f2.txt dir* - copy files and paste into dir (files will be overwrited if exist)
+- *cp -i f1.txt dir* - (-i interactive mode) Ask overwrite a existing file
+- *cp -R dir1 dir2* - copy dir which contain files (-R recursive) (copy inside files only)
 
 > `mv [options] [source] [destination]` = move files
->> *mv f1.txt rename.txt* - rename the file
->> *mv f1.txt dir/* - if the file is already exist, it will overwrite
->> *mv dir1 dir2* - if dir2 exist - o/p like `dir2/dir1/f1.txt`
+- *mv f1.txt rename.txt* - rename the file
+- *mv f1.txt dir/* - if the file is already exist, it will overwrite
+- *mv dir1 dir2* - if dir2 exist - o/p like `dir2/dir1/f1.txt`
 
 > `mkdir [dir]` - create a new directory
->> *mkdir -p dir/subdir* - `--parents` create dir and subdir also like a tree structure
->> *mkdir -p dir/{sub1,sub2}* - create dir with many subdir
+- *mkdir -p dir/subdir* - `--parents` create dir and subdir also like a tree structure
+- *mkdir -p dir/{sub1,sub2}* - create dir with many subdir
 
 > `rmdir [options] [dir]` - delete dir
->> *rmdir a/b/c* - remove c dir
->> *rmdir -p a/b/c* - remove dir structure (only when empty)
+- *rmdir a/b/c* - remove c dir
+- *rmdir -p a/b/c* - remove dir structure (only when empty)
 
 > `rm [options] [dir/file]` - delete dir/file
->> *rm -r a* - remove dir & inside files/dir also (-r recursive)
+- *rm -r a* - remove dir & inside files/dir also (-r recursive)
 
 ## permission - rwx
 > `[type][owner][group][others] 1 [ownerFileName] [groupFileName] [size] [date] [fileName]` -
->> *type* - (dash - normal file), (d-dir), (c-character file), (b-binary file)
->> *1* - symbolic link
->> *rwx* - read/write/execute
+- *type* - (dash - normal file), (d-dir), (c-character file), (b-binary file)
+- *1* - symbolic link
+- *rwx* - read/write/execute
 
 > `chmod [u/g/o][+/-/=][r/w/x] [file]` - change the permission of the file for the given user
->> *chmod u=r,g+w,o-w file* - assign / add / remove
->> *chmod go-wx file* - multiple user , multiple permission
->> *chmod a-r file* - all type of user
+- *chmod u=r,g+w,o-w file* - assign / add / remove
+- *chmod go-wx file* - multiple user , multiple permission
+- *chmod a-r file* - all type of user
 
 > `4 2 1(r w x)`
->> *chmod 755 f.txt*
+- *chmod 755 f.txt*
 | rwx | xxx |  0 |
 | :-- | :-: | -: |
 | --- | 000 | 0  |
@@ -131,41 +131,41 @@ ___
 
 ## Editor
 > `echo [options] [var/string]` - scripting
->> *name="vignesh"* - assign value to the variable (`echo $name`)
->> *echo -e 'some \t boys'* - (`\t`-tab,`\n`-new line,`\b`,`\a`-alert) escape sequence
+- *name="vignesh"* - assign value to the variable (`echo $name`)
+- *echo -e 'some \t boys'* - (`\t`-tab,`\n`-new line,`\b`,`\a`-alert) escape sequence
 
 > `touch [file]` - create a new empty file, if already exist it will update the timestamp
 
 > `cat [options] [file]` - display | combine | create txt files
->> *cat file.txt* - display the content of the file
->> *cat -n file.txt* - display with line number including the blank lines
->> *cat -s file.txt* - reduce multiple blank line to one line for display
->> *cat -E file.txt* - add `$` symbol on each line end
->> *cat > out.txt* - create file and add a content
->> *cat f1.txt f2.txt > out.txt* - concatenate 2 files content into new output file
->> *cat >> out.txt* - append content to an existing file
->> *cat f1.txt >> f2.txt* - append f1 content to an existing file
+- *cat file.txt* - display the content of the file
+- *cat -n file.txt* - display with line number including the blank lines
+- *cat -s file.txt* - reduce multiple blank line to one line for display
+- *cat -E file.txt* - add `$` symbol on each line end
+- *cat > out.txt* - create file and add a content
+- *cat f1.txt f2.txt > out.txt* - concatenate 2 files content into new output file
+- *cat - out.txt* - append content to an existing file
+- *cat f1.txt - f2.txt* - append f1 content to an existing file
 
 > `less [file]` - show only the starting of the file
->> *:up* - move up
->> *:down* - move down
->> *:p* - move one page up
->> *:space* - move one page down
->> *:g* - move to beginning of the file
->> *:G* - move to end of the file
->> */word* - search word from up to down
->> *?word* - search word from down to up
->> *:n* - find next search item
->> *:q* - quit command
+- *:up* - move up
+- *:down* - move down
+- *:p* - move one page up
+- *:space* - move one page down
+- *:g* - move to beginning of the file
+- *:G* - move to end of the file
+- */word* - search word from up to down
+- *?word* - search word from down to up
+- *:n* - find next search item
+- *:q* - quit command
 
 SYNTAX COlORFULL TEXT EDITOR
 > `nano [file]` - create a new file in the terminal
->> `ctrl+o` - save the file
->> `ctrl+x` - Exit from nano editor
->> `ctrl+k` - cut the line
->> `ctrl+u` - paste the line
->> `ctrl+y` - prev page
->> `ctrl+v` - next page
+- `ctrl+o` - save the file
+- `ctrl+x` - Exit from nano editor
+- `ctrl+k` - cut the line
+- `ctrl+u` - paste the line
+- `ctrl+y` - prev page
+- `ctrl+v` - next page
 
 > `gedit [file]` - open file in notepad editor
 
@@ -173,43 +173,43 @@ SYNTAX COlORFULL TEXT EDITOR
 > `df -h` - view free/used memory space for files (*-h* human readable)
 
 > dir:`du -h` - disk space used by the files (*-h* human readable)
->> dir:*du -sh* - (`-s` sum of total)
+- dir:*du -sh* - (`-s` sum of total)
 
 > `free -m` - view free space on dir (*-m* memory in MB)
 
 > `pidof [programName]` - know the PID of the program
 
 > `ps -ux` - long list of running processes in current user
->> *ps -aux* - list of processes used by all the user
->> *ps -U [userName]* - given user list of processes
->> *ps -C [programName]* - list of all the programs related to the program
+- *ps -aux* - list of processes used by all the user
+- *ps -U [userName]* - given user list of processes
+- *ps -C [programName]* - list of all the programs related to the program
 
 > `top` - system information (refresh every 3sec)
->> *i* - show only running processes
->> *k* - Ask PID for close the process
+- *i* - show only running processes
+- *k* - Ask PID for close the process
 
 > `kill [options] [PID]` - close the program
->> *kill -KILL [PID]* - force kill
->> *kill -9 [PID]* - force kill
+- *kill -KILL [PID]* - force kill
+- *kill -9 [PID]* - force kill
 
 ___
 
 ## Scripting
 > `.bashrc` - This is the default script will executed, when open a new terminal
->> we can customise by adding a new scripts at the end of the file
+- we can customise by adding a new scripts at the end of the file
 
 > `nano myscript.sh` - create a scripting file
->> *chmod +x myscript.sh* - give execute permission
->> *./myscript.sh* - run the scripting
+- *chmod +x myscript.sh* - give execute permission
+- *./myscript.sh* - run the scripting
 
 ## which [program/command]- return path
 > `which ls` - `\bin\ls`
->> *which bash* - `/bin/bash`
->> *which firefox* - `/usr/bin/firefox`
+- *which bash* - `/bin/bash`
+- *which firefox* - `/usr/bin/firefox`
 
 ## whatis [program/command] - return short description
 > `whatis ls` - list directory contents
 
 ## watch [command] - run the command continuously at certain interval (default 2 sec)
 > `watch free -h`
->> *watch -n 1,5 free -h* - change interval to 1.5sec
+- *watch -n 1,5 free -h* - change interval to 1.5sec

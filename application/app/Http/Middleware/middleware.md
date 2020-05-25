@@ -18,4 +18,5 @@ middleware('verified');
 ```php
 middleware('can:create',App\Post);
 middleware('can:update,post');
+middleware('can:viewAny,App\post');
 ```

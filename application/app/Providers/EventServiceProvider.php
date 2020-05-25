@@ -11,7 +11,7 @@ class EventServiceProvider extends ServiceProvider
 {
     /**
      * The event listener mappings for the application.
-     *
+     * php artisan event:generate
      * @var array
      */
     protected $listen = [
@@ -64,6 +64,11 @@ class EventServiceProvider extends ServiceProvider
         'Illuminate\Cache\Events\KeyWritten' => [
             'App\Listeners\LogKeyWritten',
         ],
+
+        # order shipped
+        'App\Events\OrderShipped' => [
+            'App\Listeners\SendShipmentNotification',
+        ],
     ];
 
     /**
@@ -75,6 +80,11 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        //
+        # Manually registering Events
+        Event::listen('event.name', function ($foo, $bar) {
+        });
+        Event::listen('event.*', function($eventName, array $data){
+        });
+
     }
 }

@@ -11,30 +11,47 @@ class UsersTableSeeder extends Seeder
 	 */
 	public function run()
 	{
-		// Admin seed
+		# Admin seed
+		$cities = collect(City::all()->modelKeys());
 		factory(User::class, 1)->create([
-			'email' => 'superadmin@doccure.com',
-			'role' => 'admin'
+			'email' => 'admin@doccure.com',
+			'role' => 'admin',
+			'salary' => rand(10000, 50000),
+			'city_id' => $cities->random(),
 		]);
 
-		// Doctor seed
-		factory(User::class, 1)->create([ 'email' => 'doctor@doccure.com','role' => 'doctor' ])
-			->each(function ($user) {
-				$this->doctorSeed($user);
-			}
-		);
+		# Doctor seed
+		factory(User::class, 1)->create(['role' => 'doctor'])->each(function ($user) {
+			$this->doctorSeed($user);
+		});
 
-		// Seed array of data
+		# Seed array of data
 		$data = [
-			['Urology', 'specialities-01.png'],
+			['Urology'],
 		];
-
 		foreach ($data as $test) {
-			$speciality = Speciality::create([
-				'name' => $test[0],
-				'image' => $test[1]
+			$bulk[] = Model::create([
+				'name' => $test[0]
 			]);
 		}
+
+		# optimize seed by insert
+		$bulk = [];
+		for ($i=0; $i<50000; $i++) {
+			$bulk[] = [
+				'created_at' => now()->toDateTimeString(),
+				'updated_at' => now()->toDateTimeString(),
+			];
+		}
+		$chunks = array_chunk($bulk, $size=5000);
+		foreach($chunks as $chunk) {
+			Model::insert($chunk);
+		}
+
+		# run no of times
+		Collection::times(3, function ($n) {
+    		return factory(Category::class)->create(['number'=>$n]);
+		});
 	}
 
 	// Doctor sub tables seed

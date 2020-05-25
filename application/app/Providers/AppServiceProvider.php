@@ -107,5 +107,10 @@ class AppServiceProvider extends ServiceProvider
         Validator::extendImplicit('foo', function ($attribute, $value, $parameters, $validator) {
             return $value == 'foo';
         });
+
+        # declare extending collection macros
+        Collection::macro('toUpper', function () { // call : $upper = $collection->toUpper();
+            return $this->map(function ($value) { return Str::upper($value); });
+        });
     }
 }

@@ -149,9 +149,12 @@ $var = [
 
 	# date
 	'date_format:format',
-	'date', 'date_equals:date',
-	'before:date', 'before_or_equal:date',
-	'after:tomorrow', 'after_or_equal:date',
+	'date',
+	'date_equals:date',
+	'before:date',
+	'before_or_equal:date',
+	'after:tomorrow',
+	'after_or_equal:date',
 
 	# file (image)
 	'file', // must be a successfully uploaded file

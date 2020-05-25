@@ -1,6 +1,7 @@
 # Learn
 
 ## Laravel
+* carbon
 * SearchableTrait
 * WithableTrait
 * Broadcasting & Channel

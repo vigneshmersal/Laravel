@@ -15,6 +15,9 @@ if ( is_numeric( $val ) ) { }
 ```php
 // check variable is instanceof the closure -> function() {}
 if ( $var instanceof Closure ) { }
+
+# get class name from instance
+get_class($user); // App/User
 ```
 
 ## function
@@ -32,10 +35,12 @@ function func(Closure $array ) { }
 
 ## array
 ```php
-# check is_array
-if ( is_array( $column ) ) { }
-
 list( $val, $key ) = [ 'vignesh', 'name' ];
 
-if ( array_key_exists( $key, $array ) ) { }
+# check
+is_array( $column )
+array_key_exists( $key, $array )
+
+# Modify/convert each values in a array
+array_map('strtoupper', $array); // ['key'=>'value'] >>> ['key'=>'VALUE']
 ```

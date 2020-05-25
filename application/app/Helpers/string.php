@@ -1,9 +1,9 @@
 <?php
-/**
- * [convertNullsAsEmpty description]
- * @param  [type] $array [description]
- * @return [type]        [description]
- */
+/*
+|--------------------------------------------------------------------------
+| convertNullsAsEmpty
+|--------------------------------------------------------------------------
+*/
 function convertNullsAsEmpty($array) {
 	array_walk_recursive($array, function (&$value, $key) {
 		$value = is_int($value) ? (String)$value : $value;
@@ -12,11 +12,11 @@ function convertNullsAsEmpty($array) {
 	return $array;
 }
 
-/**
- * getRandomString
- * @param type $length
- * @return type unique random string
- */
+/*
+|--------------------------------------------------------------------------
+| getRandomString
+|--------------------------------------------------------------------------
+*/
 function getRandomString($length) {
 	$characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 	$string = '';
@@ -27,6 +27,11 @@ function getRandomString($length) {
 	return mt_rand(10000, 99999) . $string;
 }
 
+/*
+|--------------------------------------------------------------------------
+| Encrypt & Decrypt
+|--------------------------------------------------------------------------
+*/
 function encryptStr($str) {
 	return encrypt($str); // serialization - object & array
 	return Crypt::encryptString($str); // without serialization
@@ -39,4 +44,14 @@ function decryptStr($str) {
 	} catch (DecryptException $e) {
 		\Log::info($e->getMessage());
 	}
+}
+
+/*
+|--------------------------------------------------------------------------
+| find the given letter in the string , and return the remaining words
+|--------------------------------------------------------------------------
+| after('vignesh@gmail.com', '@') >>> 'gmail.com'
+*/
+function after($str, $find) {
+	return substr( strrchr($str, $find) , 1);
 }

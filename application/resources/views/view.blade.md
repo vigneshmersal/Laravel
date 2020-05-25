@@ -4,20 +4,8 @@
 ```php
 # Default view
 @yield('content', View::make('view.name'))
-```
-### single line section
-```php
-# Define
-@yield('title')
 # Use
 @section('title', 'Page Title')
-```
-
-### using endsection
-```php
-# Define
-@yield('content')
-# Use
 @section('content')
 	<p>This is my body content.</p>
 @endsection
@@ -26,7 +14,7 @@
 ### Extend section
 ```php
 # Define
-@section('extend')
+@section('sidebar')
 	This is the extend section.
 @show
 # Use
@@ -42,7 +30,7 @@
 {{ time() }} // display timestamp
 {!! $name !!} // Displaying Unescaped Data (htmlspecialchars)
 
-{{-- display command --}}
+{{-- display command --}} // command
 
 @php
 @endphp
@@ -236,6 +224,15 @@ if ($errors->has('email')) { }
         @if ($loop->parent->first) // nested loop
         @endif
     @endforeach
+@endforeach
+
+# css - split each row has 3 columns
+@foreach ($collection->chunk(3) as $chunk)
+    <div class="row">
+        @foreach ($chunk as $product)
+            <div class="col-xs-4">{{ $product->name }}</div>
+        @endforeach
+    </div>
 @endforeach
 ```
 

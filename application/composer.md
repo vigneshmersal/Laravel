@@ -5,6 +5,8 @@ Frontend
 Laravel 6 not supported `2.x-dev` and above.
 > composer require laravel/ui
 
+> composer require "laravelcollective/html":"^5.8.0"
+
 ## Install composer globally
 Windows
 - goto [`getcomposer.org`](https://getcomposer.org/doc/00-intro.md#installation-windows)
@@ -19,7 +21,7 @@ Linux
 
 
 ## Create project
-> composer create-project --prefer-dist laravel/laravel blog
+> composer create-project --prefer-dist laravel/laravel blog "5.5"
 
 create a new application with all of the authentication scaffolding compiled and installed:
 > laravel new blog --auth
@@ -32,6 +34,9 @@ create a new application with all of the authentication scaffolding compiled and
 > composer require laravel/passport
 > php artisan migrate
 > php artisan passport:install
+
+## Laravel browser console [Debugbar](https://github.com/barryvdh/laravel-debugbar)
+> composer require barryvdh/laravel-debugbar --dev
 
 ## Install tinker
 > composer require laravel/tinker

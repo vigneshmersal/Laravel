@@ -123,6 +123,8 @@ pull($column) // remove and return col val
 
 ## array
 ```php
+$users->each->delete();
+
 # foreach
 $users->each->markAsVip();
 collection([1,2])->each(function ($item, $key) { return false; }); // stop iteration by return false;

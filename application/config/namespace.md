@@ -3,6 +3,8 @@
 // modal
 use App\ { User };
 
+use Illuminate\Http\Request;
+
 use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Support\Jsonable;

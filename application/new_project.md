@@ -9,8 +9,9 @@ composer create-project laravel/laravel=5.5 blog --prefer-dist
 set vhost & restart xampp
 
 v 7: composer require laravel/ui
-v 7: php artisan ui bootstrap --auth
-v 5,6: php artisan make: auth
+v 7: php artisan ui:auth `(without style)`
+v 7: php artisan ui bootstrap `(style)`
+v 5,6: php artisan make:auth
 
 composer install
 
@@ -22,7 +23,7 @@ composer update
 
 add .gitignore, .gitattributes
 
-v all: npm install
+npm install
 
 create database -> with collection as -> utf8_unicode_ci
 php artisan migrate

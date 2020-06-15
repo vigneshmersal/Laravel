@@ -35,6 +35,8 @@ create a new application with all of the authentication scaffolding compiled and
 > php artisan migrate
 > php artisan passport:install
 
+> composer require livewire/livewire
+
 ## Laravel browser console [Debugbar](https://github.com/barryvdh/laravel-debugbar)
 > composer require barryvdh/laravel-debugbar --dev
 

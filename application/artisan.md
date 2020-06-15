@@ -120,7 +120,7 @@ ___
  _--force_ `Create the class even if the component already exists`
  _--inline_ `Create a component that renders an inline view`
 
-> make:controller *PhotoController* `Create a new controller class`
+> make:controller *PhotoResourceController* --resource `Create a new controller class`
  _[<name>]_ `The name of the controller`
  _--api_ `Exclude the create and edit methods from the controller`
  _--force_ `Create the class even if the controller already exists.`

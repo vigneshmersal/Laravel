@@ -74,12 +74,13 @@ sudo apt-get upgrade
 # Mysql
 
 ## Host
-Location: C:\Windows\System32\drivers\etc\hosts
+Location: `C:\Windows\System32\drivers\etc\hosts`
 ```php
 127.0.0.1 			dev.doccure.test
 ```
 
 ## vHost
+Location: `C:/xampp/apache/conf/extra/httpd-vhosts.conf`
 ```php
 <VirtualHost dev.doccure.test:80>
     DocumentRoot "D:/dev/doccure/public"

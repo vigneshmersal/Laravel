@@ -118,18 +118,24 @@ ___
 
 > `4 2 1(r w x)`
 - *chmod 755 f.txt*
-| rwx | xxx |  0 |
-| :-- | :-: | -: |
-| --- | 000 | 0  |
-| --x | 001 | 1  |
-| -w- | 010 | 2  |
-| -wx | 011 | 3  |
-| r-- | 100 | 4  |
-| r-x | 101 | 5  |
-| rw- | 110 | 6  |
-| rwx | 111 | 7  |
+- | rwx | xxx |  0 |
+- | :-- | :-: | -: |
+- | --- | 000 | 0  |
+- | --x | 001 | 1  |
+- | -w- | 010 | 2  |
+- | -wx | 011 | 3  |
+- | r-- | 100 | 4  |
+- | r-x | 101 | 5  |
+- | rw- | 110 | 6  |
+- | rwx | 111 | 7  |
 
 ## Editor
+> `head [file]` - see first 10 lines of the file
+- *head -n3 [file]* - see first 3 lines
+
+> `tail [file]` - see last 10 lines of the file
+- *tail -3 [file]* - see last 3 lines
+
 > `echo [options] [var/string]` - scripting
 - *name="vignesh"* - assign value to the variable (`echo $name`)
 - *echo -e 'some \t boys'* - (`\t`-tab,`\n`-new line,`\b`,`\a`-alert) escape sequence
@@ -213,3 +219,12 @@ ___
 ## watch [command] - run the command continuously at certain interval (default 2 sec)
 > `watch free -h`
 - *watch -n 1,5 free -h* - change interval to 1.5sec
+
+___
+## SSH
+> `ssh` - check ssh is installed
+- *sudo apt-get install openssh-server* - install open ssh server
+- *sudo service ssh status* - check open ssh server is running
+- *ssh localhost* - check ssh server is connected to localhost
+- *ssh userName@IP -p1222* - (`-p` port number)
+- *sudo gedit /etc/ssh/sshd_config* - In this file we can change the default ssh port `22`

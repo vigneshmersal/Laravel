@@ -32,7 +32,7 @@ Route::get('/{locale}/posts', '')->middleware('locale'); // pass default value
 |--------------------------------------------------------------------------
 */
 Route::get('/posts/{post}', function (Post $post) { });
-Route::get('/posts/{post:slug}', function (Post $post) { });
+Route::get('/posts/{post:column}', function (Post $post) { }); // useful for column routes instead of id
 
 /*
 |--------------------------------------------------------------------------
@@ -119,4 +119,11 @@ Route::middleware('cache.headers:public;max_age=2628000;etag')->group(function (
     Route::get('privacy', 'Controller');
     Route::get('terms', 'Controller');
 });
+
+/*
+|--------------------------------------------------------------------------
+| livewire
+|--------------------------------------------------------------------------
+*/
+Route::livewire('/register', 'auth.register')->layout('layouts.app');
 ```

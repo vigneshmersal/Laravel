@@ -12,6 +12,8 @@
 
 ## Request
 ```php
+Storage::disk('public')->makeDirectory('adminuser', 0775, true, true);
+
 # Retrieving Uploaded Files
 $file = $request->file('photo');
 $file = $request->photo;

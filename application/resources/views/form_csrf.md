@@ -20,10 +20,24 @@ $.ajaxSetup({
         document.getElementById('id').submit()
     }
 ">click</span>
+
+$('#form').submit(function(e) {
+    e.preventDefault();
+    var setdata = $('#form').serialize();
+    $.ajax({
+        url: 'actions/checklogin.php',
+        type: 'POST',
+        data: setdata,
+        error: function () { },
+        success: function (data) { }
+    });
+});
 ```
 
 # Form
 ```php
+<form action="/action_page.php" target="_blank" method="post">
+
 {!! Form::open([
 	'url' => 'foo/bar',
 	'route' => ['route.name', $user->id],
@@ -34,28 +48,29 @@ $.ajaxSetup({
 	'files' => true,
 ]) !!}
 
-	Form::token();
+    {!! Form::token() !!}
 
-    Form::label('email', 'E-Mail', $attributes[]);
+    {!! Form::label($for="email", $text="EMail", []) !!}
 
-    Form::text($name, $value, $attributes[] );
+    {!! Form::text($name, $value, []) !!}
+    {!! Form::textarea($name, $value, []) !!}
 
-    Form::select($name, $options, $default, $attributes[] );
-    Form::selectRange('number', 10, 20);
-    Form::selectMonth('month');
+    {!! Form::select($name, $optionsArray, $defaultKey, []) !!}
+    {!! Form::selectMonth($name, []) !!}
+    {!! Form::selectRange($name, $min, $max, []) !!}
 
-    Form::email($name, $value, $attributes[]);
+    {!! Form::email($name, $value, []) !!}
 
-    Form::file($name, $attributes[]);
+    {!! Form::file($name, []) !!}
 
-    Form::number($name, $value);
+    {!! Form::number($name, $value, []) !!}
 
-    Form::date($name, $value);
+    {!! Form::date($name, \Illuminate\Support\Carbon::now(), []) !!}
 
-    Form::checkbox($name, $value, true);
-    Form::radio($name, $value, true);
+    {!! Form::checkbox($name, $value, $checked=true, []) !!}
+    {!! Form::radio($name, $value, $checked=true, []) !!}
 
-    Form::submit('Click');
+    {!! Form::submit($text="Submit", []) !!}
 
 {!! Form::close() !!}
 ```

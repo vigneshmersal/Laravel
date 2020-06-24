@@ -4,6 +4,13 @@
 * `ctrl+alt+t` - opening terminal in linux machine
 * `ctrl+shift+t` - open new tab
 
+## combine two commands
+> ls ; pwd - (`;`) - if the 1st CMD fails , 2nd CMD will run
+
+> ls && ped - (`&&`) - if the 1st CMD fails, then 2nd CMD will not run
+
+> ls || ped - (`||`) - if the 1st CMD success, then 2nd CMD will not run
+
 ## Basics
 > `man [command]` - help
 
@@ -104,6 +111,16 @@ ___
 
 > `rm [options] [dir/file]` - delete dir/file
 - *rm -r a* - remove dir & inside files/dir also (-r recursive)
+
+> `find searchDir/ -name test.*` - search file (`-name` search by name)
+- *find home/ -mtime -1* - search file created 1 day ago
+
+> `wc file.txt` - (o/p: 1 6 42 file.txt) word count
+- 1 - no of line (`-l` flag)
+- 6 - no of words (`-w` flag)
+- 42 - no of characters (`-c` flag)
+- file.txt - name of the file
+- *-L* flag - (no of characters in the longest line)
 
 ## permission - rwx
 > `[type][owner][group][others] 1 [ownerFileName] [groupFileName] [size] [date] [fileName]` -
@@ -222,9 +239,17 @@ ___
 
 ___
 ## SSH
-> `ssh` - check ssh is installed
+> `ssh` - check whether ssh is installed or not
 - *sudo apt-get install openssh-server* - install open ssh server
 - *sudo service ssh status* - check open ssh server is running
-- *ssh localhost* - check ssh server is connected to localhost
-- *ssh userName@IP -p1222* - (`-p` port number)
+- *ssh localhost* - check ssh server is installed
+- *ssh userName@IP -p1222* - (`-p` port number) - chk ssh client is installed
 - *sudo gedit /etc/ssh/sshd_config* - In this file we can change the default ssh port `22`
+
+> `ifconfig` - know ip address near (inet addr)
+
+> `scp` - secure copy files
+- *scp file hostUserName@IP:LocationPath* - ex: scp hello.txt root@192.0.0.1:/var/path - copy files from local to remote
+- *scp -r dirName hostUserName@IP:LocationPath* - (`-r` recursively copy all files and dir)
+- *scp remoteUserName@IP:/home/file.txt destinationLocation* - copy from remote to local
+- *scp -r remoteUserName@IP:/home/file.txt destinationLocation -P 1234 -i /home/public.key* - (`-r` recursively copy files) (`-P` mention diff port if need) (`-i` - if public key add location here)

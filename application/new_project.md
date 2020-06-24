@@ -2,15 +2,14 @@
 
 ## New project setup
 ```php
-composer create-project --prefer-dist laravel/laravel blog "5.5.*"
+composer create-project --prefer-dist laravel/laravel stan "5.5.*"
 // or
 composer create-project laravel/laravel=5.5 blog --prefer-dist
 
 set vhost & restart xampp
 
-v 7: composer require laravel/ui
-v 7: php artisan ui:auth `(without style)`
-v 7: php artisan ui bootstrap `(style)`
+v 7: composer require laravel/ui && php artisan ui vue --auth
+v 7: php artisan ui:auth `(without style)` (or) php artisan ui bootstrap `(with style)`
 v 5,6: php artisan make:auth
 
 composer install

@@ -220,8 +220,14 @@ $var = [
 
 ## Column with Rule
 ```php
-'name'               => 'required|string|max:255|unique:users',
-'email'              => 'email',
+'name'   => 'required|string|max:255|unique:users',
+'email'  => 'email',
+
+'mobile' => 'required|digits:10',
+'mobile' => 'required|numeric|between:9,11',
+'mobile' => 'required|min:10|numeric',
+'mobile' => 'required|regex:/(01)[0-9]{9}/',
+'mobile' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
 
 'title'              => 'required|max:255|unique:posts,title,'.$id,
 'body'               => ['required'],

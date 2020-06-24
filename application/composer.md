@@ -1,7 +1,14 @@
-# composer.json
+# composer
+## Install
 > composer global require laravel/installer
 
-Frontend
+## Commands
+> `composer outdated` - It will show all packages compared to new version.
+>> *composer outdated --direct*
+
+> `composer update`
+
+## Frontend
 Laravel 6 not supported `2.x-dev` and above.
 > composer require laravel/ui
 

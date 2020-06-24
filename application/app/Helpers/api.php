@@ -1,4 +1,16 @@
 <?php
+/**Use:
+try {
+    $validator = Validator::make($request->all(),[ 'name' => 'required' ]);
+    if (!$validator->fails()) {
+        return Helper::send_success_response($data);
+    } else {
+        return Helper::send_input_error_response($validator->messages()->first());
+    }
+} catch (Exception | Throwable $ex) {
+    return Helper::exception_handling($ex);
+}*/
+
 /**
  * Sends  input error response
  *

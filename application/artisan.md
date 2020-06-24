@@ -120,7 +120,7 @@ ___
  _--force_ `Create the class even if the component already exists`
  _--inline_ `Create a component that renders an inline view`
 
-> make:controller *PhotoResourceController* --resource `Create a new controller class`
+> make:controller *Api/PhotoResourceController* --resource `Create a new controller class`
  _[<name>]_ `The name of the controller`
  _--api_ `Exclude the create and edit methods from the controller`
  _--force_ `Create the class even if the controller already exists.`
@@ -346,7 +346,7 @@ ___
   --provider[=PROVIDER]  The service provider that has assets you want to publish
   --tag[=TAG]            One or many tags that have assets you want to publish (multiple values allowed)
 
-Error files: It will create a files at `resources/views/errors/` directory.
+Customize error pages: Files created at `resources/views/errors/`.
 > php artisan vendor:publish --tag=laravel-errors
 
 Create `config/tinker.php`

@@ -373,9 +373,13 @@ foreach( App\Model::cursor() as $each ) { }
 Cache::remember('homepage-books', 60*60*24, function() {
 	return $query;
 });
-Cache::forget('homepage-books');
-php artisan cache:clear
+Cache::forget('homepage-books'); // php artisan cache:clear
 
 # solve n+1 query issue
 Post::with('user')->get(); // instead of Post::all()
+
+# livewire computed property (won't make a seperate database query every time)
+public function getPostProperty() { // access by $this->post
+    return Post::find($this->postId);
+}
 ```

@@ -29,6 +29,13 @@ class User extends Authenticatable implements MustVerifyEmail // vereify by emai
         'deleted_at' => 'datetime',
     ];
 
+    /**
+     * The model's default values for attributes.
+     */
+    protected $attributes = [
+        'delayed' => false,
+    ];
+
     // ->getTimestamp(); ->toDateTimeString();
     protected $dates = [ 'deleted_at' ];
 
@@ -36,6 +43,14 @@ class User extends Authenticatable implements MustVerifyEmail // vereify by emai
     public $timestamps = false;
 
     protected $dateFormat = 'U';
+
+    protected $primaryKey = 'flight_id';
+    protected $keyType = 'string';
+
+    public $incrementing = false;
+
+    const CREATED_AT = 'creation_date';
+    const UPDATED_AT = 'last_update';
 
     // use modal route key -> Route::get('/posts/{post:slug}', function (Post $post) { });
     public function getRouteKeyName() { return 'slug'; }
@@ -140,13 +155,13 @@ class User extends Authenticatable implements MustVerifyEmail // vereify by emai
     protected static function uploadAvatar($image) {
         $filename = $image->getClientOriginalName();
         (new self())->deleteOldImage();
-        $image->storeAs('images', $filename, 'public');
+        $image->storeAs('img/adminuser', $filename, 'public');
         auth()->user()->update(['avatar' => $filename]);
     }
 
     protected function deleteOldImage() {
         if($this->avatar) {
-            Storage::delete('public/images/', $this->avatar);
+            Storage::delete('public/img/adminuser', $this->avatar);
         }
     }
 

@@ -16,13 +16,14 @@ $factory->define(User::class, function (Faker $faker) {
     $name = $faker->name;
     return [
         'name' => $name,
+        'username' => $faker->userName,
         'first_name' => $faker->firstName,
         'last_name' => $faker->lastName,
         'slug' => Str::slug($name, '_'),
 
         'email' => $faker->unique()->safeEmail,
         'phone' => $faker->randomNumber(8),
-        'password' => bcrypt('password'), // bcrypt(str_random(10)), Hash::make('password')
+        'password' => bcrypt('password'), // bcrypt($faker->password), bcrypt(str_random(10)), Hash::make('password')
         'role' => $faker->randomElement(['admin', 'doctor']),
     	'sex' => $faker->randomElement(['Male', 'Female']),
     	'dob' => "1995-03-12",
@@ -39,8 +40,11 @@ $factory->define(User::class, function (Faker $faker) {
         "user_id" => function(){
             return \App\User::all()->random();
         },
+        'company_id' => factory(App\Company::class)->create()->id,
         'user_id' => 'factory:App\User',
+        'role_id' => factory(Role::class),
 
+        'word' => $factory->word,
         'company' => $faker->company,
         "stock" => $faker->randomDigit,
         'salary'   => $faker->numberBetween(5000, 90000),
@@ -49,4 +53,19 @@ $factory->define(User::class, function (Faker $faker) {
 
         'remember_token' => str_random(10),
     ];
+});
+
+// factory(User::class)->states('admin')->create();
+$factory->state(User::class, 'admin', function ($user, $faker) {
+    return [
+        'name' => $faker->name,
+    ];
+});
+
+$factory->afterCreating(User::class, function ($user, $faker) {
+    $user->roles()->attach(1);
+});
+
+$factory->afterCreatingState(User::class, function ($user, $faker) {
+    $user->roles()->attach(1);
 });

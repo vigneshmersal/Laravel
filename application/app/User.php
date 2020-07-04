@@ -60,12 +60,20 @@ class User extends Authenticatable implements MustVerifyEmail // vereify by emai
         return $this->where(['name' => $value, 'role' => 'doctor'])->firstOrFail();
     }
 
+    public function serializeDate(DateTimeInterface $date) {
+        return $date->format('Y-m-d H:i:s');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Scope extract query
     |--------------------------------------------------------------------------
      */
     public function scopeAdmin($query) { return $query->where("role", "admin"); }
+    public function scopeActive($query) { return $query->where('active', 1); }
+    public function scopeRegisteredWithinDays($query, $days) {
+        return $query->where('created_at', '>=', now()->subDays($days));
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -88,19 +96,42 @@ class User extends Authenticatable implements MustVerifyEmail // vereify by emai
      */
     public function getFullNameAttribute() { return "{$this->first_name} {$this->last_name}"; }
     public function getActiveAttribute() { return $this->status == 1 ? 'Active' : 'InActive'; }
+    public function getIsAdminAttribute() {
+        return $this->roles()->where('id', 1)->exists();
+    }
+     public function getEmailVerifiedAtAttribute($value)
+    {
+        return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format(config('panel.date_format') . ' ' . config('panel.time_format')) : null;
+    }
 
     /*
     |--------------------------------------------------------------------------
     | Set method
     |--------------------------------------------------------------------------
     */
-    public function setFirstNameAttribute($v) { $this->attributes['first_name'] = strtolower($v); }
+    public function setFirstNameAttribute($v) {
+        $this->attributes['first_name'] = strtolower($v);
+    }
+    public function setPasswordAttribute($input)
+    {
+        if ($input) {
+            $this->attributes['password'] = app('hash')->needsRehash($input) ? Hash::make($input) : $input;
+        }
+    }
+    public function setEmailVerifiedAtAttribute($value)
+    {
+        $this->attributes['email_verified_at'] = $value ? Carbon::createFromFormat(config('panel.date_format') . ' ' . config('panel.time_format'), $value)->format('Y-m-d H:i:s') : null;
+    }
 
     /*
     |--------------------------------------------------------------------------
     | API
     |--------------------------------------------------------------------------
     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPassword($token));
+    }
     public function generateToken() {
         $this->api_token = str_random(60);
         $this->save();

@@ -20,6 +20,13 @@ class User extends JsonResource
 	public $preserveKeys = true;
 
 	/**
+     * The "data" wrapper that should be applied.
+     *
+     * @var string
+     */
+    public static $wrap = 'user'; // instead of o/p - data {} -> user {}
+
+	/**
 	* Transform the resource into an array.
 	*
 	* @param \Illuminate\Http\Request $request
@@ -41,7 +48,7 @@ class User extends JsonResource
 			// Relationships
 			'posts' => PostResource::collection($this->posts),
 
-			// Conditional Relationships
+			// Conditional Relationships (solve N+1 query loading problem)
 			'posts' => PostResource::collection($this->whenLoaded('posts')),
 
 			// Conditional Pivot Information
@@ -88,6 +95,11 @@ class User extends JsonResource
 	 */
 	public function with($request)
 	{
+		return [
+            'meta' => [
+                'key' => 'value',
+            ],
+        ];
 		return [
 			'version' => '1.0.0',
 			'api_url' => url('http://lpgvue/api')

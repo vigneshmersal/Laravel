@@ -2,8 +2,13 @@
 
 For multilanguage set `utf8_unicode_ci`
 
+## drop foreign key
+> alter table courses drop foreign key courses_sector_id_foreign
+
 ## import to windows
 C:/xampp/mysql/bin > mysql.exe -u root -p `database_name` < `path/file.sql`
+example:
+C:\xampp\mysql\bin>mysql.exe -u root -p stan < D:\Downloads\dev\guidely\candidates.sql
 
 ## change htdocs path
 - location: `C:\xampp\apache\conf\httpd`

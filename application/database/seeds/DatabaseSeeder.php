@@ -28,10 +28,12 @@ class DatabaseSeeder extends Seeder
 	private function TruncateTable($table)
 	{
         Model::unguard();
+        Eloquent::unguard();
 
 		// if ($this->command->confirm( "Confirm To Truncate $table" )) {
 			DB::statement('SET FOREIGN_KEY_CHECKS=0;'); // Schema::disableForeignKeyConstraints();
 			$table::truncate();
+			\DB::table($table)->truncate();
 			DB::statement('SET FOREIGN_KEY_CHECKS=1;'); // Schema::enableForeignKeyConstraints();
 
 			$this->command->warn($table." Truncated");

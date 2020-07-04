@@ -30,4 +30,6 @@ php artisan migrate
 config\database.php -> mysql -> strict -> false
 
 sudo apt-get install php5.6-xml // IF PHP VERSION=5.6
+
+composer require barryvdh/laravel-debugbar --dev
 ```

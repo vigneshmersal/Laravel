@@ -46,6 +46,7 @@ class CreateUsersTable extends Migration {
 			$table->integer('deleted_by')->nullable();
 			$table->timestamps();
 			$table->datetime('deleted_at')->nullable();
+			$table->softDeletes();
 
 			$table->primary(['user_id']); // change primary key of the table
 		});

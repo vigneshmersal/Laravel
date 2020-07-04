@@ -192,6 +192,10 @@ SYNTAX COlORFULL TEXT EDITOR
 
 > `gedit [file]` - open file in notepad editor
 
+> `vim`
+- `v` - visual mode
+- `:` - commands
+
 ## system
 > `df -h` - view free/used memory space for files (*-h* human readable)
 

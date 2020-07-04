@@ -1,5 +1,11 @@
 # Request
 
+```php
+# request from api
+if (Request::wantsJson()) {}
+if( $request->is('api/*')){}
+```
+
 # GET
 ```php
 # Retrieve all data

@@ -30,7 +30,7 @@ class UsersTableSeeder extends Seeder
 			['Urology'],
 		];
 		foreach ($data as $test) {
-			$bulk[] = Model::create([
+			Model::create([
 				'name' => $test[0]
 			]);
 		}

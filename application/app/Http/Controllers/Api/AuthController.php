@@ -19,13 +19,34 @@ class AuthController extends AnotherClass
 
 	public function login(Request $request)
 	{
-		$credentials = $request->only(['email', 'password']);
+		$validation = Validator::make($request->all(),[
+    		'email' => 'required',
+    		'password' => 'required',
+    	]);
 
-		if (!$token = auth()->attempt($credentials)) {
+    	if($validation->fails()){
+    		$data = api_validation_error('Validation Errors',$validation->messages());
+    		return response()->json($data,422);
+    	}
+
+    	if(Auth::attempt($request->only('email','password'))){
+    		$user = $request->user();
+
+    		Token::where('user_id',$user->id)->update(['revoked'=>1]);
+    		$tokenObj = $user->createToken('user access token');
+    		$token = $tokenObj->token;
+			$token->expires_at = Carbon::now()->addWeeks(2);
+        	$token->save();
+
+        	$token->accessToken;
+        	$token = $tokenObj->accessToken;
+
+    		return response()->json($data);
+			return $this->respondWithToken($token);
+    	}else{
 			return response()->json(['error' => 'Unauthorized'], 401);
-		}
+    	}
 
-		return $this->respondWithToken($token);
 	}
 
 	protected function respondWithToken($token)

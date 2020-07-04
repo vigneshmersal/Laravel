@@ -6,6 +6,9 @@ ___
 Options:
 > -V, --version `Display this application version`
 
+Artisan command,
+> Artisan::call('migrate');
+
 ## Table
 > cache:table `Create a migration for the cache database table`
 
@@ -83,6 +86,7 @@ ___
 
 ## db
 > db:seed `Seed the database with records`
+- ex: db:seed --class=UsersTableSeeder
  _--class[=CLASS]_ `The class name of the root seeder [default: "DatabaseSeeder"]`
  _--database[=DATABASE]_ `The database connection to seed`
  _--force_ `Force the operation to run when in production`
@@ -120,7 +124,8 @@ ___
  _--force_ `Create the class even if the component already exists`
  _--inline_ `Create a component that renders an inline view`
 
-> make:controller *Api/PhotoResourceController* --resource `Create a new controller class`
+> make:controller `Create a new controller class`
+- ex: make:controller Api/PhotosApiController -r -m=Photo --api
  _[<name>]_ `The name of the controller`
  _--api_ `Exclude the create and edit methods from the controller`
  _--force_ `Create the class even if the controller already exists.`
@@ -138,6 +143,7 @@ ___
  _--report_ `Create the exception with an empty report method`
 
 > make:factory `Create a new model factory`
+- ex: make:factory --model User Post
  _[<name>]_ `The name of the class`
  _-m, --model[=MODEL]_ `The name of the model`
 

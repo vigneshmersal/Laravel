@@ -21,6 +21,8 @@ class UserController extends Controller
      */
     public function index()
     {
+        abort_unless(\Gate::allows('book_access'), 403);
+
         return new UserResource(User::first());
 
         // (or)
@@ -36,6 +38,12 @@ class UserController extends Controller
         return (new UserResource(User::find(1)))->response()->header('X-Value', 'True');
 
         return response($users, 200);
+        return response()->noContent(); // "ok" 204 status code "No content"
+    }
+
+    public function create() {
+        abort_unless(\Gate::allows('book_create'), 403);
+
     }
 
     /**
@@ -46,6 +54,8 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        abort_unless(\Gate::allows('book_create'), 403);
+
         $rating = Rating::firstOrCreate(
             [ 'user_id' => $request->user()->id ],
             [ 'rating' => $request->rating ]
@@ -57,6 +67,14 @@ class UserController extends Controller
     }
 
     /**
+     * edit
+     * @param  [string]  [description]
+    */
+    public function edit() {
+        abort_unless(\Gate::allows('book_edit'), 403);
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -64,6 +82,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        abort_unless(\Gate::allows('book_show'), 403);
+
         return new UserResource($user);
         // (or)
         return response($student, 200); // success
@@ -79,6 +99,8 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        abort_unless(\Gate::allows('book_edit'), 403);
+
         // check if currently authenticated user is the owner of the book
         if ($request->user()->id !== $book->user_id) {
             return response()->json(['error' => 'You can only edit your own books.'], 403);
@@ -99,6 +121,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        abort_unless(\Gate::allows('book_delete'), 403);
+
         $user->delete();
 
         return new UserResource($user);

@@ -13,6 +13,7 @@ find([$id1]);
 findOrFail($id);
 
 first();
+firstOrFail();
 firstWhere($column); // value is not null,0,[],''
 firstWhere($column, $value);
 firstWhere($column, $operator, $value);
@@ -167,6 +168,11 @@ collect([1,2])->reject(function($v, $k){ return $v>1; }); // [1]
 collect([['k'=>'v']])->flatMap(function ($eachValue) { return strtoupper($eachValue); }); // ['k'=>V]
 collect([1,2])->transform(function($item, $key){ return $item*2; }); // [2,4] - modifies the collection
 collect([1,2])->map(function($item, $key){ return $item*2; }); // [2,4] - returns a new instance, does not modify the original collection
+// After Eloquent query you can modify rows
+$users = User::where('role_id', 1)->get()->map(function (User $user) {
+    $user->some_column = some_function($user);
+    return $user;
+});
 collect([[0,1],[2,3]])->mapSpread(function ($even, $odd) { return $even+$odd; }); // [1,5] nested foreach loop
 collect(['c1'=>1,'c2'=>2],['c1'=>1,'c2'=>3])->mapToGroups(function ($item, $key) { return [$item['c1']=>$item['c2']]; }); // [ 1=>[2,3] ] - convert values to key=>val pair
 collect(['c1'=>1,'c2'=>2],['c1'=>1,'c2'=>3])->mapWithKeys(function ($item, $key) { return [$item['c1']=>$item['c2']]; }); // [ 1=>3 ] - convert values to key=>val pair (but val will be replaced if the key already exis)
@@ -200,6 +206,22 @@ random($total)
 shuffle()
 ```
 
+## Increments and decrements
+```php
+Post::find($post_id)->increment('view_count');
+User::find($user_id)->increment('points', 50);
+```
+
+
+## Date
+```php
+$products = Product::whereDate('created_at', '2018-01-31')->get();
+$products = Product::whereMonth('created_at', '12')->get();
+$products = Product::whereDay('created_at', '31')->get();
+$products = Product::whereYear('created_at', date('Y'))->get();
+$products = Product::whereTime('created_at', '=', '14:13:58')->get();
+```
+
 ## condition
 ```php
 where($column, $value); # default operator "="
@@ -219,6 +241,9 @@ groupBy(['skill', function($item){ return $item['roles']; }], $preserveKeys=true
 collect([ ['a'=>6,'b'=>2],['a'=>5,'b'=>2] ])->unique($column='b') // [ ['a'=>6,'b'=>2] ]
 unique(function($item){ return $item['col1'].$item['col2']; });
 
+// havingRaw
+Product::groupBy('category_id')->havingRaw('COUNT(*) > 1')->get();
+
 # change collection when pass
 ->when(true, function($c){ return $c->push(4); }, function ($c) { return $c->push(3); });
 ->when($status, $callback, $default);
@@ -236,6 +261,11 @@ unique(function($item){ return $item['col1'].$item['col2']; });
 with('comments');
 with('comments' => function() {  });
 with('posts.comments');
+```
+
+## softdelete
+```php
+Post::withTrashed()->where('author_id', 1)->restore();
 ```
 
 ## convert
@@ -267,15 +297,6 @@ Model::insert($array); // manually add 'created_at,updated_at' => now()->toDateT
 ```php
 count() | count($column) // count no of items
 
-reverse()
-
-sort()
-sortDesc()
-
-sortBy($column)
-sortByDesc($column)
-sortBy(function ($item, $key) { return count($item['sub']); }); // sort by total sub item count
-
 sortKeys()
 
 sum() | sum($column) | sum(function($item) { return count($item); });
@@ -293,6 +314,24 @@ collect(['a','b','c','d','e','f'])->nth($nth=2,$start=1); // ['b','d','f']
 
 # crossjoin
 collect([1, 2])->crossJoin(['a', 'b']); // [ [1, 'a'], [1, 'b'], [2, 'a'], [2, 'b'] ]
+```
+
+## sorting
+```php
+reverse()
+
+sort()
+sortDesc()
+
+sortBy($column)
+sortByDesc($column)
+sortBy(function ($item, $key) { return count($item['sub']); }); // sort by total sub item count
+
+Instead of:
+User::orderBy('created_at', 'desc')->get();
+You can do it quicker:
+User::latest()->get(); // latest() will order by created_at.
+User::oldest()->get();
 ```
 
 ## Collection
@@ -316,6 +355,9 @@ DB::table('table_name')->get()->value('email');
 
 # select
 DB::select( DB::raw('SELECT * FROM `users`') );
+
+// change table column name
+$users = DB::table('users')->select('name', 'email as user_email')->get();
 ```
 
 ## Transaction
@@ -365,6 +407,7 @@ collect([1,2,3,4])->take(2); // [1,2]
 ```php
 # Instead of create()
 Model::insert($array); // manually add 'created_at,updated_at' => now()->toDateTimeString()
+DB::insert('insert into users (email, votes) values (?, ?)', ['john@example.com', '0']);
 
 # loop faster by execute single query
 foreach( App\Model::cursor() as $each ) { }
@@ -382,4 +425,7 @@ Post::with('user')->get(); // instead of Post::all()
 public function getPostProperty() { // access by $this->post
     return Post::find($this->postId);
 }
+
+faster application into 100x
+- php artisan route:cache
 ```

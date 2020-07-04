@@ -22,6 +22,20 @@ class UserController extends AnotherClass
 
     public function index(Request $request)
     {
+        if(request()->ajax())
+        {
+            return datatables()->of(AjaxCrud::latest()->get())
+                    ->addColumn('action', function($data){
+                        $button = '<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm">Edit</button>';
+                        $button .= '&nbsp;&nbsp;';
+                        $button .= '<button type="button" name="delete" id="'.$data->id.'" class="delete btn btn-danger btn-sm">Delete</button>';
+                        return $button;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+        return view('ajax_index');
+        // (or)
         $user = (new User)->newQuery();
 
         return $user;
@@ -39,21 +53,28 @@ class UserController extends AnotherClass
 
     public function store(Request $request)
     {
-        // validate
         $rules = array(
-            'name'       => 'required',
-            'email'      => 'required|email',
-            'level' => 'required|numeric'
+            'first_name'    =>  'required',
+            'last_name'     =>  'required',
+            'image'         =>  'required|image|max:2048'
         );
-        $validator = Validator::make(Input::all(), $rules);
 
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput($request->except('password'));
-        } else {
-            // store
+        $error = Validator::make($request->all(), $rules);
 
-            Session::flash('message', 'Successfully created records!');
+        if($error->fails())
+        {
+            return response()->json(['errors' => $error->errors()->all()]);
         }
+
+        $image = $request->file('image');
+
+        $new_name = rand() . '.' . $image->getClientOriginalExtension();
+
+        $image->move(public_path('images'), $new_name);
+
+        AjaxCrud::create($form_data);
+
+        return response()->json(['success' => 'Data Added successfully.']);
     }
 
     public function show($id)
@@ -63,7 +84,11 @@ class UserController extends AnotherClass
 
     public function edit($id)
     {
-
+        if(request()->ajax())
+        {
+            $data = AjaxCrud::findOrFail($id);
+            return response()->json(['data' => $data]);
+        }
     }
 
     public function update($id)

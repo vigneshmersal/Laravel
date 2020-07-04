@@ -23,3 +23,7 @@ Route::post('login', 'Api\AuthController@login');
 
 // php artisan make:resource Users --collection
 Route::apiResource('users','UserController');
+
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Api\Admin'], function () {
+    Route::apiResource('users', 'UsersApiController');
+});

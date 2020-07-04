@@ -1,5 +1,7 @@
 # Resource Collection
 
+> new UserCollection(User::all()->load('roles')
+
 ```php
 
 namespace App\Http\Resources;

@@ -1,21 +1,21 @@
 # API
 
-## Website URL
+Website URL
 > https://desk.guidely.in
 
-## Headers
+Headers
 - *Accept:* application/json
 - *Authorization:* Bearer `{{token}}`
 
-## Body
+Secret Key (for all Api)
 > apikey: qw42yunk
 ___
-*URL* : `api/v1/send_otp`
-*Method* : `post`
-*Body*: mobile, apikey
-*Header*:
-`Accept`: application/json
-output:
+## Send OTP
+- **URL** : `api/v1/send_otp`
+- *Method* : `post`
+- *Body*: mobile, apikey
+- *Header*: `Accept`: application/json
+- output:
 ```php
 "{
     ""status"": 1,

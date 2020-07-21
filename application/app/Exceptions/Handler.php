@@ -66,9 +66,46 @@ class Handler extends ExceptionHandler
             return response()->view('errors.custom', [], 500);
         }
 
-        # Handling API resource
-        if ($exception instanceof ModelNotFoundException && $request->wantsJson()) {
-            return response()->json([ 'error' => 'Resource not found' ], 404);
+        if ($e instanceof HttpResponseException) {
+            return $e->getResponse();
+        } elseif ($e instanceof ModelNotFoundException) {
+            $e = new NotFoundHttpException($e->getMessage(), $e);
+        } elseif ($e instanceof AuthenticationException) {
+            return $this->unauthenticated($request, $e);
+        } elseif ($e instanceof AuthorizationException) {
+            $e = new HttpException(403, $e->getMessage());
+        } elseif ($e instanceof ValidationException && $e->getResponse()) {
+            return $e->getResponse();
+        }
+
+        if ($this->isHttpException($e)) {
+            $statusCode = $e->getStatusCode($e);
+            if ($statusCode == 404)  return response()->view('errors.404', [], 404);
+            // or
+            if (view()->exists('errors.'.$statusCode)) {
+                return response()->view('errors.'.$statusCode, [], $statusCode);
+            }
+            // or
+            if (in_array($statusCode, array(403, 404, 500, 503))){
+                return response()->view('errors.' . $statusCode, [], $statusCode);
+            }
+        }
+
+        # This will replace our 404 response with a JSON response.
+        if ($exception instanceof ModelNotFoundException ||
+            $exception instanceof NotFoundHttpException &&
+            $request->wantsJson() ) {
+                return response()->json(['error' => 'Not Found'], 404);
+                abort(404, 'The resource you are looking for could not be found');
+        }
+
+        if ($e instanceof TokenMismatchException) {
+            if ($request->ajax()) return response('Token Mismatch Exception', 401);
+            return redirect()->route('auth.login.get');
+        }
+
+        if ($e instanceof \PDOException) { // database unavailable or login details wrong
+            return response()->view('errors.404', ['message', $e->getMessage()], 404);
         }
 
         return parent::render($request, $exception);

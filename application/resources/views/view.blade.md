@@ -9,6 +9,9 @@
 @section('content')
 	<p>This is my body content.</p>
 @endsection
+
+if (view()->exists('custom.page')) { }
+return view()->first(['custom.dashboard', 'dashboard'], $data);
 ```
 
 ### Extend section

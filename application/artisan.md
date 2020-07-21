@@ -164,7 +164,9 @@ ___
 > make:middleware *CheckAge* `Create a new middleware class`
  _[<name>]_ `The name of the class`
 
-> make:migration *create_users_table, remove_user_id_from_posts_table* `Create a new migration file`
+> make:migration create_users_table --create=users
+ - make:migration add_votes_to_users_table --table=users
+ - make:migration remove_user_id_from_posts_table --table=posts
  _[<name>]_ `The name of the migration`
  _--create[=CREATE]_ `The table to be created`
  _--table[=TABLE]_ `The table to migrate`
@@ -353,10 +355,13 @@ ___
   --tag[=TAG]            One or many tags that have assets you want to publish (multiple values allowed)
 
 Customize error pages: Files created at `resources/views/errors/`.
-> php artisan vendor:publish --tag=laravel-errors
+> vendor:publish --tag=laravel-errors
 
 Create `config/tinker.php`
-> php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
+> vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
+
+ignition `config/ignition.php`
+> vendor:publish --provider="Facade\Ignition\IgnitionServiceProvider" --tag="ignition-config"
 
 ## view
 > view:cache `Compile all of the application's Blade templates`

@@ -1,5 +1,8 @@
 # Learn
 
+- lenovo vantage features
+- laravel ignition error editor to sublime text
+
 ## Laravel
 * carbon
 * SearchableTrait

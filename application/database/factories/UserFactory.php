@@ -64,6 +64,7 @@ $factory->state(User::class, 'admin', function ($user, $faker) {
 
 $factory->afterCreating(User::class, function ($user, $faker) {
     $user->roles()->attach(1);
+    $user->accounts()->save(factory(App\Account::class)->make());
 });
 
 $factory->afterCreatingState(User::class, function ($user, $faker) {

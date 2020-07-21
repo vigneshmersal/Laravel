@@ -1,4 +1,6 @@
 # API passport
+[laravel-json-api](https://laravel-json-api.readthedocs.io/en/latest/)
+
 Install
 > composer require laravel/passport
 

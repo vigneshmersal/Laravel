@@ -1,4 +1,6 @@
 # Validation - Error code 422
+[40-additional-laravel-validation-rules/](https://laraveldaily.com/40-additional-laravel-validation-rules/)
+
 ```php
 # validate
 $validatedData = $request->validate([

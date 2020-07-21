@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Collection;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -44,6 +45,12 @@ class AppServiceProvider extends ServiceProvider
             $items = $this instanceof Collection ? $this : Collection::make($this);
             $paginate = new LengthAwarePaginator($this->forPage($page, $perPage), $this->count(), $perPage, $page, $options);
             return $paginate->setPath(Paginator::resolveCurrentPath());
+        });
+
+        Collection::macro('getNth', function ($nth) {
+            return $this->slice($nth, 1)->first();
+            return $this->values()->get($nth);
+            return $this->all()[$nth];
         });
     }
 

@@ -13,8 +13,6 @@ config/app.php
 ]
 ```
 
-> php artisan vendor:publish
-
 ## controller
 ```php
 namespace App\Http\Controllers;
@@ -40,81 +38,6 @@ class AjaxCrudController extends Controller
                     ->make(true);
         }
         return view('ajax_index');
-    }
-
-    public function create()
-    {
-        //
-    }
-
-    public function store(Request $request)
-    {
-        $rules = array(
-            'first_name'    =>  'required',
-            'last_name'     =>  'required',
-            'image'         =>  'required|image|max:2048'
-        );
-
-        $error = Validator::make($request->all(), $rules);
-
-        if($error->fails()) {
-            return response()->json(['errors' => $error->errors()->all()]);
-        }
-
-        $image = $request->file('image');
-        $new_name = rand() . '.' . $image->getClientOriginalExtension();
-        $image->move(public_path('images'), $new_name);
-
-        AjaxCrud::create($request->all());
-
-        return response()->json(['success' => 'Data Added successfully.']);
-    }
-
-    public function show($id)
-    {
-        //
-    }
-
-    public function edit($id)
-    {
-        if(request()->ajax())
-        {
-            $data = AjaxCrud::findOrFail($id);
-            return response()->json(['data' => $data]);
-        }
-    }
-
-    public function update(Request $request)
-    {
-        $image_name = $request->hidden_image;
-        $image = $request->file('image');
-
-        $rules = array(
-            'first_name'    =>  'required',
-            'last_name'     =>  'required',
-            'image'         =>  'image|max:2048'
-        );
-
-        $error = Validator::make($request->all(), $rules);
-
-        if ($error->fails()) {
-            return response()->json(['errors' => $error->errors()->all()]);
-        }
-
-        if ($image != '') {
-	        $image_name = rand() . '.' . $image->getClientOriginalExtension();
-	        $image->move(public_path('images'), $image_name);
-        }
-
-        AjaxCrud::whereId($request->hidden_id)->update();
-
-        return response()->json(['success' => 'Data is successfully updated']);
-    }
-
-    public function destroy($id)
-    {
-        $data = AjaxCrud::findOrFail($id);
-        $data->delete();
     }
 }
 

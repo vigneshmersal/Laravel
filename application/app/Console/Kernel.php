@@ -26,9 +26,15 @@ class Kernel extends ConsoleKernel
     {
         $schedule->call(function() { \Log::info("Task Schedular Called."); })->everyMinute();
 
+        //deactivate expired offer
+        $schedule->call(function(){
+            TaskScheduleController::deactivate_expired_offer();
+            // Offer::whereDate('expiry_date_time', '<=', Carbon::now() )->update(['is_active'=>0]);
+        })->everyMinute();
+
         $schedule->command('email:send')->hourly();
-            // ->weeklyOn(1, '13:00');
-            // ->dailyAt('13:00');
+        // ->weeklyOn(1, '13:00');
+        // ->dailyAt('13:00');
     }
 
     /**

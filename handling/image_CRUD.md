@@ -5,12 +5,32 @@ $table->string('image')->nullable()
 
 # validation
 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+'photo' => 'dimensions:max_width=4096,max_height=4096'
+'file'  => 'required|mimes:doc,docx,pdf,txt|max:2048',
 
 # Trait
+/**
+ * [upload photo]
+ */
 public function uploadPhoto($image, $path)
 {
-    $imageName = time().'.'.$image->getClientOriginalExtension();
-    $image->move( public_path($path), $imageName );
+	$extension = $image->getClientOriginalExtension();
+	$imageName = time().'.'.$extension;
+	$image->move( public_path($path), $imageName );
+	return $imageName;
+}
+
+/**
+ * [upload photo from external url]
+ * $image = 'https://i.stack.imgur.com/koFpQ.png';
+ * $image = 'http://www.google.co.in/intl/en_com/images/srpr/logo1w.png';
+ */
+public function uploadExternalImageURL($image, $path)
+{
+    $uploadedImageName = basename($image); // koFpQ.png
+	$extension = \File::extension($image); // png
+    $imageName = time().'.'.$extension;    // 2344.png
+	\Image::make($image)->save(public_path($path . $imageName));
     return $imageName;
 }
 

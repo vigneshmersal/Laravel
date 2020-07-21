@@ -90,15 +90,20 @@ contains(function ($value, $key) { return $value > 5; })
 search($val); // return key if val exist, else return false
 search(function ($item, $key) { return $item>5; });
 
-# has column
-has([$column])
-
 # hasAll
 collect([1,2])->every(function($v,$k){ return $v > 0; }); // true
 
 # empty|null
-collect([])->isEmpty();
+$c = collect([])->isEmpty();
+isset($c);
 collect([])->isNotEmpty();
+
+Author::hasMany(Book::class); // get authors by with books
+Author::has('books', '>', 5)->get(); // chk authors by with books > 5
+Author::has('books.ratings')->get(); // get authors by with book ratings
+
+# chk Relationship is eager loaded($product->with(['topics']))
+$product->relationLoaded('topics') // true/false
 ```
 
 ## delete
@@ -120,6 +125,11 @@ collect([1,2,3,4])->splice($pos=2,$size=1); // [3]
 # last
 pop() // remove last item
 pull($column) // remove and return col val
+```
+
+## restore
+```php
+Post::withTrashed()->where('author_id', 1)->restore();
 ```
 
 ## array
@@ -212,7 +222,6 @@ Post::find($post_id)->increment('view_count');
 User::find($user_id)->increment('points', 50);
 ```
 
-
 ## Date
 ```php
 $products = Product::whereDate('created_at', '2018-01-31')->get();
@@ -258,9 +267,31 @@ Product::groupBy('category_id')->havingRaw('COUNT(*) > 1')->get();
 ## Eloquent Relationships
 ```php
 # Best of Eager loading - to solve (N+1) issue
-with('comments');
-with('comments' => function() {  });
-with('posts.comments');
+Post::with('comments');
+Post::with(['comments:id,body'])->get(); // eager loading with select specific columns
+$posts = Post::with(['comments' => function($query) {
+    return $query->select(['id', 'body']);
+}])->get();
+Post::with('posts.comments');
+Post::with('comments' => function() {  });
+Post::with(['comments as active_comments' => function (Builder $query) {
+    $query->where('approved', 1); // condition for comments table
+    $query->orderBy('created_at', 'desc');
+}])->get();
+Post::with(['comments.user' => function (Builder $query) {
+    $query->where('active', 1); // condition for user table
+}])->get();
+
+Post::withCount([
+    'comments', 		// comments_count=50
+    'comments as active_comments_count' => function (Builder $query) {
+        $query->where('approved', 1);
+    }
+])->get();
+# nested relation
+User::withCount('posts')->withCount([
+    'posts' => function(\Illuminate\Database\Eloquent\Builder $query){ $query->withCount('videos'); }
+])->all();
 ```
 
 ## softdelete
@@ -291,6 +322,7 @@ keyBy(function($item){ return strtoupper($item['1']); }); // [A=>['1'=>'a'],B=>[
 Model::fill($array)->save();
 Model::create($array);
 Model::insert($array); // manually add 'created_at,updated_at' => now()->toDateTimeString()
+Model::insertGetId($array);
 ```
 
 ## calculation
@@ -358,6 +390,8 @@ DB::select( DB::raw('SELECT * FROM `users`') );
 
 // change table column name
 $users = DB::table('users')->select('name', 'email as user_email')->get();
+
+Product::groupBy('category_id')->havingRaw('COUNT(*) > 1')->get();
 ```
 
 ## Transaction
@@ -401,25 +435,49 @@ collect([1,2,3,4,5])->forPage($page=2, $items=2); // [3,4]
 collect([1,2,3,4])->skip(2); // [3,4]
 
 collect([1,2,3,4])->take(2); // [1,2]
+
+collect([1,2,3,4])->get()[$nth=1]; // [2]
+collect([1,2,3,4])->values()->get($nth=1); // [2]
+collect([1,2,3,4])->get()->slice($nth=1, $howmany=2); // [2,3]
 ```
 
 ## optimize
 ```php
+return 'Memory Usage: '.round(xdebug_peak_memory_usage()/1048576, $precision=2) . 'MB';
+
 # Instead of create()
 Model::insert($array); // manually add 'created_at,updated_at' => now()->toDateTimeString()
 DB::insert('insert into users (email, votes) values (?, ?)', ['john@example.com', '0']);
 
+# where condition use best filter on more data
+where('created_at', '>', now()->subDays(29)) // use date filter first
+where('name', 'like', '%vig%') // use like filter second
+
 # loop faster by execute single query
 foreach( App\Model::cursor() as $each ) { }
 
+# To load bulk data from server like 100120 data's it will take more memory 100MB
+# But if u use cursor() it will split the query and optimize the memory into 16MB
+# Usecase - No, one will show 100000 records on a single page. But there are much other use cases where you may need to fetch 100000 records. For example, you may need for report generating like analytics, or to update each record for some reason, or you may need to send a notification to 100000 users or you may need to clean up some records based on some conditions. There are many many use cases where you may need to fetch 100000 records.
+Question::all();
+Question::cursor(10000, function($questions){});
+
 # cache query
-Cache::remember('homepage-books', 60*60*24, function() {
-	return $query;
-});
-Cache::forget('homepage-books'); // php artisan cache:clear
+Cache::remember('index.posts', 30, function() { // time - 60*60*24
+    return Post::all(['id', 'name']);
+	return Post::with(['user:id,name', 'comments'])->get()->map(function($post) {
+        return [
+            'title' => $post->title,
+            'comments' => $post->comments->pluck('body'),
+        ];
+    })->toArray(); // toArray() - store data's only
+}); // use blade files as array format
+Cache::forget('index.posts'); // php artisan cache:clear
 
 # solve n+1 query issue
 Post::with('user')->get(); // instead of Post::all()
+Hotel::with('city')->withCount(['bookings'])->get(); // bookings_count
+$post->load('user');
 
 # livewire computed property (won't make a seperate database query every time)
 public function getPostProperty() { // access by $this->post
@@ -427,5 +485,24 @@ public function getPostProperty() { // access by $this->post
 }
 
 faster application into 100x
-- php artisan route:cache
+- php artisan route:cache (boostrap/cache/route.php)
+- php artisan optimize
+
+faster config/ dir: (get .env value and minimized array stored in - boostrap/config/cache.php)
+- php artisan config:cache (to remove -> clear:cache)
+
+Composer optimize autoload (one-to-one-association of the class)
+- composer dumpautoload -o
+
+Fastest cache & session driver:
+- memcached
+
+remove unused service, add in
+- config/app.php
+
+package
+- laravel page speed
+
+Object cache
+- singleton
 ```

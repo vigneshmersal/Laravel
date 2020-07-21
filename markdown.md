@@ -20,6 +20,9 @@ __strong__
 > Blockquotes
 >> Nested Blockquotes
 
+# sfs
+    Four space
+
 ## List
 - Dot list
 	* Nested Dot list
@@ -56,19 +59,27 @@ ___
 [Name](#id)
 
 ## Syntax Highlighting
+JSON view
 ```json
 {
 	"key": "value"
 }
 ```
 
+Javascript view
 ```js
 var s = "JavaScript syntax highlighting";
 alert(s);
 ```
 
+PHP view
 ```php
 $name = "vignesh"
+```
+
+Terminal shript editor view
+```sh
+$ git pull
 ```
 
 

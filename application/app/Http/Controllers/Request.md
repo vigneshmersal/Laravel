@@ -38,14 +38,13 @@ $request->input('products.*.name'); # get array of data
 
 ## check condition
 ```php
-# check var exist in the query string
-if ($request->exists('name')) { }
-
 # check var exist with the val
 if ($request->has('name')) { }
 if ($request->has(['name', 'email'])) { }
 if ($request->hasAny(['name', 'email'])) { }
 if ($request->filled('name')) { } // present & not empty
+if ($request->exists('name')) { } // present (checkbox, query string)
+
 if ($request->missing('name')) { } // absent
 
 # check view exist

@@ -37,19 +37,30 @@ class User extends JsonResource
 		return parent::toArray($request);
 
 		// (or)
+		// get attribute
+		$convertTo = $this->attributes['meta']['convertTo'];
+		// call function
+		'conversion' => $this->convertTo($convertTo, $this->bitcoin)
 
 		return [
 			'id' => $this->id,
 			'name' => $this->name,
 			'email' => $this->email,
 			'created_at' => (string) $this->created_at,
+			'created_at' => Carbon::parse($this->created_at)->format("Y-m-d"),
 			'updated_at' => (string) $this->updated_at,
 
 			// Relationships
 			'posts' => PostResource::collection($this->posts),
 
+
 			// Conditional Relationships (solve N+1 query loading problem)
 			'posts' => PostResource::collection($this->whenLoaded('posts')),
+            'category' => new CategoryResource($this->whenLoaded('category')),
+            'category' => $this->when($this->relationLoaded('category'), $this->category->name ?? ''),
+			'posts' => $this->when($this->relationLoaded('posts'), function () {
+                return PostResource::collection($this->posts);
+            }),
 
 			// Conditional Pivot Information
 			'expires_at' => $this->whenPivotLoaded('role_user', function () {
@@ -63,6 +74,7 @@ class User extends JsonResource
 
 			// Conditional Attributes
 			'secret' => $this->when(Auth::user()->isAdmin(), 'secret-value'),
+			'test_type' => $this->when($this->test_type, MockTest::TEST_TYPE_SELECT[$this->test_type]),
 			'secret' => $this->when(Auth::user()->isAdmin(), function () {
 				return 'secret-value';
 			}),
@@ -72,6 +84,35 @@ class User extends JsonResource
 				'first-secret' => 'value',
 				'second-secret' => 'value',
 			]),
+			$this->mergeWhen($this->section, function() {
+				$collect = collect();
+				foreach($this->section as $key => $section)
+				{
+					$collect->push([
+						"name"            => $section['name'],
+						"mock_questions"  => collect([
+							'english' => MockQuestionResource::collection($this->questions(1)),
+							'hindi' => MockQuestionResource::collection($this->questions(2)),
+						]),
+					]);
+				}
+				return ['section' => $collect];
+			}),
+
+			'pagination' => [
+	            'total' => $this->total(),
+	            'count' => $this->count(),
+	            'per_page' => $this->perPage(),
+	            'current_page' => $this->currentPage(),
+	            'total_pages' => $this->lastPage()
+	        ],
+	        'meta' => ['song_count' => $this->collection->count()],
+
+	        return [
+	            'data' => $this->collection->transform(function($item) {
+	                return $item->only(['id', 'technology_strategy', 'icon']);
+	            })
+	        ];
 		];
 	}
 
@@ -93,6 +134,11 @@ class User extends JsonResource
 	 * @param  [type] $request [description]
 	 * @return [type]          [description]
 	 */
+	// return (new SongResource(Song::find(1)))->additional([
+ //        'meta' => [
+ //            'anything' => 'Some Value'
+ //        ]
+ //    ]);
 	public function with($request)
 	{
 		return [

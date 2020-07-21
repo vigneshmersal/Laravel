@@ -5,6 +5,6 @@
 |--------------------------------------------------------------------------
 | example
 */
-function fun(array $array) {
+function upperCase(array $array) {
 	return array_map('strtoupper', $array);
 }

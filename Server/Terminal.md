@@ -192,9 +192,22 @@ SYNTAX COlORFULL TEXT EDITOR
 
 > `gedit [file]` - open file in notepad editor
 
-> `vim`
+> `vim` - show the editor
+- `i` - insert mode
+- `Esc` - exit from insert mode to normal mode
 - `v` - visual mode
-- `:` - commands
+- `h,j,k,l` - select letters left,down,up,right (working only in visual mode)
+- `V` - select entire line
+- `d` - delete selections, letters, line
+- `u` - undo the changes (like ctrl+z)
+- `:q` - quit
+- `:wq` - write and quit
+- `:w f.txt` - save new file with name
+- `:e f.txt` - edit existing file
+- `:e ~/.vimrc`
+- `:pwd` - know the current working dir
+- `:colorscheme [hit tab]` - to see list of themes, *:colorscheme blue* - use theme
+- `:so %` - source the file
 
 ## system
 > `df -h` - view free/used memory space for files (*-h* human readable)
@@ -248,6 +261,7 @@ ___
 - *sudo service ssh status* - check open ssh server is running
 - *ssh localhost* - check ssh server is installed
 - *ssh userName@IP -p1222* - (`-p` port number) - chk ssh client is installed
+- *ssh -i D:/dev/key.pem uname@IP* - connect
 - *sudo gedit /etc/ssh/sshd_config* - In this file we can change the default ssh port `22`
 
 > `ifconfig` - know ip address near (inet addr)

@@ -49,30 +49,17 @@ class UserController extends AnotherClass
     function create()
     {
         $this->authorize('create', Post::class);
+        abort_if(Gate::denies('question_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_unless($request->filled(['mock_test_id']), Response::HTTP_FORBIDDEN, '403 Forbidden');
     }
 
     public function store(Request $request)
     {
-        $rules = array(
-            'first_name'    =>  'required',
-            'last_name'     =>  'required',
-            'image'         =>  'required|image|max:2048'
-        );
-
         $error = Validator::make($request->all(), $rules);
 
-        if($error->fails())
-        {
+        if($error->fails()) {
             return response()->json(['errors' => $error->errors()->all()]);
         }
-
-        $image = $request->file('image');
-
-        $new_name = rand() . '.' . $image->getClientOriginalExtension();
-
-        $image->move(public_path('images'), $new_name);
-
-        AjaxCrud::create($form_data);
 
         return response()->json(['success' => 'Data Added successfully.']);
     }
@@ -109,8 +96,7 @@ class UserController extends AnotherClass
     /**
      * Single Action Controllers
      * php artisan make:controller ShowProfile --invokable
-     * @param  int  $id
-     * @return View
+     * Route::get('user/{id}', 'UserController');
      */
     public function __invoke($id)
     {

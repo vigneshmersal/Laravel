@@ -63,6 +63,8 @@ Route::resource('user', 'User\UserController', [
 ])->names([
     'create' => 'faq.new'
 ])->parameters([
+    // request()->route()->parameters()
+    // request()->route('users')
     'users' => 'admin_user' // /users/{id} -> /users/{admin_user}
 ]);
 
@@ -72,6 +74,7 @@ Route::resources([
 ]);
 
 // Nested Resources: /photos/{photo}/comments/{comment}
+// https://laraveldaily.com/nested-resource-controllers-and-routes-laravel-crud-example/
 Route::resource('photos.comments', 'PhotoCommentController');
 
 // It will skip the - /photos/{photo} url format on - show|edit|update|destroy
@@ -118,6 +121,16 @@ Route::fallback(function () {
 Route::middleware('cache.headers:public;max_age=2628000;etag')->group(function () {
     Route::get('privacy', 'Controller');
     Route::get('terms', 'Controller');
+});
+
+/*
+|--------------------------------------------------------------------------
+| dynamic subdomain name
+|--------------------------------------------------------------------------
+*/
+Route::domain('{username}.workspace.com')->group(function () {
+    Route::get('user/{id}', function ($username, $id) {
+    });
 });
 
 /*

@@ -4,7 +4,7 @@
 ```php
 composer create-project --prefer-dist laravel/laravel stan "5.5.*"
 // or
-composer create-project laravel/laravel=5.5 blog --prefer-dist
+composer create-project laravel/laravel=5.5 blog --prefer-dist --auth
 
 set vhost & restart xampp
 

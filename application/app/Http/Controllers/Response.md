@@ -36,3 +36,12 @@ return response('Hello World', 200)
     ->cookie('name', 'value', $minutes)
 	->cookie( 'name', 'value', $minutes, $path, $domain, $secure, $httpOnly );
 ```
+
+## API
+```php
+use Symfony\Component\HttpFoundation\Response;
+Response::HTTP_CREATED
+Response::HTTP_ACCEPTED
+Response::HTTP_FORBIDDEN
+return response(null, Response::HTTP_NO_CONTENT);
+```

@@ -1,5 +1,14 @@
 # PHP
 
+## Issues
+Memory limit problems
+ /etc/php/7.2/apache2/php.ini
+c:/xampp/php/php.ini
+```php
+;memory_limit=1024MB
+memory_limit=-1
+```
+
 ## string
 ```php
 if ( is_null( $val ) ) { }

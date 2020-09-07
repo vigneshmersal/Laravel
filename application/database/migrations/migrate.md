@@ -24,6 +24,8 @@ $table->integer('combo_type')->length(1)->default(0)->unsigned();
 ```
 
 ## Migrations with validation
+
+```php
 id
 => increments , tinyIncrements , smallIncrements , mediumIncrements , bigIncrements
 
@@ -85,10 +87,17 @@ Schema::drop('users'); // dropIfExists
 ->unsigned()
 ->useCurrent()
 
+// rename column old
+$table->integer('age')->change();
+// rename column new
+$table->rename('name', 'username');
+
 =====CREATE & ALTER=====
 Schema::create('shop_user_maps', function (Blueprint $table) {}
 Schema::table('users', function (Blueprint $table) {}
 ALTER TABLE customers ADD COLUMN id INT AUTO_INCREMENT PRIMARY KEY
+
+$table->enum('color', ['red', 'blue']);
 
 $table->increments('id');
 $table->string('name');
@@ -106,3 +115,4 @@ $table->integer('deleted_by')->nullable();
 $table->timestamps();
 $table->datetime('deleted_at')->nullable();
 $table->softDeletes();
+```

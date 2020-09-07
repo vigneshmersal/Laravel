@@ -2,6 +2,9 @@
 
 - lenovo vantage features
 - laravel ignition error editor to sublime text
+- psr 4 code fixer (also - php cs fixer package)
+- how to use const variable inside trait of child
+- how to stop debugbar when custom api service mobile/apis/
 
 ## Laravel
 * carbon
@@ -45,3 +48,6 @@
 
 ## 3rd party
 * tokbox
+
+## Sites
+https://devdojo.com/t/laravel

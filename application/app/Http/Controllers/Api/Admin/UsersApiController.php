@@ -16,7 +16,7 @@ class UsersApiController extends Controller
     {
         abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new UserResource(User::with(['roles'])->get());
+        return new UserResource(User::with(['roles'])->withCount(['roles'])->get());
     }
 
     public function store(StoreUserRequest $request)

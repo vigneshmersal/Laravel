@@ -16,6 +16,8 @@ use App\PusherBeams\PusherBeamsMessage;
 use Storage;
 use Helper;
 
+// Notification::send(Admin::first(), new TodoCompleted($task));
+// $admin->notify(new TodoCompleted($task));
 class WelcomeMsgToUser extends Notification implements ShouldBroadcast, ShouldQueue
 {
     use Queueable;
@@ -45,6 +47,27 @@ class WelcomeMsgToUser extends Notification implements ShouldBroadcast, ShouldQu
             ->markdown('notifications.shop.driver', ['data' => $order_details])
             ->bcc(config('general.admin_mail_address'), config('general.admin_name'))
             ->bcc(config('general.business_to_email_id'));
+
+        return $this->from('example@example.com')
+                ->view('emails.orders.shipped')
+                ->text('emails.orders.shipped_plain')
+                ->with([
+                    'orderName' => $this->order->name,
+                    'orderPrice' => $this->order->price,
+                ])
+                ->attach('/path/to/file')
+                ->attach('/path/to/file', [
+                    'as' => 'name.pdf',
+                    'mime' => 'application/pdf',
+                ])
+                ->attachFromStorage('/path/to/file')
+                ->attachFromStorage('/path/to/file', 'name.pdf', [
+                   'mime' => 'application/pdf'
+                ])
+                ->attachFromStorageDisk('s3', '/path/to/file')
+                ->attachData($this->pdf, 'name.pdf', [
+                    'mime' => 'application/pdf',
+                ]);
     }
 
     /**

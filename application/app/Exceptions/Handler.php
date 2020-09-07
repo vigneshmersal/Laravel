@@ -78,10 +78,15 @@ class Handler extends ExceptionHandler
             return $e->getResponse();
         }
 
-        if ($this->isHttpException($e)) {
-            $statusCode = $e->getStatusCode($e);
-            if ($statusCode == 404)  return response()->view('errors.404', [], 404);
-            // or
+        if ($this->isHttpException($exception)) {
+            $statusCode = $exception->getStatusCode();
+            switch ($statusCode) {
+                case '404':
+                    return response()->view('errors/404');
+                case '500';
+                    return response()->view('errors/500');
+            }
+
             if (view()->exists('errors.'.$statusCode)) {
                 return response()->view('errors.'.$statusCode, [], $statusCode);
             }

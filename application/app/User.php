@@ -41,21 +41,24 @@ class User extends Authenticatable implements MustVerifyEmail // vereify by emai
 	// ->getTimestamp(); ->toDateTimeString();
 	protected $dates = [ 'deleted_at' ];
 
-	// disable - created_at , updated_at
-	public $timestamps = false;
-
-	protected $dateFormat = 'U';
+	protected $dateFormat = 'U'; // utc
 
 	protected $primaryKey = 'flight_id';
 	protected $keyType = 'string';
 
 	public $incrementing = false;
 
+	// disable - created_at , updated_at
+	public $timestamps = false;
 	const CREATED_AT = 'creation_date';
 	const UPDATED_AT = 'last_update';
+	protected $touches = ['post']; // in comment model , update parent 'updated_at' timestamp
 
 	// use modal route key -> Route::get('/posts/{post:slug}', function (Post $post) { });
-	public function getRouteKeyName() { return 'slug'; }
+	public function getRouteKeyName() {
+		return 'slug';
+		return ['product' => 'id', 'product_slug' => 'slug']; // {product}, {product_slug}
+	}
 
 	// validate doctor role -> Route::get('/doctor/{doctor}', function (User $user) { });
 	public function resolveRouteBinding($value, $field = null) {
@@ -89,8 +92,11 @@ class User extends Authenticatable implements MustVerifyEmail // vereify by emai
 	| Scope Filter
 	|--------------------------------------------------------------------------
 	*/
-	public function scopeFilter($query, QueryFilter $filters) { return $filters->apply($query); }
-	public function scopeFilters($query, $filters) { // User::filter(['type'])->get();
+	public function scopeFilter($query, QueryFilter $filters) {
+		return $filters->apply($query);
+	}
+	public function scopeFilters($query, $filters) {
+		// User::filter(['type'])->get();
 		if( isset($filters['type']) ){ $query->where('type', '=', $filters['type']); }
 	}
 
@@ -99,8 +105,12 @@ class User extends Authenticatable implements MustVerifyEmail // vereify by emai
 	| Get methods
 	|--------------------------------------------------------------------------
 	 */
-	public function getFullNameAttribute() { return "{$this->first_name} {$this->last_name}"; }
-	public function getActiveAttribute() { return $this->status == 1 ? 'Active' : 'InActive'; }
+	public function getFullNameAttribute() {
+		return "{$this->first_name} {$this->last_name}";
+	}
+	public function getActiveAttribute() {
+		return $this->status == 1 ? 'Active' : 'InActive';
+	}
 	public function getIsAdminAttribute() {
 		return $this->roles()->where('id', 1)->exists();
 	}
@@ -265,5 +275,10 @@ class User extends Authenticatable implements MustVerifyEmail // vereify by emai
 			}
 			return true;
 		});
+
+		# Default ordering in global scope
+		static::addGlobalScope('order', function (Builder $builder) {
+	        $builder->orderBy('name', 'asc');
+	    });
 	}
 }

@@ -5,6 +5,11 @@ For multilanguage set `utf8_unicode_ci`
 ## drop foreign key
 > alter table courses drop foreign key courses_sector_id_foreign
 
+> ALTER TABLE courses ADD INDEX (user_id)
+
+> ALTER TABLE courses DROP INDEX (user_id)
+
+
 ## import to windows
 C:/xampp/mysql/bin > mysql.exe -u root -p `database_name` < `path/file.sql`
 example:

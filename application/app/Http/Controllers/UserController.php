@@ -18,10 +18,24 @@ class UserController extends AnotherClass
 
         # authorize resource controller
         $this->authorizeResource(Post::class, 'post');
+
+        # App\Http\Controllers\FooBarController@getuser
+        $currentAction = \Route::currentRouteAction();
+        list($controller, $method) = explode('@', $currentAction);
+        // $controller now is "App\Http\Controllers\FooBarController"
+        // $method now is "getuser"
+        $controller = preg_replace('/.*\\\/', '', $controller);
+        // $controller now is "FooBarController"
     }
 
     public function index(Request $request)
     {
+        $user = $user->newQuery();
+        if ($request->has('city')) {
+            $user->where('city', $request->input('city'));
+        }
+        return $user->get();
+
         if(request()->ajax())
         {
             return datatables()->of(AjaxCrud::latest()->get())

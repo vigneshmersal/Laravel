@@ -112,7 +112,6 @@ Route group
 ```
 
 ## Livewire class
-
 ```php
 use Livewire\Component;
 use \Illuminate\Session\SessionManager;

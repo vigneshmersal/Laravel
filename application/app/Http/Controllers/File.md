@@ -49,3 +49,21 @@ return response()->download($pathToFile)->deleteFileAfterSend();
 return response()->file($pathToFile);
 return response()->file($pathToFile, $headers);
 ```
+
+## Delete
+```php
+use Illuminate\Support\Facades\File;
+
+$image_path = public_path("images/news/".$news->photo);
+if(file_exists($image_path)){
+	File::delete( $image_path);
+	File::delete($file1, $file2);
+	File::delete([$file1, $file2]);
+}
+
+Storage::delete('public/'.$image_path);
+Storage::disk('public')->delete($image_path);
+
+// PHP
+unlink(app_path().'/images/news/'.$news->photo);
+```

@@ -101,7 +101,7 @@ $dt->diffForHumans($now) // 1 month ago
 $dt->diffInMilliseconds($now) | $dt->diffInMicroseconds($now) | $dt->diffInSeconds($now)
 $dt->diffInMinutes($now)
 $dt->diffInHours($now)
-$dt->diffInDays($now) // 31
+now()->diffInDays($user->updated_at) // 31
 $dt->diffInWeeks($now)
 $dt->diffInWeekdays($now) | $dt->diffInWeekenddays($now)
 $dt->diffInMonths($now)

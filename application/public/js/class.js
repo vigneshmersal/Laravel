@@ -43,6 +43,50 @@ class select2 {
 	hide() { $(id).next(".select2-container").hide(); }
 }
 
+class event {
+	triggerByClass() {
+		document.getElementByClassName("example").click();
+		$(".example").trigger("click");
+	}
+
+	triggerByQuerySelect() {
+		var dest = document.querySelector('#input');
+		dest.trigger('focus');
+	}
+
+	listenEvent() {
+		var dest = document.querySelector('#input');
+		dest.addEventListener('focus', function(e){ });
+	}
+
+	ver allIframes = document.getElementsByTagName("iframe");
+}
+
+class iframe {
+	html() {
+		var a = '<iframe src="https://ibpsguide.prepdesk.in/api/player/1" id="videoFrame" (load)="playVideo(this)" style="width:100%;height: 230px;overflow: hidden;border: 0px solid transparent;" class="iframe" allow="encrypted-media *;autoplay;" allowfullscreen></iframe>';
+	}
+	playVideo(frame) {
+		let allIframes = document.getElementsByTagName("iframe");
+		let iframe =allIframes[0].contentWindow;
+		let sourcevideo = this.Livedata.prepdesk_en;
+		this.globalservies.getdatafromurl('https://ibpsguide.prepdesk.in/api/video/'+sourcevideo).subscribe((data: any) => {
+			iframe.postMessage({ action: 'play', payload: data['item'] }, '*');
+		};
+	}
+}
+
+class javascript {
+	select() {
+		var dest = document.querySelector("#"+id);
+		var dest = document.querySelector("."+className);
+		var dest = document.getElementByClassName(className);
+	}
+	addClass() {
+		document.querySelector("#id").classList = "btn btn-primary";
+	}
+}
+
 class checkboxes {
 	constructor() { this.value = 0; }
 

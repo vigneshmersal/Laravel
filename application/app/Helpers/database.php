@@ -1,4 +1,9 @@
 <?php
+function customModel($tableName) { // user_report
+	$table = \Str::studly($tableName); // UserReport
+	return "App\\$table";
+}
+
 /**
  * Get the array of columns
  * @return mixed

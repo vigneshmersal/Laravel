@@ -25,17 +25,18 @@ class UserController extends Controller
 
         return new UserResource(User::first());
 
-        // (or)
+        return UserResource::collection(User::with(['roles'])->withCount(['roles'])->get());
 
-        return new UserCollection(User::paginate(3));
+        return CommentResource::collection($this->comments)->collection->groupBy('someColumn');
 
-        // (or)
-
-        // When the preserveKeys property is set to true, collection keys will be preserved:
-        return UserResource::collection(User::all()->keyBy->id);
+        $array = Model::get()->groupBy('day')->map(function($group) {
+            return CommentResource::collection($group);
+        });
 
         // response's headers
         return (new UserResource(User::find(1)))->response()->header('X-Value', 'True');
+
+        return ModelResource::collection($model)->response()->getData(true);
 
         return response($users, 200);
         return response()->noContent(); // "ok" 204 status code "No content"
@@ -85,8 +86,18 @@ class UserController extends Controller
         abort_unless(\Gate::allows('book_show'), 403);
 
         return new UserResource($user);
-        // (or)
-        return response($student, 200); // success
+
+        return (new CourseResource($course))->foo('bar');
+
+        return (new CourseResource($course))->additional([
+            'meta' => ['key' => 'value']
+        ]);
+
+        return response()->json([
+            'data' => [
+                'title' => $book->title,
+            ]
+        ], 200);
         return response()->json([ "message" => "Student not found" ], 404); // fail
     }
 

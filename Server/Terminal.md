@@ -1,4 +1,4 @@
-# Terminal
+## Terminal
 * `GUI` - Graphical User Interface
 * `CLI` - Command Line Interface
 * `ctrl+alt+t` - opening terminal in linux machine
@@ -147,6 +147,9 @@ ___
 - | rwx | 111 | 7  |
 
 ## Editor
+make empty
+> cat /dev/null > `file.log`
+
 > `head [file]` - see first 10 lines of the file
 - *head -n3 [file]* - see first 3 lines
 
@@ -191,23 +194,6 @@ SYNTAX COlORFULL TEXT EDITOR
 - `ctrl+v` - next page
 
 > `gedit [file]` - open file in notepad editor
-
-> `vim` - show the editor
-- `i` - insert mode
-- `Esc` - exit from insert mode to normal mode
-- `v` - visual mode
-- `h,j,k,l` - select letters left,down,up,right (working only in visual mode)
-- `V` - select entire line
-- `d` - delete selections, letters, line
-- `u` - undo the changes (like ctrl+z)
-- `:q` - quit
-- `:wq` - write and quit
-- `:w f.txt` - save new file with name
-- `:e f.txt` - edit existing file
-- `:e ~/.vimrc`
-- `:pwd` - know the current working dir
-- `:colorscheme [hit tab]` - to see list of themes, *:colorscheme blue* - use theme
-- `:so %` - source the file
 
 ## system
 > `df -h` - view free/used memory space for files (*-h* human readable)

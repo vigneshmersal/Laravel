@@ -4,8 +4,8 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 // php artisan make:migration remove_user_id_from_posts_table
-class RemoveUserIdFromPostsTable extends Migration {
-
+class RemoveUserIdFromPostsTable extends Migration
+{
 	/**
 	 * Run the migrations.
 	 *

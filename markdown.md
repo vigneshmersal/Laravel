@@ -55,8 +55,8 @@ ___
 | Header      | Title       | Here's this   |
 | Paragraph   | Text        | And more      |
 
-## Linking to Heading <a> Tag {#id}
-[Name](#id)
+## Header Link
+[Linking to Heading](#header-link)
 
 ## Syntax Highlighting
 JSON view

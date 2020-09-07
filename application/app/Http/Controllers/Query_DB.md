@@ -1,52 +1,6 @@
-# Laravel Query
-
 ## instantiate
 ```php
-$user = new User;
 $user = (new App\User)->newQuery();
-```
-
-## Get
-```php
-find($id);
-find([$id1]);
-findOrFail($id);
-
-first();
-firstOrFail();
-firstWhere($column); // value is not null,0,[],''
-firstWhere($column, $value);
-firstWhere($column, $operator, $value);
-first(function($v,$k){ return $v>1; });
-
-last()
-last(function($v,$k){ return $v>1; });
-
-keys()
-values()
-pluck($val, $key)
-
-get()
-get([$column1])
-get($column1, 'default')
-get($column, function(){ return 'default'; })
-
-all()
-all([$column1])
-
-only(['name']); // return specified column
-except(['password']); // return except specified column
-forget(['password']); // removes an item from the collection by its key
-
-collect([1,2,3,4])->take(2); // [1,2]
-collect([1,2,3,4])->take(-2); // [3,4]
-takeUntil(function ($item) { return $item>=3; }); // if true
-takeWhile(function ($item) { return $item>=3; }); // if false
-
-# display
-$collection->dd();
-$collection->dump();
-->tap(function($collection){ Log::debug('Values', $collection); }) // like return this
 ```
 
 ## set
@@ -81,57 +35,6 @@ put($key, $val)
 $collectionB = $collectionA->collect(); // copy - return new instance
 ```
 
-## check
-```php
-# has key & val
-contains($val)
-contains($key, $val)
-contains(function ($value, $key) { return $value > 5; })
-search($val); // return key if val exist, else return false
-search(function ($item, $key) { return $item>5; });
-
-# hasAll
-collect([1,2])->every(function($v,$k){ return $v > 0; }); // true
-
-# empty|null
-$c = collect([])->isEmpty();
-isset($c);
-collect([])->isNotEmpty();
-
-Author::hasMany(Book::class); // get authors by with books
-Author::has('books', '>', 5)->get(); // chk authors by with books > 5
-Author::has('books.ratings')->get(); // get authors by with book ratings
-
-# chk Relationship is eager loaded($product->with(['topics']))
-$product->relationLoaded('topics') // true/false
-```
-
-## delete
-```php
-# first
-shift() // remove and return first item
-collect([1,2,3,4])->skip($firstNoOfItems=2); // [3,4]
-collect([1,2,3,4])->skipUntil($val=3); // [3,4]
-collect([1,2,3,4])->skipWhile($val=3); // [3,4]
-collect([1,2,3,4])->skipUntil(function ($item) { return $item>=3; }); // [3,4]
-collect([1,2,3,4])->skipWhile(function ($item) { return $item<=3; }); // [4]
-
-collect([1,2,3,4])->slice($pos=2); // [3,4]
-collect([1,2,3,4])->slice($pos=2,$size=1); // [3]
-
-collect([1,2,3,4])->splice($pos=2); // [3,4]
-collect([1,2,3,4])->splice($pos=2,$size=1); // [3]
-
-# last
-pop() // remove last item
-pull($column) // remove and return col val
-```
-
-## restore
-```php
-Post::withTrashed()->where('author_id', 1)->restore();
-```
-
 ## array
 ```php
 $users->each->delete();
@@ -149,6 +52,9 @@ collect(['k'=>'v'])->flip(); // ['v'=>'k']
 
 # split single array to multiple array
 $collection->chunk($number)->toArray() //  [[1, 2, 3, 4], [5, 6, 7]]
+User::chunk(100, function ($users) {
+    foreach ($users as $user) { }
+});
 $collection->split($number)->toArray() //  [[1, 2, 3, 4], [5, 6, 7]]
 
 # join multiple array to single array
@@ -216,21 +122,6 @@ random($total)
 shuffle()
 ```
 
-## Increments and decrements
-```php
-Post::find($post_id)->increment('view_count');
-User::find($user_id)->increment('points', 50);
-```
-
-## Date
-```php
-$products = Product::whereDate('created_at', '2018-01-31')->get();
-$products = Product::whereMonth('created_at', '12')->get();
-$products = Product::whereDay('created_at', '31')->get();
-$products = Product::whereYear('created_at', date('Y'))->get();
-$products = Product::whereTime('created_at', '=', '14:13:58')->get();
-```
-
 ## condition
 ```php
 where($column, $value); # default operator "="
@@ -243,17 +134,20 @@ whereIn($column, [1,2])
 whereNotIn($column, [1,2])
 collect([new User, new Post])->whereInstanceOf(User::class) // [App\User]
 
-# group by
-groupBy($column='id') // ['id' => 'account-x10'] maatch by account-x10
-groupBy(function ($item, $key) { return substr($item['id'], -3); }); // match by x10
-groupBy(['skill', function($item){ return $item['roles']; }], $preserveKeys=true);
-collect([ ['a'=>6,'b'=>2],['a'=>5,'b'=>2] ])->unique($column='b') // [ ['a'=>6,'b'=>2] ]
-unique(function($item){ return $item['col1'].$item['col2']; });
+# WHERE (gender = 'Male' and age >= 18) or (gender = 'Female' and age >= 65)
+$q->where(function ($query) {
+    $query->where('gender', 'Male')->where('age', '>=', 18);
+})->orWhere(function($query) {
+    $query->where('gender', 'Female')->where('age', '>=', 65);
+})
 
-// havingRaw
-Product::groupBy('category_id')->havingRaw('COUNT(*) > 1')->get();
+$q->orWhere(['b' => 2, 'c' => 3]);
 
 # change collection when pass
+->when($request->has('search'), function ($q) use ($request) {
+    return $q->where('name', 'like', "%".$request->search."%");
+})
+Model::query()->when(true, function ($q) { return $q->where('likes', '>', 0); });
 ->when(true, function($c){ return $c->push(4); }, function ($c) { return $c->push(3); });
 ->when($status, $callback, $default);
 ->whenEmpty($status, $callback, $default);
@@ -264,27 +158,59 @@ Product::groupBy('category_id')->havingRaw('COUNT(*) > 1')->get();
 ->unlessNotEmpty($status, $callback, $default);
 ```
 
+## Group by & having
+```php
+# preserve key
+->groupBy('column', $preserveKey=true) // preserve key instead of [0] it will keep the key
+# By relation column
+->groupBy('products.name')
+# modify date column
+->groupByRaw('YEAR(birth_date)')
+->groupBy(function($item, $key) {
+    return Carbon::parse($item['created_at'])->format('m/d/Y'); }); // [03/12/2020] => []
+# modify column
+->groupBy(function($item, $key) { return strlen($item['name']); }); // alter group key
+->groupBy(function ($item, $key) { return substr($item['id'], -3); }); // match by x10
+# By calc
+->groupBy('country')->map(function ($row) { return $row->count(); }); // [India] => 2
+->groupBy('country')->map(function ($row) { return $row->sum('amount'); }); // [india=>5000]
+# Group By multiple column
+->groupBy(function ($item, $key) { return $item['country'].$item['city']; });
+groupBy(['column1', 'column2']) // column1 => [ column2 => [] ]
+->groupBy(['skill', function($item){ return $item['roles']; }]);
+
+// havingRaw
+Product::groupBy('category_id')->havingRaw('COUNT(*) > 1')->get();
+->havingRaw('YEAR(birth_date) > 2000')
+->orderByRaw('YEAR(birth_date)')
+
+# unique
+collect([ ['a'=>6,'b'=>2],['a'=>5,'b'=>2] ])->unique($column='b') // [ ['a'=>6,'b'=>2] ]
+unique(function($item){ return $item['col1'].$item['col2']; });
+```
+
 ## Eloquent Relationships
 ```php
 # Best of Eager loading - to solve (N+1) issue
 Post::with('comments');
 Post::with(['comments:id,body'])->get(); // eager loading with select specific columns
+has('products', '>' , 10)
 $posts = Post::with(['comments' => function($query) {
     return $query->select(['id', 'body']);
 }])->get();
 Post::with('posts.comments');
 Post::with('comments' => function() {  });
-Post::with(['comments as active_comments' => function (Builder $query) {
+Post::with(['comments as active_comments' => function ($query) {
     $query->where('approved', 1); // condition for comments table
     $query->orderBy('created_at', 'desc');
 }])->get();
-Post::with(['comments.user' => function (Builder $query) {
+Post::with(['comments.user' => function ($query) {
     $query->where('active', 1); // condition for user table
 }])->get();
 
 Post::withCount([
     'comments', 		// comments_count=50
-    'comments as active_comments_count' => function (Builder $query) {
+    'comments as active_comments_count' => function ($query) {
         $query->where('approved', 1);
     }
 ])->get();
@@ -292,6 +218,10 @@ Post::withCount([
 User::withCount('posts')->withCount([
     'posts' => function(\Illuminate\Database\Eloquent\Builder $query){ $query->withCount('videos'); }
 ])->all();
+# double nested relation
+"mock_questions_count" => (int) $this->mockTests->reduce(function ($count, $mockTests) {
+    return $count + $mockTests->mockQuestions->count();
+}),
 ```
 
 ## softdelete
@@ -315,14 +245,6 @@ collect([['a'=>'1'],['a'=>'2']])->implode($column='a',$join=','); // 1,2
 # add key from column value
 collect([['1'=>'a'],['1'=>'b']])->keyBy('1'); // [a=>['1'=>'a'],b=>['1'=>'b']]
 keyBy(function($item){ return strtoupper($item['1']); }); // [A=>['1'=>'a'],B=>['1'=>'b']]
-```
-
-## Save
-```php
-Model::fill($array)->save();
-Model::create($array);
-Model::insert($array); // manually add 'created_at,updated_at' => now()->toDateTimeString()
-Model::insertGetId($array);
 ```
 
 ## calculation
@@ -359,17 +281,26 @@ sortBy($column)
 sortByDesc($column)
 sortBy(function ($item, $key) { return count($item['sub']); }); // sort by total sub item count
 
-Instead of:
-User::orderBy('created_at', 'desc')->get();
-You can do it quicker:
-User::latest()->get(); // latest() will order by created_at.
-User::oldest()->get();
+$user->timestamps=false; $user->save(); // update model, without timestamp
+$user->touch(); // update updated_at timestamp
+
+# Order by relationship
+$users = Topic::with('latestPost')->get()->sortByDesc('latestPost.created_at');
+# Order by Mutator
+$clients = Client::get()->sortBy('full_name'); // first_name.' '.last_name
 ```
 
 ## Collection
 ```php
 # create
 $collection = collect([1, 2, 3]);
+
+# get (city=>no_of_times)
+array_count_values($products->pluck('city')->toArray()); // [1=>5,2=>7]
+
+# pass collection as foreach and return new array
+return collect(['a'=>1])->map(function ($v, $k) { return ['id' => $k]; }); // ['a'=>['id'=>'a']]
+return collect(['a'=>1])->map(function ($v, $k) { return ['id' => $k]; })->values(); // [['id'=>'a']]
 
 # extending macros // Call: $upper = $collection->toUpper();
 Collection::macro('toUpper', function () {
@@ -380,65 +311,9 @@ Collection::macro('toUpper', function () {
 Collection::times(5, function($n) { return $n*9; }); // [9,18,27,36,45]
 ```
 
-## DB
-```php
-# get
-DB::table('table_name')->get()->value('email');
-
-# select
-DB::select( DB::raw('SELECT * FROM `users`') );
-
-// change table column name
-$users = DB::table('users')->select('name', 'email as user_email')->get();
-
-Product::groupBy('category_id')->havingRaw('COUNT(*) > 1')->get();
-```
-
-## Transaction
-```php
-# Closure based
-DB::transaction(function() use ($billable) {
-	// stripe
-});
-
-# Without closure
-try {
-	DB::beginTransaction();
-	// insert records
-	DB::commit();
-} catch (\Exception | \Throwable $e) {
-	DB::rollback();
-}
-```
-
-## Database
-```php
-# Get table name from model instance
-$instance->getTable();
-
-# Get table columns
-Schema::getcolumnListing($table);
-
-# Check table column exist
-if(Schema::hasColumn($table, $column)) { }
-```
-
 ## class
 ```php
 collect(['USD'])->mapInto(Currency::class); // [Currency('USD')] - create a new instance of the given class
-```
-
-## pagination
-```php
-collect([1,2,3,4,5])->forPage($page=2, $items=2); // [3,4]
-
-collect([1,2,3,4])->skip(2); // [3,4]
-
-collect([1,2,3,4])->take(2); // [1,2]
-
-collect([1,2,3,4])->get()[$nth=1]; // [2]
-collect([1,2,3,4])->values()->get($nth=1); // [2]
-collect([1,2,3,4])->get()->slice($nth=1, $howmany=2); // [2,3]
 ```
 
 ## optimize
@@ -462,8 +337,14 @@ foreach( App\Model::cursor() as $each ) { }
 Question::all();
 Question::cursor(10000, function($questions){});
 
+# instead of passing hole response, get used data's only in array format
+User::all(); // bulk
+User::get()->toArray(); // hole column
+User::get()->pluck('name')->toArray(); // less column
+
 # cache query
-Cache::remember('index.posts', 30, function() { // time - 60*60*24
+$cacheKey = md5(vsprintf('%s.%s', [$user->id,$days]))
+Cache::remember('index.posts', $seconds = 30, function() { // time - 60*60*24
     return Post::all(['id', 'name']);
 	return Post::with(['user:id,name', 'comments'])->get()->map(function($post) {
         return [
@@ -506,3 +387,4 @@ package
 Object cache
 - singleton
 ```
+

@@ -103,6 +103,7 @@ Blade::include('includes.input', 'input'); // @input(['type' => 'email'])
 ```
 
 ## script
+
 ```javascript
 // array
 var app = <?php echo json_encode($array); ?>;
@@ -116,7 +117,10 @@ var app = @json($array, JSON_PRETTY_PRINT);
 @endpush
 ```
 
+___
+
 ## Vue
+
 ```php
 <example-component :some-prop='@json($array)'></example-component>
 ```
@@ -147,10 +151,14 @@ foreach ($errors->all() as $message) { }
 
 # check
 if ($errors->has('email')) { }
+@if ($errors->any())
+@error('title')
 ```
-
 ## Condition & looping
+
 ```php
+true - collect()
+false - 0, '', null, []
 # if
 @if($condition)
 @elseif($condition)
@@ -166,10 +174,14 @@ if ($errors->has('email')) { }
 @endunless
 
 # isset
+true - 0, '', [], collect()
+false - null,
 @isset($condition)
 @endisset
 
 # empty
+true - 0, '', null, []
+false - collect()
 @empty($condition)
 @endempty
 

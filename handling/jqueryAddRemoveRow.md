@@ -1,11 +1,13 @@
 # Add/Remove Row
 
 database
+
 ```php
 $table->json('section');
 ```
 
 model
+
 ```php
 protected $casts = [
     // App\MockTest::first()->section = Collection{ all:[ 1=>["name"=>"vig"], 2=>[] ] }
@@ -33,17 +35,20 @@ public function setSectionAttribute($value)
 ```
 
 validation
+
 ```php
 'section' => 'required|array',
 'section.*.name' => 'required|string',
 ```
 
 route
+
 ```php
 Route::get('tests/getBox', 'testsController@getBox')->name('test.getBox');
 ```
 
 controller
+
 ```php
 # store
 $test = Test::create($request->all());
@@ -62,6 +67,7 @@ public function getBox(Request $request)
 ```
 
 testSection.blade.php
+
 ```php
 <div id="seccount{{$rid}}" class="section_box">
     <div class="row">
@@ -80,6 +86,7 @@ testSection.blade.php
 ```
 
 create.blade.php
+
 ```php
 <div class="form-group">
 	<div class="col-xs-12 form-group text-right">
@@ -112,6 +119,7 @@ function removeRow(id) {
 ```
 
 edit.blade.php
+
 ```php
 @foreach ($model->section as $key => $section)
     @component('components.testSection', ['rid' => $key, 'section' => $section])
@@ -120,6 +128,7 @@ edit.blade.php
 ```
 
 show.blade.php
+
 ```php
 <table>
 	<tr>

@@ -2,7 +2,7 @@
 [40-additional-laravel-validation-rules/](https://laraveldaily.com/40-additional-laravel-validation-rules/)
 
 ```php
-# validate
+# direct validate
 $validatedData = $request->validate([
 	'author.name' => ['required', new Uppercase,
 			function ($attribute, $value, $fail) {

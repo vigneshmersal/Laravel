@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use http\Client\Request;
 use Illuminate\Database\Eloquent\Builder;
 
 abstract class QueryFilter

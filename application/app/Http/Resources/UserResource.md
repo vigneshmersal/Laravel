@@ -26,6 +26,18 @@ class User extends JsonResource
      */
     public static $wrap = 'user'; // instead of o/p - data {} -> user {}
 
+    protected $api;
+
+    public function api($value){
+        $this->api = $value;
+        return $this;
+    }
+
+    public function set($key, $value){
+        $this->{$key} = $value;
+        return $this;
+    }
+
 	/**
 	* Transform the resource into an array.
 	*
@@ -41,6 +53,13 @@ class User extends JsonResource
 		$convertTo = $this->attributes['meta']['convertTo'];
 		// call function
 		'conversion' => $this->convertTo($convertTo, $this->bitcoin)
+
+		foreach ($this as $item) {
+			$data[]['details'] =  [
+				'subject' => $item->subject,
+			];
+		}
+		return $data;
 
 		return [
 			'id' => $this->id,
@@ -100,12 +119,16 @@ class User extends JsonResource
 			}),
 
 			'pagination' => [
+				'base' => $paginated->url(1),
 	            'total' => $this->total(),
 	            'count' => $this->count(),
 	            'per_page' => $this->perPage(),
 	            'current_page' => $this->currentPage(),
-	            'total_pages' => $this->lastPage()
+	            'total_pages' => $this->lastPage(),
+	            'next' => $paginated->nextPageUrl(),
+        		'prev' => $paginated->previousPageUrl(),
 	        ],
+
 	        'meta' => ['song_count' => $this->collection->count()],
 
 	        return [
@@ -127,6 +150,14 @@ class User extends JsonResource
 	{
 		$response->header('X-Value', 'True');
 	}
+
+	# customize laravel resource collection pagination
+	public function withResponse($request, $response)
+    {
+        $jsonResponse = json_decode($response->getContent(), true);
+        unset($jsonResponse['links'],$jsonResponse['meta']);
+        $response->setContent(json_encode($jsonResponse));
+    }
 
 	/**
 	 * Adding Additional Data

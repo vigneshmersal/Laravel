@@ -1,5 +1,6 @@
 # CRUD files
 
+- database / add relation
 - migration
 - permission seeder
 - model
@@ -11,6 +12,7 @@
 - lang
 - menu
 - resource/pages
+- file upload path storage/gitignore/config.filesystem
 
 ## After
 - migration (id, unsignedBigInteger, foreign-index(), integer(select box))

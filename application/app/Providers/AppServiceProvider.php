@@ -8,8 +8,15 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Collection;
 
+use Illuminate\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 class AppServiceProvider extends ServiceProvider
 {
+    public $bindings = [Contract::class => Service::class];
+
+    public $singleton = [OtherContract::class => OtherService::class];
+
     /**
      * Register any application services.
      * @return void
@@ -17,6 +24,12 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         Schema::defaultStringLength(191);
+
+        $this->app->singleton(Contract::class, Service::class);
+
+        $this->app->bind(OtherContract::class, function ($app) {
+            return new OtherService($app);
+        });
 
         if ($this->app->environment() == 'local') {
         }
@@ -33,6 +46,17 @@ class AppServiceProvider extends ServiceProvider
         /**
          * Paginate a standard Laravel Collection.
          * $lists = $lists->collectionPaginate();
+         * https://laravel.com/docs/7.x/pagination
+         * https://laravel.com/api/5.8/Illuminate/Pagination/LengthAwarePaginator.html
+            $page = $request->input('page') ?:1;
+            if ($page) {
+                $skip = 10 * ($page - 1);
+                $raw_query = $raw_query->take(10)->skip($skip);
+            } else {
+                $raw_query = $raw_query->take(10)->skip(0);
+            }
+            $parameters = $request->getQueryString();
+            $parameters = preg_replace('/&page(=[^&]*)?|^page(=[^&]*)?&?/','', $parameters);
          * @param int $perPage
          * @param int $page
          * @param array $options
@@ -40,11 +64,12 @@ class AppServiceProvider extends ServiceProvider
          */
         Collection::macro('collectionPaginate', function($perPage = null, $page = null, $options = [])
         {
-            $perPage = $perPage ?? env('BACKEND_PAGINATION');
+            $perPage = $perPage ?? env('BACKEND_PAGINATION', 15);
             $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
             $items = $this instanceof Collection ? $this : Collection::make($this);
             $paginate = new LengthAwarePaginator($this->forPage($page, $perPage), $this->count(), $perPage, $page, $options);
             return $paginate->setPath(Paginator::resolveCurrentPath());
+            // return $paginate->withPath('');
         });
 
         Collection::macro('getNth', function ($nth) {

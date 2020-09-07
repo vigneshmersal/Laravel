@@ -26,11 +26,12 @@ use Spatie\Permission\Models\Permission;
 // Exception
 use Exception;
 InvalidArgumentException;
-use Illuminate\Auth\AuthenticationException,
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Access\AuthorizationException;
-use Symfony\Component\HttpKernel\Exception\HttpException,
-use Illuminate\Database\Eloquent\ModelNotFoundException,
-use Illuminate\Validation\ValidationException,
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Cache\LockTimeoutException;

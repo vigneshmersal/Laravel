@@ -1,13 +1,15 @@
 # Eloquent
 
-[hasOne](#hasOne)
+[hasOne](#hasone)
 [belongsTo](#belongsTo)
 [hasMany](#hasMany)
 [belongsToMany](#belongsTo)
 [hasOneThrough](#hasOneThrough)
 [hasManyThrough](#hasManyThrough)
 
-## hasOne (one to one) {#hasOne}
+## hasOne
+(one to one)
+
 ```php
 Class User{
 	public function phone() {
@@ -18,9 +20,12 @@ Class User{
 $phone = User::find(1)->phone;
 ```
 
-# belongsTo {#belongsTo}
+## belongsTo {#belongsTo}
 one to one Inverse, one to many Inverse
+
 ```php
+protected $touches = ['post']; // update parent 'updated_at' timestamp
+
 Class Phone {
 	public function user() {
 	    return $this->belongsTo('App\User', 'foreign_key'='user_id', 'other_key'='id');
@@ -32,14 +37,15 @@ class Comment extends Model {
     }
 }
 
-# save author_id
+// save author_id
 $phone->user()->associate($instance);
 $phone->save();
 
 $comment->post->title;
 ```
 
-## hasMany (one to many) {#hasMany}
+## hasMany (one to many)
+
 ```php
 class User extends Model {
     public function posts() {
@@ -90,6 +96,7 @@ $user->posts()->where('active', 1)->get(); // relationship condition
 ```
 
 ## belongsToMany (many to many) {#belongsToMany}
+
 ```php
 class User extends Model { // table - role_user
     public function roles() {
@@ -97,7 +104,9 @@ class User extends Model { // table - role_user
         	->using('App\RoleUser') // custom pivot table
         	->as('subscription') // rename 'pivot'
         	->withPivot('column1', 'column2') // pass additional data
-        	->wherePivot('approved', 1)->wherePivotIn('priority', [1, 2])->wherePivotNotIn('priority', [1,2])
+        	->wherePivot('approved', 1)
+            ->wherePivotIn('priority', [1, 2])
+            ->wherePivotNotIn('priority', [1,2])
         	->withTimestamps();
     }
 }
@@ -128,6 +137,7 @@ $user->roles()->sync([1,2,3]);
 $page->tags()->wherePivot('feature_id', 1)->sync($tagIds); // with condition
 $user->roles()->sync([1 => ['expires' => true], 2, 3]); // pass additional data
 $user->roles()->syncWithoutDetaching([1, 2, 3]); // If you do not want to detach existing IDs
+$user->roles()->syncWithoutDetaching([ 1 => ['expires' => true] ]); // with additional data
 $user->roles()->sync([1,2,3], false); // If you do not want to detach existing IDs
 
 # sync ids array with additional data
@@ -141,6 +151,7 @@ $user->roles()->toggle([1, 2, 3]);
 ```
 
 ## hasOneThrough {#hasOneThrough}
+
 ```php
 # mechanic has one car, car has one owner
 # get mechanic has owner
@@ -157,6 +168,7 @@ class Mechanic extends Model {
 ```
 
 ## hasManyThrough {#hasManyThrough}
+
 ```php
 # country has many users, users has many posts
 # get country has many posts

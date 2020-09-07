@@ -4,6 +4,14 @@
 # request from api
 if (Request::wantsJson()) {}
 if( $request->is('api/*')){}
+
+$request->getRequestUri(); // /api/v1/tests_in_pause?apikey=qw42yunk
+$request->getQueryString();
+```
+
+## Remove
+```php
+unset($request->name)
 ```
 
 # GET
@@ -46,6 +54,7 @@ if ($request->filled('name')) { } // present & not empty
 if ($request->exists('name')) { } // present (checkbox, query string)
 
 if ($request->missing('name')) { } // absent
+if ($request->missing('name')) { $request->request->add(['name' => 'vig']); }
 
 # check view exist
 if (View::exists('emails.customer')) { }

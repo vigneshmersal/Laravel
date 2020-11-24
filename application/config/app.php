@@ -7,6 +7,8 @@ return [
     // Api key for access
     'api_key' => env('API_KEY', '12345'),
 
+    'timezone' => 'Asia/Kolkata', // UTC
+
     'providers' => [
         /*
          * Package Service Providers...

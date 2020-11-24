@@ -6,6 +6,8 @@ composer create-project --prefer-dist laravel/laravel stan "5.5.*"
 // or
 composer create-project laravel/laravel=5.5 blog --prefer-dist --auth
 
+laravel new myapp --jet --stack=inertia --team
+
 set vhost & restart xampp
 
 v 7: composer require laravel/ui && php artisan ui bootstrap --auth
@@ -32,4 +34,6 @@ config\database.php -> mysql -> strict -> false
 sudo apt-get install php5.6-xml // IF PHP VERSION=5.6
 
 composer require barryvdh/laravel-debugbar --dev
+
+php artisan storage:link
 ```

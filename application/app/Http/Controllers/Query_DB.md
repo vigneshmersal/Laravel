@@ -3,33 +3,46 @@
 $user = (new App\User)->newQuery();
 ```
 
-## set
+## add new item at first
+```php
+# prepend
+prepend($val)
+prepend($val,$key)
+```
+
+## add new item to last
+```php
+# append last
+concat([$val])
+push($val)
+put($key, $val)
+```
+
+## merge key & value pair
 ```php
 # combine key & val array
 collect(['key1'])->combine(['value1']); // ['key1' => 'value1']
+```
 
+## merge values to existing key
+```php
 # merge array & replace val if key already exist
 collect(['a'])->merge(['b']); // ['a','b']
 collect(['a'=>1])->merge(['a'=>2,'b'=>3]); // ['a'=>2,'b'=>3]
+```
+
+## merge create new format
+```php
 collect(['a','b'])->zip([1,2]); // [['a',1], ['b',2]]
 
-# merge array & replace val if key already exist
+# merge array & skip val if key already exist
 collect(['a'=>1])->union(['a'=>2,'b'=>3]); // ['a'=>1,'b'=>3]
 
 # merge array
 collect(['a'=>1])->mergeRecursive(['a'=>2,'b'=>3]); // ['a'=>[1,2],'b'=>3]
 
-# prepend
-prepend($val)
-prepend($val,$key)
-
 # set val whereever by position
 collect([1,2,3,4])->splice($pos=2,$size=1,$newItems=[5,6]); // [1,2,5,6,4]
-
-# append last
-concat([$val])
-push($val)
-put($key, $val)
 
 # copy to new collection
 $collectionB = $collectionA->collect(); // copy - return new instance
@@ -38,9 +51,9 @@ $collectionB = $collectionA->collect(); // copy - return new instance
 ## array
 ```php
 $users->each->delete();
+$users->each->markAsVip();
 
 # foreach
-$users->each->markAsVip();
 collection([1,2])->each(function ($item, $key) { return false; }); // stop iteration by return false;
 collect([['John',35],['Jane',33]])->eachSpread(function ($name, $age) { }); // nested foreach loop
 
@@ -122,73 +135,6 @@ random($total)
 shuffle()
 ```
 
-## condition
-```php
-where($column, $value); # default operator "="
-where($column, $operator, $value)
-whereNull($column)
-whereNotNull($column)
-whereBetween($column, [100,200])
-whereNotBetween($column, [100,200])
-whereIn($column, [1,2])
-whereNotIn($column, [1,2])
-collect([new User, new Post])->whereInstanceOf(User::class) // [App\User]
-
-# WHERE (gender = 'Male' and age >= 18) or (gender = 'Female' and age >= 65)
-$q->where(function ($query) {
-    $query->where('gender', 'Male')->where('age', '>=', 18);
-})->orWhere(function($query) {
-    $query->where('gender', 'Female')->where('age', '>=', 65);
-})
-
-$q->orWhere(['b' => 2, 'c' => 3]);
-
-# change collection when pass
-->when($request->has('search'), function ($q) use ($request) {
-    return $q->where('name', 'like', "%".$request->search."%");
-})
-Model::query()->when(true, function ($q) { return $q->where('likes', '>', 0); });
-->when(true, function($c){ return $c->push(4); }, function ($c) { return $c->push(3); });
-->when($status, $callback, $default);
-->whenEmpty($status, $callback, $default);
-->whenNotEmpty($status, $callback, $default);
-
-->unless($status, $callback, $default);
-->unlessEmpty($status, $callback, $default);
-->unlessNotEmpty($status, $callback, $default);
-```
-
-## Group by & having
-```php
-# preserve key
-->groupBy('column', $preserveKey=true) // preserve key instead of [0] it will keep the key
-# By relation column
-->groupBy('products.name')
-# modify date column
-->groupByRaw('YEAR(birth_date)')
-->groupBy(function($item, $key) {
-    return Carbon::parse($item['created_at'])->format('m/d/Y'); }); // [03/12/2020] => []
-# modify column
-->groupBy(function($item, $key) { return strlen($item['name']); }); // alter group key
-->groupBy(function ($item, $key) { return substr($item['id'], -3); }); // match by x10
-# By calc
-->groupBy('country')->map(function ($row) { return $row->count(); }); // [India] => 2
-->groupBy('country')->map(function ($row) { return $row->sum('amount'); }); // [india=>5000]
-# Group By multiple column
-->groupBy(function ($item, $key) { return $item['country'].$item['city']; });
-groupBy(['column1', 'column2']) // column1 => [ column2 => [] ]
-->groupBy(['skill', function($item){ return $item['roles']; }]);
-
-// havingRaw
-Product::groupBy('category_id')->havingRaw('COUNT(*) > 1')->get();
-->havingRaw('YEAR(birth_date) > 2000')
-->orderByRaw('YEAR(birth_date)')
-
-# unique
-collect([ ['a'=>6,'b'=>2],['a'=>5,'b'=>2] ])->unique($column='b') // [ ['a'=>6,'b'=>2] ]
-unique(function($item){ return $item['col1'].$item['col2']; });
-```
-
 ## Eloquent Relationships
 ```php
 # Best of Eager loading - to solve (N+1) issue
@@ -222,11 +168,6 @@ User::withCount('posts')->withCount([
 "mock_questions_count" => (int) $this->mockTests->reduce(function ($count, $mockTests) {
     return $count + $mockTests->mockQuestions->count();
 }),
-```
-
-## softdelete
-```php
-Post::withTrashed()->where('author_id', 1)->restore();
 ```
 
 ## convert
@@ -270,26 +211,6 @@ collect(['a','b','c','d','e','f'])->nth($nth=2,$start=1); // ['b','d','f']
 collect([1, 2])->crossJoin(['a', 'b']); // [ [1, 'a'], [1, 'b'], [2, 'a'], [2, 'b'] ]
 ```
 
-## sorting
-```php
-reverse()
-
-sort()
-sortDesc()
-
-sortBy($column)
-sortByDesc($column)
-sortBy(function ($item, $key) { return count($item['sub']); }); // sort by total sub item count
-
-$user->timestamps=false; $user->save(); // update model, without timestamp
-$user->touch(); // update updated_at timestamp
-
-# Order by relationship
-$users = Topic::with('latestPost')->get()->sortByDesc('latestPost.created_at');
-# Order by Mutator
-$clients = Client::get()->sortBy('full_name'); // first_name.' '.last_name
-```
-
 ## Collection
 ```php
 # create
@@ -314,77 +235,5 @@ Collection::times(5, function($n) { return $n*9; }); // [9,18,27,36,45]
 ## class
 ```php
 collect(['USD'])->mapInto(Currency::class); // [Currency('USD')] - create a new instance of the given class
-```
-
-## optimize
-```php
-return 'Memory Usage: '.round(xdebug_peak_memory_usage()/1048576, $precision=2) . 'MB';
-
-# Instead of create()
-Model::insert($array); // manually add 'created_at,updated_at' => now()->toDateTimeString()
-DB::insert('insert into users (email, votes) values (?, ?)', ['john@example.com', '0']);
-
-# where condition use best filter on more data
-where('created_at', '>', now()->subDays(29)) // use date filter first
-where('name', 'like', '%vig%') // use like filter second
-
-# loop faster by execute single query
-foreach( App\Model::cursor() as $each ) { }
-
-# To load bulk data from server like 100120 data's it will take more memory 100MB
-# But if u use cursor() it will split the query and optimize the memory into 16MB
-# Usecase - No, one will show 100000 records on a single page. But there are much other use cases where you may need to fetch 100000 records. For example, you may need for report generating like analytics, or to update each record for some reason, or you may need to send a notification to 100000 users or you may need to clean up some records based on some conditions. There are many many use cases where you may need to fetch 100000 records.
-Question::all();
-Question::cursor(10000, function($questions){});
-
-# instead of passing hole response, get used data's only in array format
-User::all(); // bulk
-User::get()->toArray(); // hole column
-User::get()->pluck('name')->toArray(); // less column
-
-# cache query
-$cacheKey = md5(vsprintf('%s.%s', [$user->id,$days]))
-Cache::remember('index.posts', $seconds = 30, function() { // time - 60*60*24
-    return Post::all(['id', 'name']);
-	return Post::with(['user:id,name', 'comments'])->get()->map(function($post) {
-        return [
-            'title' => $post->title,
-            'comments' => $post->comments->pluck('body'),
-        ];
-    })->toArray(); // toArray() - store data's only
-}); // use blade files as array format
-Cache::forget('index.posts'); // php artisan cache:clear
-
-# solve n+1 query issue
-Post::with('user')->get(); // instead of Post::all()
-Hotel::with('city')->withCount(['bookings'])->get(); // bookings_count
-$post->load('user');
-
-# livewire computed property (won't make a seperate database query every time)
-public function getPostProperty() { // access by $this->post
-    return Post::find($this->postId);
-}
-
-faster application into 100x
-- php artisan route:cache (boostrap/cache/route.php)
-- php artisan optimize
-
-faster config/ dir: (get .env value and minimized array stored in - boostrap/config/cache.php)
-- php artisan config:cache (to remove -> clear:cache)
-
-Composer optimize autoload (one-to-one-association of the class)
-- composer dumpautoload -o
-
-Fastest cache & session driver:
-- memcached
-
-remove unused service, add in
-- config/app.php
-
-package
-- laravel page speed
-
-Object cache
-- singleton
 ```
 

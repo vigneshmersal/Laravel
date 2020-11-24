@@ -1,39 +1,52 @@
 # GitHub
 
-Open source project CRM(customer relationship system)
-> https://github.com/Bottelet/DaybydayCRM
+## install
+```sh
+# Linux
+sudo apt-get update
+sudo apt-get install git
 
+# Mac
+brew install git
+```
+
+## git version
 > `git --version` - chk git version
 
+## git remote
 > `git remote -v` - chk remote url
+```sh
+> `git remote show origin`
+* remote origin
+  Fetch URL:
+	...git
+  Push  URL:
+	...git
+  HEAD branch:
+	master
+  Remote branch:
+    master tracked
+  Local branch configured for 'git pull':
+    master merges with remote master
+  Local ref configured for 'git push':
+    master pushes to master (up to date)
+```
 
-git fetch --all
-git branch -al
-git branch -v = see branches with last commit msg
-git branch --merged = list merged branches
+## git fetch
+> `git fetch --all`
 
-git show __commit_ID__ = show committed changes
-
-git diff = show changes from last commit
-git diff __comare_branch__ = to compare branches
-git diff __commit_id_first_5_characters__ __compare_commit_characters__
-
-git merge --merged = list merged branches
-
-## Git Configuration
+## git Config
 > `git config --list` - list out the configurations
 - *git config user.name "vignesh"* - set username
 - *git config --global user.name "vignesh"* - set username as global
 - *git config user.email "email"* - set email
 - *git config --global user.email "email"* - set email as global
 - *git config --global core.editor "subl"* - set git editor is sublime text
-___
 
-## Alias (shortcut)
+## git alias
 > `git config --global alias.s status` - set alias
 - *git config --global --unset alias.s* - remove alias
 - *vi ~/.gitconfig* - alias stored
-___
 
 ## Remove old git & set new git repository:
 - *rm -rf .git*
@@ -50,58 +63,126 @@ ___
 ## COMPOSER
 COMPOSER HTTPS CONFIG - if http restrict
 > `composer config --global repo.packagist composer https://packagist.org`
-___
 
-## Existing Project Setup
-> `git clone {{url.git}}` - download git files to local system
-___
+## git Clone
+```sh
+$ git clone <url>
+
+# Clone a Git repository into a specific folder
+$ git clone <url> <directory>
+
+# Git clone a specific branch
+$ git clone -b <branch> <remote_repo>
+
+# Git clone exclusively one branch - clone only particular branch
+$ git clone --single-branch --branch <branchn> <repository>
+
+# Clone a private Git repository
+https://devconnected.com/how-to-clone-a-git-repository/
+```
 
 ## New project Setup
+```sh
 - *git init* - initialise the git repo
-- *git remote add origin {{url.git}}* - add origin
-___
+- *git remote add origin <url>* - add origin
+```
 
-## Basics
-> `git branch {{name}}` - create new branch
-- *git checkout {{name}}* - checkout to old branch
-- *git checkout -b {{name}}* - checkout to old branch
+## git Branch
+```sh
+# create new branch
+$ git branch <branch-name>
 
-> `git pull` - get code from origin
-- *git pull origin {{branch}}*
+# list all branches
+git branch -al
 
-> `git diff` - list new changes with existing files
-- *git diff f1.txt* - chk diff on particualr file
+# branches with last commit msg
+git branch -v
 
-> `git status` - list out the modified files
+# list merged branches
+git branch --merged
+```
 
+## git checkout
+```sh
+# checkout to old branch
+$ git checkout <branch-name>
+$ git checkout -b <branch-name>
+
+$ git checkout -b <branch-name> <origin/branch_name>
+```
+
+## git add
 > `git add .` - add all files to commit
 - *git add f1.txt f2.txt*
 
+## git commit
 > `git commit -m "initial commit"` - commit the added files to push
 - *git commit* - To add description for that commit
 - *git commit --amend* - append new changes to last commit (not recommanded)
 
-> `git merge {{branch}}` - merge two branches
-- *git mergetool* - resolve conflicts
-___
+## git status
+> `git status` - list out the modified files
 
-# Merge Tool
+## git show
+> git show __commit_ID__ = show committed changes
+
+## git diff
+```sh
+# show changes from last commit
+$ git diff
+# chk diff on particualr file
+$ git diff f1.txt
+
+# to compare branches
+$ git diff __comare_branch__
+$ git diff __commit_id_first_5_characters__ __compare_commit_characters__
+```
+
+## git pull
+```sh
+# get code from origin
+$ git pull
+$ git pull origin <branch>
+```
+
+## git Merge
+```sh
+# merge two branches
+$ git merge <branch>
+
+# resolve conflicts
+$ git mergetool
+
+# list merged branches
+$ git merge --merged
+```
 Homepage: http://kdiff3.sourceforge.net
 
 Start from commandline:
-- Comparing 2 files:       kdiff3 file1 file2
-- Merging 2 files:         kdiff3 file1 file2 -o outputfile
-- Comparing 3 files:       kdiff3 file1 file2 file3
-- Merging 3 files:         kdiff3 file1 file2 file3 -o outputfile
 
-- Comparing 2 directories: kdiff3 dir1 dir2
-- Merging 2 directories:   kdiff3 dir1 dir2-o destinationdir
-- Comparing 3 directories: kdiff3 dir1 dir2 dir3
-- Merging 3 directories:   kdiff3 dir1 dir2 dir3 -o destinationdir
+```sh
+# Comparing 2 files:
+kdiff3 file1 file2
+# Merging 2 files:
+kdiff3 file1 file2 -o outputfile
+# Comparing 3 files:
+kdiff3 file1 file2 file3
+# Merging 3 files:
+kdiff3 file1 file2 file3 -o outputfile
+
+# Comparing 2 directories:
+kdiff3 dir1 dir2
+# Merging 2 directories:
+kdiff3 dir1 dir2-o destinationdir
+# Comparing 3 directories:
+kdiff3 dir1 dir2 dir3
+# Merging 3 directories:
+kdiff3 dir1 dir2 dir3 -o destinationdir
+```
 
 ___
 
-## stash
+## git stash
 - `git stash`
 - *git stash list* - list all stash
 - *git stash -u* - untracked (new file)
@@ -115,7 +196,7 @@ ___
 - *git stash drop -q stash@{0}* - to drop stash
 ___
 
-## list out last pushes
+## git log
 > `gitk`
 
 > `git log`
@@ -124,3 +205,11 @@ ___
 - *git log --oneline --graph*
 - *git log --oneline* - show commit name only
 - *git log -p {{file}}* - track all modifications on particular file
+
+---
+
+## issue
+
+### How to fix Git Error ‘Your local changes to the following files will be overwritten by merge’
+
+https://appuals.com/how-to-fix-git-error-your-local-changes-to-the-following-files-will-be-overwritten-by-merge/

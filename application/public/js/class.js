@@ -30,6 +30,11 @@ class selects {
 	constructor() { this.value = 0; }
 
 	get val() { return this.value; }
+	get selectedText() {
+		$( "#myselect option:selected" ).text();
+		$("select[name='categories[2][id]'] option:selected").text();
+		$('id').find('option:selected').text();
+	}
 
 	resetSelect( id , cmd = "--Select--" ) { $( id ).html( "<option value=''>" + cmd + "</option>" ); return this; }
 	removeOptions_ExceptFirst( id ) { $( id ).find( "option" ).not( ':first' ).remove(); return this; }
@@ -95,6 +100,7 @@ class checkboxes {
 	check( id ) { $( id ).prop( "checked" , true ); return this; }
 	uncheck( id ) { $( id ).prop( "checked" , false ); return this; }
 	isChecked( id ) { return $( id ).prop( "checked" ); }
+	checkedCount() { return $('[name="ques_id[]"]:checked').length; }
 
 	enable( id ) { $( id ).attr( "disabled" , false ); return this; }
 	disable( id ) { $( id ).attr( "disabled" , true ); return this; }
@@ -223,6 +229,14 @@ class arrays {
 
 	/** convert to string */
 	toString( ary ) { this.value = ary.join(); return this; }
+
+	foreach(data) {
+		$.each(data, function( index, section ) {
+		});
+		$(".multi-categories").each(function( k, e ) {
+			console.log(e.value);
+		});
+	}
 }
 
 class collections {

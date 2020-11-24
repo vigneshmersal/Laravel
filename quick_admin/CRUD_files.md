@@ -7,12 +7,12 @@
 - validation request
 - routes (web, api)
 - controllers
+- lang
+- resource/pages
+- menu
 - api - controller
 - api - resource
-- lang
-- menu
-- resource/pages
-- file upload path storage/gitignore/config.filesystem
+- file upload path storage, .gitignore, config.filesystem[]
 
 ## After
 - migration (id, unsignedBigInteger, foreign-index(), integer(select box))

@@ -12,6 +12,12 @@ firstWhere($column); // value is not null,0,[],''
 firstWhere($column, $value);
 firstWhere($column, $operator, $value);
 first(function($v,$k){ return $v>1; });
+
+# retrieve the first result of a query (or) 
+# perform some other action if no results are found
+firstOr(function () {});
+# array of columns
+->firstOr(['id', 'legs'], function () {});
 ```
 
 ## Last

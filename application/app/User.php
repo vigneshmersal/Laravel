@@ -9,6 +9,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
+use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+
 use App\Traits\QueryFilter;
 
 class User extends Authenticatable implements MustVerifyEmail // vereify by email notify
@@ -246,6 +248,27 @@ class User extends Authenticatable implements MustVerifyEmail // vereify by emai
 		}
 	}
 
+	/* ----------Role & Permission---------- */
+	public function permissions() {
+		$permissions = [];
+		foreach ($this->roles as $each) {
+			$permissions = $each->permissions();
+		}
+		return $permissions;
+	}
+
+	public function hasRole($name) {
+		return $this->roles()->where('title', $name)->exists();
+	}
+
+	public function hasPermission($name) {
+		return $this->permissions()->where('title', $name)->exists();
+	}
+
+	public function hasAnyPermission($array) {
+		return $this->permissions()->whereIn('title', $array)->count() > 0;
+	}
+
 	/*
 	|--------------------------------------------------------------------------
 	| Booting Methods
@@ -264,6 +287,8 @@ class User extends Authenticatable implements MustVerifyEmail // vereify by emai
 		static::updating(function ($model) {
 			// which fields where updated
 			$dirty = $record->getDirty();
+			//if ($product->isDirty('statut')) {
+    		//if (count($product->getDirty()) == 1) {
 
 			foreach ($dirty as $field => $newdata) {
 				// getOriginal old date
@@ -276,9 +301,34 @@ class User extends Authenticatable implements MustVerifyEmail // vereify by emai
 			return true;
 		});
 
+		# Multiple event
+		// protected static $updateOnEvents = ['saved','deleted',...];
+	    foreach (static::$updateOnEvents as $event) {
+	        static::$event(function($questionnaire){
+	        });
+		}
+
 		# Default ordering in global scope
 		static::addGlobalScope('order', function (Builder $builder) {
 	        $builder->orderBy('name', 'asc');
 	    });
+
+	    static::creating(function ($obj) {
+			Cache::tags('sectors.all')->flush();
+		});
+
+		static::updating(function ($obj) {
+			Cache::tags([
+				'sectors.all',
+				"sectors.find.{$obj->id}"
+			])->flush();
+		});
+
+		static::deleting(function ($obj) {
+			Cache::tags([
+				'sectors.all',
+				"sectors.find.{$obj->id}"
+			])->flush();
+		});
 	}
 }

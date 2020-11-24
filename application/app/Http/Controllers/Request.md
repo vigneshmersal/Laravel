@@ -14,6 +14,15 @@ $request->getQueryString();
 unset($request->name)
 ```
 
+## Modify
+```php
+$request->merge([
+    'user_id' => $modified_user_id_here,
+]);
+$request->request->set(key, value).
+$request->request->add(['newParam' => $newParam]);
+```
+
 # GET
 ```php
 # Retrieve all data
@@ -54,7 +63,9 @@ if ($request->filled('name')) { } // present & not empty
 if ($request->exists('name')) { } // present (checkbox, query string)
 
 if ($request->missing('name')) { } // absent
-if ($request->missing('name')) { $request->request->add(['name' => 'vig']); }
+if ($request->missing('name')) { 
+    $request->request->add(['name' => 'vig']); 
+}
 
 # check view exist
 if (View::exists('emails.customer')) { }

@@ -15,10 +15,8 @@ https://github.com/CrestApps/laravel-code-generator
 
 # own code
 https://github.com/victoryoalli/laravel-code-generator
-
 Install:
 > composer require --dev victoryoalli/laravel-code-generator
-
 - php artisan code:generator 'App\Sector' -A
 
 # API
@@ -31,3 +29,12 @@ https://laravelsd.com/
 
 # Testing
 https://pociot.dev/18-laravel-testtools
+
+# Response Cache
+https://github.com/spatie/laravel-responsecache
+
+# user agent
+https://github.com/jenssegers/agent
+
+# Markdown
+https://packagist.org/packages/league/commonmark

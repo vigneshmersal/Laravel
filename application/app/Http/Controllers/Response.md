@@ -1,5 +1,8 @@
 # Response
 
+# Json pretty print
+> return response($status, 200, ['Content-type'=> 'application/json; charset=utf-8'], JSON_UNESCAPED_UNICODE);
+
 ```php
 # passing data to view
 return view('admin.profile', ['name' => 'vignesh'])

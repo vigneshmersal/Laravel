@@ -1,6 +1,13 @@
 # Validation - Error code 422
 [40-additional-laravel-validation-rules/](https://laraveldaily.com/40-additional-laravel-validation-rules/)
 
+# Email Validate
+```php
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+	throw new InvalidArgumentException;
+}
+```
+
 ```php
 # direct validate
 $validatedData = $request->validate([
@@ -107,6 +114,7 @@ $var = [
 
 	# array &
 	'array',
+    'min:1', 'max:5',
 	'size:5', // chk array length
 	'distinct', // check array has no duplicate values
 	'person.email' => 'required', // access array by dot notation

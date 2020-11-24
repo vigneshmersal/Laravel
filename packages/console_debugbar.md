@@ -6,6 +6,10 @@
 
 > php artisan vendor:publish --provider="Barryvdh\Debugbar\ServiceProvider"
 
+## disable
+> Debugbar::disable();
+> app('debugbar')->disable();
+
 ## Use
 At `Messages` tab,
 ```php

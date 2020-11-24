@@ -1,4 +1,6 @@
 # livewire
+https://www.nicesnippets.com/blog/laravel-livewire-load-more-example
+https://laravel-livewire.com/docs/2.x/reference
 
 ## Install
 > composer require livewire/livewire

@@ -2,12 +2,38 @@
 
 For multilanguage set `utf8_unicode_ci`
 
-## drop foreign key
+## Explain query
+> EXPLAIN select * from users
+
+- mysql automatically create index for foreign keys
+
+## comma seperated column values
+> SELECT GROUP_CONCAT(id)  FROM table_level where parent_id=4 group by parent_id;
+
+## foreign key
+> alter table comments add foreign key (post_id) references posts(id) 
+  - on delete cascade 
+  - on delete restrict 
+  - on delete no action 
+  - on update cascade
+  - set null 
 > alter table courses drop foreign key courses_sector_id_foreign
 
+## Add/drop index
 > ALTER TABLE courses ADD INDEX (user_id)
-
 > ALTER TABLE courses DROP INDEX (user_id)
+
+## primary/unique/foreign key
+```php
+ALTER TABLE `redirects`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `redirects_old_url_unique` (`old_url`),
+  ADD KEY `redirects_user_id_foreign` (`user_id`);
+
+ALTER TABLE `redirects`
+  ADD CONSTRAINT `redirects_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+COMMIT;
+```
 
 
 ## import to windows
@@ -134,3 +160,15 @@ port=3306
 port=3307
 port=8111
 ```
+
+## Error: MySQL shutdown unexpectedly.
+## File 'C:\xampp\mysql\data\ibtmp1' size is now 12 MB
+## Waiting for purge to start
+This is as a result of some files in C:\xampp\mysql\data\mysql getting corrupted.
+
+Solution:
+
+Back up C:\xampp\mysql\data
+Copy all file C:\xampp\mysql\backup
+Paste and replace existing file in: C:\xampp\mysql\data, except for the ibdata1 file.
+Leaving ibdata1 will help against table does not exist error.

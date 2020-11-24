@@ -2,13 +2,9 @@
 [laravel-json-api](https://laravel-json-api.readthedocs.io/en/latest/)
 
 Install
-> composer require laravel/passport
-
-Create Passport tables
-> php artisan migrate
-
-Generate client encryption keys(token)
-> php artisan passport:install
+- composer require laravel/passport
+- php artisan migrate
+- php artisan passport:install // Generate client encryption keys(token)
 
 Add API trait to Models,
 ```php
@@ -157,5 +153,33 @@ class UserController extends Controller
         $user = Auth::user();
         return response()->json(['user' => $user], $this->successStatus);
     }
+}
+```
+
+## get user without middleware
+```php
+return auth('api_candidates')->user();
+```
+
+```php
+public function test(Request $request)
+{
+    $access_token = $request->header('Authorization');
+
+    $auth_header = explode(' ', $access_token); // Bearer {token}
+    $token = $auth_header[1]; // {token}
+
+    // break up the token into its three parts
+    $token_parts = explode('.', $token);
+
+    $token_header_json = base64_decode($token_parts[1]); // base64 decode to get a json string
+    // {"aud":"1","jti":"b9be7f5d0f8eb394e57dff0fb40a3ee17624d1a613e7f93704f2a3885d8bd2349372dd289f5e62d4","iat":1598771934,"nbf":1598771934,"exp":1630307934,"sub":"1","scopes":[]}
+
+    // then convert the json to an array
+    $token_header_array = json_decode($token_header_json, true);
+    $user_token = $token_header_array['jti'];
+
+    $user_id = DB::table('oauth_access_tokens')->where('id', $user_token)->value('user_id');
+    return $user = User::findOrFail($user_id);
 }
 ```

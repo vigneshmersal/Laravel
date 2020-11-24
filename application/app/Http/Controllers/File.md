@@ -1,6 +1,8 @@
 # File
 [symfony](https://github.com/symfony/symfony/blob/3.0/src/Symfony/Component/HttpFoundation/File/UploadedFile.php)
 
+https://medium.com/@sehmbimanvir/laravel-upload-files-to-amazon-s3-a17d013f53ce
+
 ## Html
 ```php
 <form enctype="multipart/form-data" method="POST">
@@ -66,4 +68,33 @@ Storage::disk('public')->delete($image_path);
 
 // PHP
 unlink(app_path().'/images/news/'.$news->photo);
+```
+
+## s3
+https://stackoverflow.com/questions/48783020/laravel-s3-image-upload-creates-a-folder-with-the-filename-automatically
+```php
+composer require league/flysystem-aws-s3-v3
+$exists = Storage::disk('s3')->exists('file.jpg');
+>>> $path = Storage::disk('s3')->put('images/', 'dgd');
+$missing = Storage::disk('s3')->missing('file.jpg');
+
+$contents = Storage::get('file.jpg');
+return Storage::download('file.jpg');
+return Storage::download('file.jpg', $name, $headers);
+Storage::disk('s3')->delete('folder_path/file_name.jpg');
+
+$url = Storage::url('file.jpg');
+$path = $request->file('avatar')->store(
+    'avatars/'.$request->user()->id, 's3'
+);
+
+public function moveImg($id, $tempDir)
+{
+    $images = Storage::disk('s3')->allFiles('temp/' . $tempDir);
+    foreach($images as $img)
+    {
+        $moveTo = str_replace('temp/' . $tempDir, 'property/' . $id, $img);
+        Storage::disk('s3')->move($img, $moveTo);
+    }
+}
 ```

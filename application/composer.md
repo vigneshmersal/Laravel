@@ -2,11 +2,21 @@
 ## Install
 > composer global require laravel/installer
 
-## Commands
-> `composer outdated` - It will show all packages compared to new version.
->> *composer outdated --direct*
+## Update laravel installer 4.X
+1. `composer global require "laravel/installer:^4.0"`
+    - verify: `laravel --version`
+2. uninstall and reinstall
+    - `laravel global remove laravel/installer`
+    - `laravel global require laravel/installer`
+3. update global `composer.json`
+    - { "require": { "laravel/installer": "^4.0" } }
+    - `composer update`
 
-> `composer update`
+## composer Commands
+- `composer outdated` - It will show all packages compared to new version.
+    + `composer outdated --direct`
+
+- `composer update`
 
 ## Frontend
 Laravel 6 not supported `2.x-dev` and above.
@@ -26,6 +36,7 @@ Linux
 - To add globally by: `mv composer.phar /usr/local/bin/composer`
 - If added globally check by: `composer`
 
+---
 
 ## Create project
 > composer create-project --prefer-dist laravel/laravel blog "5.5"
@@ -36,11 +47,6 @@ create a new application with all of the authentication scaffolding compiled and
 ## Done everything for us - like composer|migration
 > composer require laracasts/generators --dev
 > composer require laracasts/testdummy --dev
-
-## Install Passport
-> composer require laravel/passport
-> php artisan migrate
-> php artisan passport:install
 
 > composer require livewire/livewire
 

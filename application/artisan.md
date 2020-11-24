@@ -329,7 +329,7 @@ ___
 > storage:link `Create the symbolic links configured for the application`
       --relative        Create the symbolic link using relative paths
 
-## stub
+## stub - `stubs/` folder
 > stub:publish `Publish all stubs that are available for customization`
       --force           Overwrite any existing files
 

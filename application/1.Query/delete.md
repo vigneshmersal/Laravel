@@ -24,6 +24,11 @@ pop() // remove last item
 pull($column) // remove and return col val
 ```
 
+## force delete
+```php
+forceDelete()
+```
+
 ## restore
 ```php
 Model::withTrashed()->restore();

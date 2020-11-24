@@ -53,7 +53,14 @@ $value = Cache::get('key', 'default');
 $value = Cache::store('file')->get('foo');
 $value = Cache::get('key', function () { return DB::table(...)->get(); });
 $value = cache('key');
+
+# Tag
 $john = Cache::tags(['people', 'artists'])->get('John');
+Cache::tags(['people', 'authors'])->flush();
+Cache::tags('authors')->flush();
+Cache::tags(['people', 'artists'])->put('John', $john, $seconds);
+if (\Cache::tags($cache_tags)->has($cache_key)) {}
+
 
 # Retrive & Remove
 $value = Cache::pull('key');
@@ -63,7 +70,7 @@ Cache::forget('key'); // remove item
 Cache::put('key', 'value', 0);
 Cache::put('key', 'value', -5);
 Cache::flush(); // remove all items
-Cache::tags(['people', 'authors'])->flush();
+php artisan cache:clear
 
 # Store
 Cache::put('key', 'value');
@@ -76,7 +83,6 @@ Cache::add('key', 'value', $seconds); // Store If Not Present
 Cache::forever('key', 'value'); // store forever , only remove by manually - `forget`
 Cache::store('redis')->put('bar', 'baz', 600); // 10 Minutes
 cache(['key' => 'value'], $seconds = now()->addMinutes(10));
-Cache::tags(['people', 'artists'])->put('John', $john, $seconds);
 
 # Check
 if (Cache::has('key')) {}

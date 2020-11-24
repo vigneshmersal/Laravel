@@ -1,4 +1,7 @@
 # [Datatable](https://yajrabox.com/docs/laravel-datatables/master/installation)
+
+- https://datatables.yajrabox.com/fluent/custom-filter
+
 ## Installation
 [https://github.com/yajra/laravel-datatables](https://github.com/yajra/laravel-datatables)
 ### Buttons Plugin Installation
@@ -109,7 +112,11 @@ class PostsDataTable extends DataTable
             ])
             ->setRowAttr([
                 'color' => function($user) { return $user->color; },
-                'color' => '{{$color}}'
+                'color' => '{{$color}}',
+                'style' => function($item){
+                    if (!is_null($item->deleted_at))
+                        return 'background-color: lightpink;';
+                }
             ])
 
             ->whitelist(['name', 'email']) // Sorting and searching will only work on columns

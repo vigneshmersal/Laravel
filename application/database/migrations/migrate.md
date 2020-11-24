@@ -15,8 +15,13 @@ unique
 index
 unsigned
 
+## Unique
+> $table->unique(['post_id', 'tag_id']);
+
 ## foreign relation
 ```php
+$table->foreignId('user_id');
+
 $table->unsignedBigInteger('user_id')->index();
 $table->foreign('user_id')->references('id')->on('users');
 

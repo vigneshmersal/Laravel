@@ -36,3 +36,21 @@ Model::updateOrCreate([], [
     'column' => \DB::raw('column + 1'),
 ]);
 ```
+
+## timestamp
+```php
+$user->timestamps=false; $user->save(); // update model, without timestamp
+$user->touch(); // update updated_at timestamp
+```
+
+## restore
+```php
+Post::withTrashed()->where('author_id', 1)->restore();
+```
+
+## Duplicate save
+```php
+$newQs = $qs->replicate();
+$newQs->mock_test_id = $mock_test_id;
+$newQs->save();
+```

@@ -1,5 +1,10 @@
 # Route
 
+if (! defined('DEFAULT_VERSION')) {
+    define('DEFAULT_VERSION', '8');
+    // in controller = return redirect('docs/'.DEFAULT_VERSION);
+}
+
 ## Web Routes
 ```php
 /*

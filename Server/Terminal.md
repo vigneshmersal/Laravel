@@ -102,11 +102,11 @@ ___
 - *mv dir1 dir2* - if dir2 exist - o/p like `dir2/dir1/f1.txt`
 
 > `mkdir [dir]` - create a new directory
-- *mkdir -p dir/subdir* - `--parents` create dir and subdir also like a tree structure
+- *mkdir -p dir/subdir* - `--parents` create parent dir and subdir also like a tree structure
 - *mkdir -p dir/{sub1,sub2}* - create dir with many subdir
 
 > `rmdir [options] [dir]` - delete dir
-- *rmdir a/b/c* - remove c dir
+- *rmdir a/b/c* - remove only 'c' dir
 - *rmdir -p a/b/c* - remove dir structure (only when empty)
 
 > `rm [options] [dir/file]` - delete dir/file
@@ -195,6 +195,12 @@ SYNTAX COlORFULL TEXT EDITOR
 
 > `gedit [file]` - open file in notepad editor
 
+Gut Merge
+> Type some message
+> CtrlCO
+> Type the file name (such as "Merge_feature01") and press Enter
+> CtrlX to exit
+
 ## system
 > `df -h` - view free/used memory space for files (*-h* human readable)
 
@@ -209,6 +215,7 @@ SYNTAX COlORFULL TEXT EDITOR
 - *ps -aux* - list of processes used by all the user
 - *ps -U [userName]* - given user list of processes
 - *ps -C [programName]* - list of all the programs related to the program
+- *ps aux | grep php* - search php processes
 
 > `top` - system information (refresh every 3sec)
 - *i* - show only running processes
@@ -241,6 +248,7 @@ ___
 - *watch -n 1,5 free -h* - change interval to 1.5sec
 
 ___
+
 ## SSH
 > `ssh` - check whether ssh is installed or not
 - *sudo apt-get install openssh-server* - install open ssh server
@@ -257,3 +265,40 @@ ___
 - *scp -r dirName hostUserName@IP:LocationPath* - (`-r` recursively copy all files and dir)
 - *scp remoteUserName@IP:/home/file.txt destinationLocation* - copy from remote to local
 - *scp -r remoteUserName@IP:/home/file.txt destinationLocation -P 1234 -i /home/public.key* - (`-r` recursively copy files) (`-P` mention diff port if need) (`-i` - if public key add location here)
+
+## copy file from local to remote using pem file
+> scp -r -i D:/Downloads/dev/guidely/live/guidely.pem uploads.zip root@128.199.23.101:/var/www/console.guidely.in/htdocs/public/
+
+> `chown` - change owner of the folder
+- *sudo chown -R <owner>:<group> <folder>* - (-R - recursive to all sub folders)
+- *sudo chown <owner> <folder>* - changing ownership of the folder
+- *sudo chown :<group> <folder>* - changing group of the folder
+- *sudo chown --from=<oldUser> <newUser> <folder>* - change ownership only when the existing file owner is <oldUser>, then it will change the user to <newUser>.
+- *sudo chown --from=:<oldGroup> :<newGroup> <folder>* - changing group name only to <oldGroup>
+- *sudo chown --reference=<oldFolder>/ <newFolder>* - copy ownership and group to another folder
+- `sudo chown <user>:<group> *` - changing ownership of files present inside the dir, without making any changes to the parent dir.
+
+> `chgrp` - change group name
+- *chgrp <group> <folder>*
+
+> `sudo apt-get` - apt - advance package tool install
+- *sudo apt-get update* - resync update remote files to local
+- *nano /etc/apt/source.list* - apt-get updated files list
+example:
+- *sudo apt-get install php5-cli* - install
+- *sudo apt-get remove php5-cli* - uninstall, but not remove config files
+- *sudo apt-get remove --purge php5-cli* - uninstall, also remove config files
+- *sudo apt-get autoremove* - uninstall predefault installed packages
+
+> ifconfig - list all interface config
+- *ifconfig [eth0]* - list only particular interface config
+- *ifconfig [eth0] up* - make internet connection up
+- *ifconfig [eth0] down* - make internet connection down
+	- eth0 - ethernet connection
+	- wl0 - wireless connection
+		- hwaddr - hardware address
+		- inet addr - local ipv4 address
+		- inet6 addr - local ipv6 address
+		- Bcast - broadcast ip address
+		- Rx packages
+		- Tx packages

@@ -17,3 +17,5 @@ collect([1,2,3,4])->get()[$nth=1]; // [2]
 collect([1,2,3,4])->values()->get($nth=1); // [2]
 collect([1,2,3,4])->get()->slice($nth=1, $howmany=2); // [2,3]
 ```
+
+> {{ $users->onEachSide(5)->links() }}

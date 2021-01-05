@@ -9,7 +9,7 @@ class UserController extends AnotherClass
     public function __construct()
     {
         $this->middleware('log')->only('index');
-        $this->middleware('subscribed')->except('store');
+        $this->middleware('guest')->except('logout'); // except method name
 
         $this->middleware(function ($request, $next) {
             // ...

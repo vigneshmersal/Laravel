@@ -9,14 +9,16 @@ For multilanguage set `utf8_unicode_ci`
 
 ## comma seperated column values
 > SELECT GROUP_CONCAT(id)  FROM table_level where parent_id=4 group by parent_id;
+## Star rating
+> SELECT SUM(rating = 1) AS one_s, SUM(rating = 2) AS two_s FROM star_ratings
 
 ## foreign key
-> alter table comments add foreign key (post_id) references posts(id) 
-  - on delete cascade 
-  - on delete restrict 
-  - on delete no action 
+> alter table comments add foreign key (post_id) references posts(id)
+  - on delete cascade
+  - on delete restrict
+  - on delete no action
   - on update cascade
-  - set null 
+  - set null
 > alter table courses drop foreign key courses_sector_id_foreign
 
 ## Add/drop index
@@ -24,6 +26,7 @@ For multilanguage set `utf8_unicode_ci`
 > ALTER TABLE courses DROP INDEX (user_id)
 
 ## primary/unique/foreign key
+
 ```php
 ALTER TABLE `redirects`
   ADD PRIMARY KEY (`id`),
@@ -47,6 +50,7 @@ C:\xampp\mysql\bin>mysql.exe -u root -p stan < D:\Downloads\dev\guidely\candidat
 
 ## [Check Stable versions](https://www.php.net/downloads.php)
 check by `php -v`
+
 ```php
 PHP 7.4.5
 PHP 7.3.17
@@ -61,7 +65,6 @@ PHP 7.2.30
 2. MyISAM - table level locking ,  full-text search
 3. CSV
 4. Blackhole
-```
 
 ## Use older PHP versions
 - go to this [link](https://sourceforge.net/projects/xampp/files/)
@@ -80,6 +83,7 @@ PHP 7.2.30
 
 ## PHP Modules
 Check available php extension modules by `php -m`
+
 ```php
 [PHP Modules]
 bcmath, bz2, calendar, Core, ctype, curl, date, dom, exif, fileinfo, filter,
@@ -92,11 +96,13 @@ SPL, standard, tokenizer, xml, xmlreader, xmlwriter, zip, zlib
 ## Install PHP extension at windows
 Location: `C:\xampp\php\php.ini`
 [mcrypt](https://sourceforge.net/projects/mcrypt/)
+
 ```php
 ;extension=php_mcrypt.dll
 ```
 
 ## Install PHP extension at ubuntu
+
 ```php
 sudo apt-get update
 
@@ -111,17 +117,19 @@ sudo apt-get upgrade
 
 ## Host
 Location: `C:\Windows\System32\drivers\etc\hosts`
+
 ```php
 127.0.0.1 			dev.doccure.test
 ```
 
 ## vHost
 Location: `C:/xampp/apache/conf/extra/httpd-vhosts.conf`
+
 ```php
-<VirtualHost dev.doccure.test:80>
-    DocumentRoot "D:/dev/doccure/public"
-    ServerName dev.doccure.test
-     <Directory "D:/dev/doccure/public">
+<VirtualHost dev.guidely.test:80>
+    DocumentRoot "D:/dev/guidely/public"
+    ServerName dev.guidely.test
+     <Directory "D:/dev/guidely/public">
        DirectoryIndex index.php
        AllowOverride All
        Order allow,deny
@@ -137,6 +145,7 @@ Location: `C:/xampp/apache/conf/extra/httpd-vhosts.conf`
 After `Xampp -> config -> Service & Port settings -> set port -> save`
 Restart xampp
 visit `localhost:8080`
+
 ```php
 Location: C:\xampp\apache\conf\httpd\httpd.conf
 # Listen 80
@@ -155,6 +164,7 @@ ServerName www.example.com:444
 
 ## Change mysql port
 Location: C:/xampp/mysql/bin/my.ini
+
 ```php
 port=3306
 port=3307
@@ -162,13 +172,4 @@ port=8111
 ```
 
 ## Error: MySQL shutdown unexpectedly.
-## File 'C:\xampp\mysql\data\ibtmp1' size is now 12 MB
-## Waiting for purge to start
-This is as a result of some files in C:\xampp\mysql\data\mysql getting corrupted.
 
-Solution:
-
-Back up C:\xampp\mysql\data
-Copy all file C:\xampp\mysql\backup
-Paste and replace existing file in: C:\xampp\mysql\data, except for the ibdata1 file.
-Leaving ibdata1 will help against table does not exist error.

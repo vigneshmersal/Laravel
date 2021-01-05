@@ -144,5 +144,15 @@ class AppServiceProvider extends ServiceProvider
         Collection::macro('toUpper', function () { // call : $upper = $collection->toUpper();
             return $this->map(function ($value) { return Str::upper($value); });
         });
+
+        if(env('APP_DEBUG')) {
+            \DB::listen(function($query) {
+                \File::append(
+                    storage_path('/logs/query.log'),
+                    'Sql -> '.$query->sql.'. '.
+                    'Execution Time -> '.$query->time.PHP_EOL
+                );
+            });
+        }
     }
 }

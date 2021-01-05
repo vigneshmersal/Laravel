@@ -2,20 +2,15 @@
 ```php
 # preserve key instead of [0] it will keep the key
 ->groupBy('column', $preserveKey=true)
-
 # custom
-->groupBy(function($item){ 
-    return $item['column']; 
-});
+->groupBy(function($item){ return $item['column']; });
 ```
 
 ## By multiple column
 ```php
 groupBy(['column1', 'column2']) // column1 => [ column2 => [] ]
 
-->groupBy(function ($item, $key) {
-    return $item['column1'].$item['column2']; 
-});
+->groupBy(function ($item, $key) { return $item['column1'].$item['column2']; });
 ```
 
 ## By relation
@@ -33,12 +28,12 @@ groupBy(['column1', 'column2']) // column1 => [ column2 => [] ]
 });
 ```
 
-## By custom value
+## By custom aggregate value
 ```php
-->groupBy('country')->map(function ($row) { 
+->groupBy('country')->map(function ($row) {
     return $row->count(); //[India]=>2
     return $row->sum('amount'); // [india=>5000]
-}); 
+});
 ```
 
 ## raw
@@ -50,13 +45,14 @@ groupBy(['column1', 'column2']) // column1 => [ column2 => [] ]
 // havingRaw
 ->havingRaw('COUNT(*) > 1')
 ->havingRaw('YEAR(birth_date) > 2000')
+Product::groupBy('name')->havingRaw('COUNT(*) > 1')->get();
 ```
 
-## unique 
+## unique
 ```php
 // By column [ ['a'=>6,'b'=>2] ]
 collect([ ['a'=>6,'b'=>2],['a'=>5,'b'=>2] ])->unique($column='b');
 
-# By multiple custom 
+# By multiple custom
 unique(function($item){ return $item['col1'].$item['col2']; });
 ```

@@ -55,12 +55,14 @@ public function testFunction() {}
 ---
 
 ## visit page
+```php
 $this->visit('/');
 $this->click('Click Me'); // <a href="#">Click Me</a>
+```
 
 ## assert
-$this->assertTrue();
-$this->assertFalse();
+```php
+$this->assertTrue(); | $this->assertFalse();
 
 $this->assertSee('<h1>hi</h1>'); // content
 $this->assertEquals(); // match value
@@ -71,3 +73,4 @@ $this->assertEmpty();
 
 $this->seePageIs('/feedback'); // url
 $this->assertRedirect('/docs/8');
+```

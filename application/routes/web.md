@@ -1,9 +1,13 @@
 # Route
 
+```php
 if (! defined('DEFAULT_VERSION')) {
     define('DEFAULT_VERSION', '8');
     // in controller = return redirect('docs/'.DEFAULT_VERSION);
 }
+```
+
+> ->middleware('throttle:api');
 
 ## Web Routes
 ```php
@@ -13,8 +17,16 @@ if (! defined('DEFAULT_VERSION')) {
 |--------------------------------------------------------------------------
 */
 Auth::routes();
-Auth::routes(['register' => false]);
-Auth::routes(['verify' => true]); // verify email by link
+Auth::routes([
+    'login' => true,
+    'logout' => true,
+    'register' => true,
+    'reset' => false,
+    'confirm' => false,
+    'verify' => true, // verify email by link
+]);
+Laravel 7 -> /vendor/laravel/ui/src/AuthRouteMethods.php
+Before Laravel 7 -> /vendor/laravel/framework/src/illuminate/Routing/Router.php
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +60,10 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
 	Route::get('dashboard', 'Admin\AdminController@dashboard')->name('dashboard')
 		->withoutMiddleware(['guest']);
 })->middleware([AdminOnly::class, 'guest', 'role:editor']);
+
+Route::group(['prefix'=>'account', 'as'=>'account.*', 'middleware'=>'auth'], function() {
+
+});
 ```
 
 ## Resource route (--resource --model=Photo)

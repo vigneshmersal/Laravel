@@ -5,8 +5,9 @@
 composer create-project --prefer-dist laravel/laravel stan "5.5.*"
 // or
 composer create-project laravel/laravel=5.5 blog --prefer-dist --auth
-
+// v - 8
 laravel new myapp --jet --stack=inertia --team
+laravel new myapp --jet --stack=livewire --team
 
 set vhost & restart xampp
 

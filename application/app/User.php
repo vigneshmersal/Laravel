@@ -23,14 +23,21 @@ class User extends Authenticatable implements MustVerifyEmail // vereify by emai
 		'status', 'created_by', 'updated_by', 'deleted_by'
 	];
 
+	// ->get()->makeHidden(['id'])
+    // ->makeVisible(['id'])
 	protected $hidden = [ 'password', 'remember_token' ];
 
-	// integer, integer, real, float, double, decimal:<digits>, string, boolean, object, array, collection, date, datetime, and timestamp
+	// integer, integer, real, float, double,
+	// decimal:<digits>, (no of digits decimal:2)
+	// string, boolean, object, array, collection, date, datetime, and timestamp
+	// ->withCasts(['last_posted_at' => 'datetime'])
 	protected $casts = [
 		'is_admin' => 'boolean', // 1 & 0 converted to true, false
 		'status' => 'integer', // true, false convered to 1, 0
 		'options' => 'array', // json to array access $options['key']
-		'deleted_at' => 'datetime',
+		'deleted_at' => 'datetime:Y-m-d',
+		'options' => App\Casts\Json::class, // Hash::class.':sha256',
+		'address' => \App\Address::class,
 	];
 
 	/**

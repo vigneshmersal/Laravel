@@ -36,6 +36,7 @@ brew install git
 > `git fetch --all`
 
 ## git Config
+> `git config` - list of git configs
 > `git config --list` - list out the configurations
 - *git config user.name "vignesh"* - set username
 - *git config --global user.name "vignesh"* - set username as global
@@ -109,19 +110,47 @@ $ git checkout <branch-name>
 $ git checkout -b <branch-name>
 
 $ git checkout -b <branch-name> <origin/branch_name>
+
+# undo new changes - before commit
+$ git checkout -- app/user.php
+
+# goto particular commit
+$ git checkout <commit_ID>
 ```
 
 ## git add
 > `git add .` - add all files to commit
 - *git add f1.txt f2.txt*
+- *git add -- app/user.php*
 
 ## git commit
 > `git commit -m "initial commit"` - commit the added files to push
 - *git commit* - To add description for that commit
+- *git commit -q -m commitmessage*
 - *git commit --amend* - append new changes to last commit (not recommanded)
+
+## git revert
+> *git revert --no-commit <commitId>* - revert last commit
+> *git revert --abort* - Abort revert (undo revert cmd)
+> *git commit -q -m <msg>* - complete revert
+
+## git clean
+> *git clean -qf -- app/test.php* - delete new file before add
+
+## git push
+> *git push origin master*
 
 ## git status
 > `git status` - list out the modified files
+
+## git reset
+> `git reset` = unstage all added files
+> `git reset -q -- app/user.php` - unstage file from staged file
+> `git reset HEAD` - unstage all added files
+> `git reset HEAD __file__` = To unstage particular file
+> `$ git reset --hard HEAD` (discards local conflicts, and resets to remote branch HEAD)
+> `git reset --hard __commit_ID__` = go to commit, remove new changes
+> `git reset --soft __commit_ID__` = go to commit, still hold new changes
 
 ## git show
 > git show __commit_ID__ = show committed changes
@@ -147,6 +176,9 @@ $ git pull origin <branch>
 
 ## git Merge
 ```sh
+# merge your work to master
+$ git merge origin/master
+
 # merge two branches
 $ git merge <branch>
 
@@ -155,10 +187,22 @@ $ git mergetool
 
 # list merged branches
 $ git merge --merged
-```
-Homepage: http://kdiff3.sourceforge.net
 
-Start from commandline:
+$ git merge abort -> last pull abort
+git checkout
+git pull
+composer install
+.lock
+```
+
+## Rebase
+
+```php
+$ git rebase origin/master
+```
+
+## Kdiff3
+Homepage: http://kdiff3.sourceforge.net
 
 ```sh
 # Comparing 2 files:
@@ -213,3 +257,10 @@ ___
 ### How to fix Git Error ‘Your local changes to the following files will be overwritten by merge’
 
 https://appuals.com/how-to-fix-git-error-your-local-changes-to-the-following-files-will-be-overwritten-by-merge/
+
+## “Pull is not possible because you have unmerged files”
+git clean -df
+git reset --hard HEAD
+git reset --hard origin/master
+git checkout REMOTE_BRANCH_NAME
+git pull origin REMOTE_BRANCH_NAME

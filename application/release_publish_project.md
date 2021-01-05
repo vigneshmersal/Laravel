@@ -34,6 +34,7 @@ log:
 
 reload:
 > sudo service nginx reload
+> sudo service nginx restart
 
 Check what user PHP-FPM is running as (it's www-data)
 > ps aux | grep php
@@ -87,5 +88,13 @@ php artisan up
 APP_ENV=staging
 APP_DEBUG=true
 APP_URL=http://test-something.yourdomain.com
+```
+
+## Clear
+```php
+php artisan view:clear
+php artisan route:clear
+php artisan cache:clear
+php artisan config:cache
 ```
 

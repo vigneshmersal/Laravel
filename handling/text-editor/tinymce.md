@@ -123,6 +123,7 @@ for (var i = 0; i < allEditors.length; ++i) {
 }
 
 # get
+tinyMCE.editors[$('#mail').attr('id')].getContent() // preferred
 var content = tinymce.get("texteditor").getContent();
 var content = tinymce.get("texteditor").getContent({ format : 'html' });
 var content = tinymce.get("texteditor").getContent({ format : 'raw' });
@@ -130,11 +131,11 @@ var content = tinymce.get("texteditor").getContent({ format : 'raw' });
 # set
 tinyMCE.activeEditor.setContent(s);
 tinyMCE.getInstanceById('textarea_id').setContent(s);
-tinyMCE.get('my_textarea_id').setContent(my_value_to_set);
+tinyMCE.get('my_textarea_id').setContent(my_value_to_set); // preferred
 tinyMCE.get('texteditor').setContent(my_value_to_set);
 tinyMCE.activeEditor.execCommand('mceInsertContent',false,Getname);
 
-# when javascript add new editor btn clicked
+# Dynamically add editor
 createNewTinyEditor("description2");
 function createNewTinyEditor(id) {
     tinyConfig.selector = '#'+id;

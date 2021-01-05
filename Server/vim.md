@@ -17,7 +17,7 @@ https://github.com/gosukiwi/vim-atom-dark/tree/master/colors
 - `Esc` - exit from insert mode to normal mode
 
 ## shortcuts
-- `h,j,k,l` - select letters left,down,up,right (working only in visual mode)
+- `h,j,k,l` - select letters left,down,up,right (working only in `visual mode`)
 - `V` - (capital v) select entire line
 - `y` - copy the line
 - `p` - paste the line
@@ -25,6 +25,7 @@ https://github.com/gosukiwi/vim-atom-dark/tree/master/colors
 - `yyp` - copy and paste the line fast
 - `.` - execute the last command
 - `u` - undo the changes (like ctrl+z)
+- `ctrl+r` - redo the changes (like ctrl+y)
 - `/word` - search & find the word (n-find next)
 - `zz` - move current line as the center of the screen
 

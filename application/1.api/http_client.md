@@ -9,18 +9,19 @@ https://jsonplaceholder.typicode.com/
 
 ## Laravel Http Client Response Class
 \vendor\laravel\framework\src\Illuminate\Http\Client\Response.php
+
 ```php
-# data
+// data
 $response->body(); // string data
 $response->__toString(); // string data
 $response->json(); // json data
 
-# header
-$response->headers(); 
-$response->header('Date'); 
+// header
+$response->headers();
+$response->header('Date');
 
-# status
-$response->status(); // getStatusCode() 
+// status
+$response->status(); // getStatusCode()
 $response->ok(); // status() == 200
 $response->successful(); // status() >= 200 && status() < 300;
 $response->redirect(); // status() >= 300 && status() < 400;
@@ -29,9 +30,8 @@ $response->serverError(); // status() >= 500
 $response->failed(); // serverError || clientError
 $response->throw(); // if invalid url, serverError || clientError -> throw RequestException
 
-# url
+// url
 $response->effectiveUri(); // url informations
-
 ```
 
 ## Usage
@@ -40,13 +40,11 @@ use Illuminate\Support\Facades\Http;
 
 $response = Http::get('https://jsonplaceholder.typicode.com/todos/1');
 
-$response = Http::post('https://jsonplaceholder.typicode.com/posts', 
-    ['title'=>'post']);
+$response = Http::post('https://jsonplaceholder.typicode.com/posts',['title'=>'post']);
 
 $response->offsetExists('title'); // true
 $response['title']; // post
 $response->offsetGet('title'); // post
-
 
 Http::patch();
 Http::put();
@@ -118,7 +116,7 @@ Http::fake(function(){
 Http::assertSent(function($request) {
     return true; // testing pass
     return $request->hasHeader('Date');
-    return $request->url() == 'https://jsonplaceholder.typicode.com/todos/1'; 
+    return $request->url() == 'https://jsonplaceholder.typicode.com/todos/1';
     return $request['title'] == 'post1';
 });
 

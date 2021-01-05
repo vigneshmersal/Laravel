@@ -1,5 +1,11 @@
 # Middleware
 
+## In controller
+```php
+$this->middleware('log')->only('index');
+$this->middleware('subscribed')->except('store'); // except method name
+```
+
 ## Authentication
 ```php
 # Authentication
@@ -13,10 +19,14 @@ middleware('password.confirm');
 middleware('verified');
 ```
 
-
 ## Role & Permission
 ```php
 middleware('can:create',App\Post);
 middleware('can:update,post');
 middleware('can:viewAny,App\post');
+```
+
+## Throttle
+```php
+middleware('throttle:api');
 ```

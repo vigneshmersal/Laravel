@@ -1,10 +1,10 @@
 ## Date
 ```php
 # created_at, updated_at timestamps - by default carbon
-$user->created_at->addDays(1); 
+$user->created_at->addDays(1);
 
 # Date - today
-whereDate('date', now()) 
+whereDate('date', now())
 whereDate('date', '=', now())
 whereDate('date', date('Y-m-d'))
 whereDate('date', Carbon::now())
@@ -60,14 +60,14 @@ Reservation::all()->filter(function($item) {
 ->orderBy('day')
 ->get()
 ->map(function($item, $key){
-    return new DailyPracticePdfResource($item);
+    return new PdfResource($item);
 })
 ->groupBy(['year', 'monthname']);
 
 selectRaw('year(created_at) year, monthname(created_at) monthname, count(*) data, month(created_at) month')
 
-->select(DB::raw('count(id) as `data`'), 
-    DB::raw("DATE_FORMAT(created_at, '%m-%Y') new_date"),  
+->select(DB::raw('count(id) as `data`'),
+    DB::raw("DATE_FORMAT(created_at, '%m-%Y') new_date"),
     DB::raw('YEAR(created_at) year'))
     DB::raw('MONTH(created_at) month'))
 ->groupby('year','month')

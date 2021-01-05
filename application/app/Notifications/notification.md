@@ -20,6 +20,7 @@
 
 app/Notifications/TodoCompleted.php
 model
+
 ```php
 use Illuminate\Notifications\Notifiable;
 class User extends Model {
@@ -31,3 +32,6 @@ class User extends Model {
     }
 }
 ```
+
+## firebase
+https://firebase.google.com/docs/cloud-messaging/http-server-ref

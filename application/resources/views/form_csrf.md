@@ -1,5 +1,6 @@
 # CSRF
 Setup AJAX csrf-token header
+
 ```js
 $.ajaxSetup({
     headers: {

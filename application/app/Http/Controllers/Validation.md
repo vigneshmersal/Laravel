@@ -13,7 +13,9 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 $validatedData = $request->validate([
 	'author.name' => ['required', new Uppercase,
 			function ($attribute, $value, $fail) {
-	            if ($value === 'foo') { $fail($attribute.' is invalid.'); }
+	            if ($value === 'foo') {
+	            	$fail($attribute.' is invalid.');
+	            }
 	        }
 		],
 ]);
@@ -287,4 +289,10 @@ $var = [
         'cc' => 'credit card'
     ],
 ],
+```
+
+## Back
+```php
+return back()->withErrors(['name.required', 'Name is required'])->withInput();
+return redirect()->back()->withInput(Input::all())->with('message', 'wrong!');
 ```

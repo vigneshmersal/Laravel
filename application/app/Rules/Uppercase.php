@@ -4,6 +4,7 @@ namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 
+// $this->validate($request, ['letter' => new Uppercase]);
 class Uppercase implements Rule
 {
     /**

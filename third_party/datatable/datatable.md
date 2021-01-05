@@ -27,10 +27,61 @@ php artisan vendor:publish --tag=datatables-buttons
 ## Modal
 ### Datatable with Model
 In this example, we will create a DataTable service class.
+
 ```
 php artisan datatables:make User --model
 ```
 **Usage:** This will create an `PostsDataTable` class on `app\DataTables` directory.
+
+### Datatable export all action function
+```php
+/* For Export Buttons available inside jquery-datatable "server side processing" - Start
+    - due to "server side processing" jquery datatble doesn't support all data to be exported
+    - below function makes the datatable to export all records when "server side processing" is on */
+    function newexportaction(e, dt, button, config) {
+        var self = this;
+        var oldStart = dt.settings()[0]._iDisplayStart;
+        dt.one('preXhr', function (e, s, data) {
+            // Just this once, load all data from the server...
+            data.start = 0;
+            data.length = 2147483647;
+            dt.one('preDraw', function (e, settings) {
+                // Call the original action function
+                if (button[0].className.indexOf('buttons-copy') >= 0) {
+                    $.fn.dataTable.ext.buttons.copyHtml5.action.call(self, e, dt, button, config);
+                } else if (button[0].className.indexOf('buttons-excel') >= 0) {
+                    $.fn.dataTable.ext.buttons.excelHtml5.available(dt, config) ?
+                        $.fn.dataTable.ext.buttons.excelHtml5.action.call(self, e, dt, button, config) :
+                        $.fn.dataTable.ext.buttons.excelFlash.action.call(self, e, dt, button, config);
+                } else if (button[0].className.indexOf('buttons-csv') >= 0) {
+                    $.fn.dataTable.ext.buttons.csvHtml5.available(dt, config) ?
+                        $.fn.dataTable.ext.buttons.csvHtml5.action.call(self, e, dt, button, config) :
+                        $.fn.dataTable.ext.buttons.csvFlash.action.call(self, e, dt, button, config);
+                } else if (button[0].className.indexOf('buttons-pdf') >= 0) {
+                    $.fn.dataTable.ext.buttons.pdfHtml5.available(dt, config) ?
+                        $.fn.dataTable.ext.buttons.pdfHtml5.action.call(self, e, dt, button, config) :
+                        $.fn.dataTable.ext.buttons.pdfFlash.action.call(self, e, dt, button, config);
+                } else if (button[0].className.indexOf('buttons-print') >= 0) {
+                    $.fn.dataTable.ext.buttons.print.action(e, dt, button, config);
+                }
+                dt.one('preXhr', function (e, s, data) {
+                    // DataTables thinks the first item displayed is index 0, but we're not drawing that.
+                    // Set the property to what it was before exporting.
+                    settings._iDisplayStart = oldStart;
+                    data.start = oldStart;
+                });
+                // Reload the grid with the original page. Otherwise, API functions like table.cell(this) don't work properly.
+                setTimeout(dt.ajax.reload, 0);
+                // Prevent rendering of the full data to the DOM
+                return false;
+            });
+        });
+        // Requery the server with the new one-time export settings
+        dt.ajax.reload();
+    };
+    //For Export Buttons available inside jquery-datatable "server side processing" - End
+```
+
 
 ```php
 <?php
@@ -310,6 +361,7 @@ class PostsDataTable extends DataTable
 ```
 
 ## Example Route:
+
 ```php
 use App\DataTables\UsersDataTable;
 
@@ -347,6 +399,7 @@ Route::get('users', function(UsersDataTable $dataTable) {
 ```
 
 ## Example View:
+
 ```php
 @extends('app')
 
@@ -370,6 +423,7 @@ Route::get('users', function(UsersDataTable $dataTable) {
 
 ## Creating a DataTable Scope service class
 DataTable scope is class that we can use to limit our database search results based on the defined query scopes.
+
 ```
 php artisan datatables:scope ActiveUser
 ```
@@ -397,6 +451,7 @@ class ActiveUser implements DataTableScopeContract
 ```
 
 ## Using Directly at Router
+
 ```php
 use DataTables;
 use Yajra\DataTables\Html\Builder;
@@ -427,6 +482,7 @@ Route::get('user-data', function(RolesDataTable $dataTable) {
 ```
 
 ## Javascript Datatable
+
 ```js
 $(function() {
     $('#table').DataTable({
@@ -469,6 +525,7 @@ $(function() {
 ```
 
 ## Example Response
+
 ```json
 {
     "draw": 2,
@@ -520,6 +577,7 @@ $(function() {
 
 ## CONFIGURATIONS
 The configuration file can be found at ``config/datatables.php``
+
 ### Error
 - **NULL:** 'error' => null (or) throw
 - **Response if Null** "error": "Exception Message:\n\nSQLSTATE[42S22]: Column not found: 1054 Unknown column 'xxx' in 'order clause' (SQL: select * from `users` where `users`.`deleted_at` is null order by `xxx` asc limit 10 offset 0)"
@@ -532,21 +590,25 @@ The sql generated will be like ``column LIKE "%keyword%"`` when set to true.
 
 ### Case Sensitive Search
 Case insensitive will search the keyword in lower case format.
+
 ```php
 'case_insensitive' => true,
 ```
 
 ### Index Column
+
 ```php
 'index_column' => 'DT_RowIndex',
 ```
 
 ### Html Builder Config
 Run
+
 ```
 php artisan vendor:publish --tag=datatables-html
 ```
 Published config is located at ``config/datatables-html.php``
+
 ```php
 return [
     'table' => [

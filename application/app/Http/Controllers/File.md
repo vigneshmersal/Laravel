@@ -72,6 +72,7 @@ unlink(app_path().'/images/news/'.$news->photo);
 
 ## s3
 https://stackoverflow.com/questions/48783020/laravel-s3-image-upload-creates-a-folder-with-the-filename-automatically
+
 ```php
 composer require league/flysystem-aws-s3-v3
 $exists = Storage::disk('s3')->exists('file.jpg');
@@ -97,4 +98,13 @@ public function moveImg($id, $tempDir)
         Storage::disk('s3')->move($img, $moveTo);
     }
 }
+```
+
+## File save content
+
+```php
+File::append(
+    storage_path('/logs/query.log'),
+    $query->sql.' ['.implode(', ', $query->bindings).'] - '.$time.PHP_EOL
+);
 ```

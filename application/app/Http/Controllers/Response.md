@@ -1,7 +1,10 @@
 # Response
 
-# Json pretty print
+## Json pretty print
 > return response($status, 200, ['Content-type'=> 'application/json; charset=utf-8'], JSON_UNESCAPED_UNICODE);
+
+## Retrive
+> $resonse->original['status']
 
 ```php
 # passing data to view

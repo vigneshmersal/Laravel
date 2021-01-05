@@ -32,9 +32,14 @@ class Kernel extends ConsoleKernel
             // Offer::whereDate('expiry_date_time', '<=', Carbon::now() )->update(['is_active'=>0]);
         })->everyMinute();
 
-        $schedule->command('email:send')->hourly();
-        // ->weeklyOn(1, '13:00');
-        // ->dailyAt('13:00');
+        $schedule->call(new DeleteRecentUsers)->daily();
+        $schedule->command('emails:send Taylor --force')->daily();
+        $schedule->command(EmailsCommand::class, ['Taylor', '--force'])->daily();
+        // ->daily() , ->weeklyOn(1, '13:00') ->dailyAt('13:00');
+
+        // job
+        $schedule->job(new Heartbeat)->everyFiveMinutes();
+        $schedule->job(new Heartbeat, 'heartbeats')->everyFiveMinutes(); // "heartbeats" queue
     }
 
     /**

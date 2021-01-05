@@ -30,7 +30,7 @@ collect([1,2])->every(function($v,$k){ return $v > 3; }); // false
 ```php
 has('books')
 has('books', '>', 5)
-has('books.ratings')
+has('books.ratings') // two layer deep checking
 whereHas('books', function($v,$k){ $v['col']>1 })
 doesntHave('books')
 

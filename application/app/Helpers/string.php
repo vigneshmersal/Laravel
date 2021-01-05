@@ -78,3 +78,10 @@ function middle($str, $start, $last) { // "^1$" -> 1
 function linkCode($name, $join = "_") {
 	return Str::slug(Str::lower($name), $join);
 }
+
+function replace() {
+	return str_replace("world","Peter","Hello world!");
+}
+function replaceSpaces() {
+	return preg_replace('/\s+/', '_', $str);
+}

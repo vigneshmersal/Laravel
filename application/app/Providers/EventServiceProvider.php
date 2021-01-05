@@ -36,8 +36,20 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\LogFailedLogin',
         ],
 
+        'Illuminate\Auth\Events\Validated' => [
+            'App\Listeners\LogValidated',
+        ],
+
         'Illuminate\Auth\Events\Logout' => [
             'App\Listeners\LogSuccessfulLogout',
+        ],
+
+        'Illuminate\Auth\Events\CurrentDeviceLogout' => [
+            'App\Listeners\LogCurrentDeviceLogout',
+        ],
+
+        'Illuminate\Auth\Events\OtherDeviceLogout' => [
+            'App\Listeners\LogOtherDeviceLogout',
         ],
 
         'Illuminate\Auth\Events\Lockout' => [
@@ -69,6 +81,12 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\OrderShipped' => [
             'App\Listeners\SendShipmentNotification',
         ],
+
+        #
+        'Laravel\Passport\Events\AccessTokenCreated' => [
+            'App\Listeners\RevokeExistingTokens', // $user = User::find($event->userId);
+            // $user->tokens()->offset(1)->get()->map(function ($token) { $token->revoke(); });
+        ],
     ];
 
     /**
@@ -80,11 +98,18 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        # Manually registering Events
-        Event::listen('event.name', function ($foo, $bar) {
-        });
-        Event::listen('event.*', function($eventName, array $data){
-        });
+        require base_path('routes/events.php'); // register new route -> routes/events.php
 
+        # Manually registering Events
+        Event::listen(GiftPurchased::class, function (GiftPurchased $event) { });
+        Event::listen(function (GiftPurchased $event) { dd($event); });
+        Event::listen('event.name', function ($foo, $bar) { });
+        Event::listen('event.*', function($eventName, array $data){ });
+
+        // Fired on successful logins...
+        $events->listen('auth.login', function ($user, $remember) {
+            \DB::table('sessions')->where('user_id', \Auth::user()->id)
+                ->where('id', '!=', \Session::getId())->delete();
+        });
     }
 }

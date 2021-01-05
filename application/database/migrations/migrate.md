@@ -2,6 +2,7 @@
 
 ## Path to migrate
 > php artisan migrate --path=/database/migrations/file.php
+> php artisan schema:dump --prune
 
 ## Artisan commands
 - migrate:reset = ROLLBACK ALL MIGRATIONS
@@ -9,11 +10,11 @@
 - migrate:fresh = DROP TABLES AND MIGRATE
 
 ## additional
-nullable
-default
-unique
-index
-unsigned
+nullable()
+default(1)
+unique()
+index()
+unsigned()
 
 ## Unique
 > $table->unique(['post_id', 'tag_id']);
@@ -22,6 +23,7 @@ unsigned
 ```php
 $table->foreignId('user_id');
 
+$table->unsignedInteger('user_id')->index();
 $table->unsignedBigInteger('user_id')->index();
 $table->foreign('user_id')->references('id')->on('users');
 
@@ -58,7 +60,7 @@ device - macAddress
 
 json - json
 
-created_at => timestamps , timestampsTz
+created_at => ->timestamps() , ->timestampsTz()
 deleted_at => softDeletes , softDeletesTz
 
 =====CHECK=====

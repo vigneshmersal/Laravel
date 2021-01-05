@@ -42,3 +42,16 @@ password.confirm // confirm their password before they can continue
 auth.basic // automatically prompted for credentials when accessing the route (default column-email)
 auth.basic.once
 ```
+
+## Logout from otherdevices
+https://codezen.io/how-to-manage-logged-in-devices-in-laravel/
+
+```php
+// uncommand app/http/kernal.php
+\Illuminate\Session\Middleware\AuthenticateSession::class,
+
+// Auth/LoginController.php
+protected function authenticated() {
+    \Auth::logoutOtherDevices(request('password'));
+}
+```

@@ -26,6 +26,22 @@ class inputs {
 	}
 }
 
+class textarea {
+	charactersRemainigCount() {
+		var text_max = 160;
+		textRemaining();
+		$('#sms').keyup(function() {
+			textRemaining();
+		});
+		function textRemaining() {
+			var text_length = $('#sms').val().length;
+			var text_remaining = text_max - text_length;
+			if (text_remaining>=0)
+				$('#textarea_feedback').html(text_remaining + ' characters remaining');
+		}
+	}
+}
+
 class selects {
 	constructor() { this.value = 0; }
 
@@ -109,6 +125,14 @@ class checkboxes {
 	check_And_Disable( id , val ) { this.check( id, val ); this.disable( id ); return this; }
 	uncheck_And_Enable( id ) { this.uncheck( id ); this.enable( id ); return this; }
 	uncheck_And_Disable( id ) { this.uncheck( id ); this.disable( id ); return this; }
+
+	checkall(){
+		var select_all = document.getElementById("select_all"); //select all checkbox
+		var checkboxes = document.getElementsByClassName("checkBoxClass"); //checkbox items
+		for (i = 0; i < checkboxes.length; i++) {
+			checkboxes[i].checked = select_all.checked;
+		}
+	}
 }
 
 class radios {
@@ -359,6 +383,8 @@ class forms {
 
 	/** submit */
 	submit(id) { $(id).submit(); }
+
+	confirm() { if (!confirm('Confirm?')) return false; }
 }
 
 class jses {

@@ -66,7 +66,9 @@ collect(['k'=>'v'])->flip(); // ['v'=>'k']
 # split single array to multiple array
 $collection->chunk($number)->toArray() //  [[1, 2, 3, 4], [5, 6, 7]]
 User::chunk(100, function ($users) {
-    foreach ($users as $user) { }
+    foreach ($users as $user) {
+        $q->push($user);
+    }
 });
 $collection->split($number)->toArray() //  [[1, 2, 3, 4], [5, 6, 7]]
 

@@ -1,17 +1,38 @@
 # Command
+https://quantizd.com/how-to-use-laravel-task-scheduler-on-windows-10/
+https://ole.michelsen.dk/blog/schedule-jobs-with-crontab-on-mac-osx/
+
+> php artisan schedule:list
+
+open cron file
+> crontab -e
+> env EDITOR=vim crontab -e
+
+list crons
+> crontab -l
+
+command
+> * * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
+// or
+> * * * * * php /path-to-your-project/artisan schedule:run >> /dev/null 2>&1
+
+local
+> php artisan schedule:run
 
 ## call
 ```php
 Artisan::call('email:send', ['user' => 1, '--queue' => 'default', '--id' => [5], '--force' => true ]);
 Artisan::call('email:send', ['user' => 1, '--queue' => 'default']);
 Artisan::queue('email:send 1 --queue=default'); // queue
+	->onConnection('redis')->onQueue('commands');
 ```
 
 ## Arguments
 ```php
 {user}
+{user=} // required
 {user?} // optional
-{user=foo} // pass value
+{user=foo} // default value
 {user: description} // description
 ```
 
@@ -24,6 +45,87 @@ Artisan::queue('email:send 1 --queue=default'); // queue
 {id*} // array: 1 2
 {--id=*} // --id=1 --id=2
 {--queue= : description}
+```
+
+## schedule
+```php
+->everyMinute(); // 1 min
+->everyTwoMinutes(); // 2 min
+->everyThreeMinutes(); // 3 min
+->everyFourMinutes(); // 4 min
+->everyFiveMinutes(); // 5 min
+->everyTenMinutes(); // 10 min
+->everyFifteenMinutes(); // 15 min
+->everyThirtyMinutes();	// 30 min
+->hourly();	// 1 hr
+->everyTwoHours();	// 2 hr
+->everyThreeHours(); // 3 hr
+->everyFourHours();	// 4 hr
+->everySixHours();	// 6 hr
+->daily();
+->dailyAt('13:00');
+->twiceDaily(1, 13);
+->weekly();
+->weeklyOn(1, '8:00');
+->monthly();
+->monthlyOn(4, '15:00');
+->lastDayOfMonth('15:00');
+->quarterly();
+->yearly();
+->timezone('America/New_York');
+
+// particular
+->weekly()->mondays()->at('13:00');
+
+// days
+->weekdays();
+->weekends();
+->sundays();
+->mondays();
+->tuesdays();
+->wednesdays();
+->thursdays();
+->fridays();
+->saturdays();
+
+// interval
+->days([0, 3]);
+->between('7:00', '22:00');
+->unlessBetween('23:00', '4:00');
+
+// condition
+->environments($env); ->environments(['staging', 'production']);
+->when(Closure);
+->skip(function () {});
+
+// time zone
+->timezone('America/New_York')
+
+// time
+->at('02:00')
+
+// run at same time
+->withoutOverlapping(); // prevent to run if previous job is run
+->withoutOverlapping(10); // default 24hr
+->runInBackground();
+->evenInMaintenanceMode();
+
+// output
+->sendOutputTo($filePath);
+->appendOutputTo($filePath);
+->emailOutputTo('foo@example.com');
+->emailOutputOnFailure('foo@example.com');
+
+// before , after
+->before(function () { }) , ->after(function () { });
+
+// success | fail
+->onSuccess(function () { }) , ->onFailure(function () { });
+
+// ping url
+->pingBefore($url) , ->thenPing($url);
+->pingBeforeIf($condition, $url) , ->thenPingIf($condition, $url);
+->pingOnSuccess($successUrl) , ->pingOnFailure($failureUrl);
 ```
 
 ## Handle

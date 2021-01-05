@@ -8,13 +8,11 @@
 - how to stop debugbar when custom api service mobile/apis/
 
 ## Laravel
-* carbon
 * SearchableTrait
 * WithableTrait
 * Broadcasting & Channel
 * Laravel Echo
 * Pusher
-* Notification
 * Difference Between –Prefer-Dist And –Prefer-Source Options In Composer
 
 ## JS
@@ -34,10 +32,10 @@
 * Passport - know
 * Scout
 * Socialite
-* Telescope
+* Telescope - know
 
 ## Server
-* Filezilla
+* Filezilla - know
 * svn
 * Cpanel
 * gitlab CI/CD
@@ -60,6 +58,8 @@ https://stackcoder.in/posts
 https://bestoflaravel.com/
 https://laravel-news.com/
 https://www.itsolutionstuff.com
+https://codezen.io/category/laravel/
+https://divinglaravel.com/
 
 ### learn by videos
 https://vimeo.com/showcase/laracononline
@@ -67,6 +67,6 @@ https://vimeo.com/showcase/laracononline
 ### Github
 - https://github.com/dcblogdev
 
-### Open source project 
+### Open source project
 - CRM(customer relationship system)
 https://github.com/Bottelet/DaybydayCRM

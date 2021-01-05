@@ -25,6 +25,10 @@ Artisan command,
   _--message[=MESSAGE]_ `The message for the maintenance mode`
   _--retry[=RETRY]_ `The number of seconds after which the request may be retried`
   _--allow[=ALLOW]_ `IP or networks allowed to access the application while in maintenance mode (multiple values allowed`
+  _--redirect[=REDIRECT]_ `redirect to`
+  _--secret[=SECRET]_ `site.com/secretkeyvalue whitelist when calling via secretkey`
+  _--render[=RENDER]_ `view blade file --render=errors::503 , it will helpful when doing composer install on maintenance mode`
+  _--status[=STATUS]_ `status code default:503`
 
 > env `Display the current framework environment` _local or production_
 

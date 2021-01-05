@@ -2,11 +2,12 @@
 [laravel-json-api](https://laravel-json-api.readthedocs.io/en/latest/)
 
 Install
-- composer require laravel/passport
-- php artisan migrate
-- php artisan passport:install // Generate client encryption keys(token)
+> composer require laravel/passport
+> php artisan migrate
+> php artisan passport:install // Generate client encryption keys(token)
 
 Add API trait to Models,
+
 ```php
 use Laravel\Passport\HasApiTokens;
 class User extends Authenticatable {
@@ -15,6 +16,7 @@ class User extends Authenticatable {
 ```
 
 AuthServiceProvider.php
+
 ```php
 use Laravel\Passport\Passport;
 public function boot() {
@@ -23,6 +25,7 @@ public function boot() {
 ```
 
 config/auth.php
+
 ```php
 'api' => [
     'driver' => 'passport',
@@ -32,24 +35,34 @@ config/auth.php
 ```
 
 Login
-```php
-$response = $http->post('http://your-app.com/oauth/token', [
-    'headers' => [
-        'Accept' => 'application/json'
-    ], [
-    'form_params' => [
-        'grant_type' => 'password',
-        'client_id' => 'client-id', // from oauth_clients table (or) passport:install
-        'client_secret' => 'client-secret', // from oauth_clients table (or) passport:install
-        'username' => 'taylor@laravel.com', // email
-        'password' => 'password',
-        'scope' => '*',
-    ],
-]);
-```
 
-Get
 ```php
+$http = new \GuzzleHttp\Client;
+try{
+    $response = $http->post('http://your-app.com/oauth/token', [
+        'headers' => [
+            'Accept' => 'application/json'
+        ], [
+            'form_params' => [
+                'grant_type' => 'password',
+                'client_id' => config('services.passport.client_id'), // from oauth_clients table (or) passport:install
+                'client_secret' => config('services.passport.client_secret'), // from oauth_clients table (or) passport:install
+                'username' => $request->email,
+                'password' => $request->password,
+                'scope' => '*',
+            ],
+        ]
+    ]);
+    return $response->getBody();
+} catch (\GuzzleHttp\Exception\BadResponseException $e) {
+    if ($e->getCode() === 400)
+        return response()->json('Invalid Request. Please enter a username or a password.', $e->getCode());
+    else if ($e->getCode() === 401)
+        return response()->json('Your credentials are incorrect. Please try again', $e->getCode());
+    return response()->json('Something went wrong on the server.', $e->getCode());
+}
+
+// get
 $response = $client->request('GET', '/api/user', [
     'headers' => [
         'Accept' => 'application/json',
@@ -60,6 +73,7 @@ $response = $client->request('GET', '/api/user', [
 ```
 
 routes/web.php
+
 ```php
 Route::post('login', 'API\UserController@login');
 Route::post('register', 'API\UserController@register');
@@ -70,6 +84,7 @@ Route::group(['middleware' => 'auth:api'], function(){
 ```
 
 API login/register
+
 ```php
 <?php
 namespace App\Http\Controllers\API;
@@ -168,7 +183,7 @@ public function test(Request $request)
 
     $auth_header = explode(' ', $access_token); // Bearer {token}
     $token = $auth_header[1]; // {token}
-
+    // (or) $token = $request->bearerToken();
     // break up the token into its three parts
     $token_parts = explode('.', $token);
 

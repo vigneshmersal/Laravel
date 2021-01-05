@@ -1,26 +1,36 @@
 # composer
-## Install
+## Laravel Installer
 > composer global require laravel/installer
+
+## Check
+// show all installed pacgages.
+// -i = installed, -t = tree
+> composer show
+> composer show -i
+> composer global show
+> composer global show -i
+
+// show specific package
+> composer show nesbot/carbon
 
 ## Update laravel installer 4.X
 1. `composer global require "laravel/installer:^4.0"`
+    - (or) `composer global require "laravel/homestead=~7.0" --with-all-dependencies`
     - verify: `laravel --version`
 2. uninstall and reinstall
     - `laravel global remove laravel/installer`
     - `laravel global require laravel/installer`
-3. update global `composer.json`
+3. `composer.json`
     - { "require": { "laravel/installer": "^4.0" } }
     - `composer update`
+4. upgrade new version
+    - `composer global update`
 
 ## composer Commands
 - `composer outdated` - It will show all packages compared to new version.
     + `composer outdated --direct`
 
 - `composer update`
-
-## Frontend
-Laravel 6 not supported `2.x-dev` and above.
-> composer require laravel/ui
 
 > composer require "laravelcollective/html":"^5.8.0"
 
@@ -36,6 +46,12 @@ Linux
 - To add globally by: `mv composer.phar /usr/local/bin/composer`
 - If added globally check by: `composer`
 
+## Update composer Windows/Linux
+> composer self-update --snapshot
+go back to any version,
+> composer self-update --2
+> composer self-update --1
+
 ---
 
 ## Create project
@@ -47,8 +63,6 @@ create a new application with all of the authentication scaffolding compiled and
 ## Done everything for us - like composer|migration
 > composer require laracasts/generators --dev
 > composer require laracasts/testdummy --dev
-
-> composer require livewire/livewire
 
 ## Laravel browser console [Debugbar](https://github.com/barryvdh/laravel-debugbar)
 > composer require barryvdh/laravel-debugbar --dev

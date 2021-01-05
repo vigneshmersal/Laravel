@@ -105,6 +105,8 @@ ___
 - *mkdir -p dir/subdir* - `--parents` create parent dir and subdir also like a tree structure
 - *mkdir -p dir/{sub1,sub2}* - create dir with many subdir
 
+> `> file.log` - make file empty (remove file contens)
+
 > `rmdir [options] [dir]` - delete dir
 - *rmdir a/b/c* - remove only 'c' dir
 - *rmdir -p a/b/c* - remove dir structure (only when empty)
@@ -270,6 +272,7 @@ ___
 > scp -r -i D:/Downloads/dev/guidely/live/guidely.pem uploads.zip root@128.199.23.101:/var/www/console.guidely.in/htdocs/public/
 
 > `chown` - change owner of the folder
+- chown root:root <folder>
 - *sudo chown -R <owner>:<group> <folder>* - (-R - recursive to all sub folders)
 - *sudo chown <owner> <folder>* - changing ownership of the folder
 - *sudo chown :<group> <folder>* - changing group of the folder

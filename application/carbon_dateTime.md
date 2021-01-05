@@ -1,6 +1,6 @@
 # [Carbon](https://packagist.org/packages/nesbot/carbon)
 
-Document:
+## Document:
 https://carbon.nesbot.com/docs/
 
 `use Carbon\Carbon;`
@@ -8,9 +8,9 @@ https://carbon.nesbot.com/docs/
 ## select
 ```php
 selectRaw("
-    DATE_FORMAT(created_at, '%b') as shortmonthname, 
-    DATE_FORMAT(created_at, '%M') as monthname, 
-    EXTRACT(MONTH FROM created_at) AS month, 
+    DATE_FORMAT(created_at, '%b') as shortmonthname,
+    DATE_FORMAT(created_at, '%M') as monthname,
+    EXTRACT(MONTH FROM created_at) AS month,
 ")
 ```
 
@@ -26,7 +26,14 @@ Carbon::yesterday()
 Carbon::tomorrow() | Carbon::tomorrow('Europe/London')
 
 # Constants (0 TO 6)
-Carbon::SUNDAY, Carbon::MONDAY, Carbon::TUESDAY, Carbon::WEDNESDAY, Carbon::THURSDAY, Carbon::FRIDAY, Carbon::SATURDAY
+Carbon::SUNDAY,
+Carbon::MONDAY,
+Carbon::TUESDAY,
+Carbon::WEDNESDAY,
+Carbon::THURSDAY,
+Carbon::FRIDAY,
+Carbon::SATURDAY
+
 Carbon::SECONDS_PER_MINUTE // 60
 Carbon::MINUTES_PER_HOUR // 60
 Carbon::HOURS_PER_DAY // 24
@@ -61,7 +68,7 @@ $dt->addHour() | $dt->addHours(24)
 $dt->addDay() | $dt->addDays(29)
 $dt->addWeekday() | $dt->addWeekdays(2)
 $dt->addWeek() | $dt->addWeeks(2)
-$dt->addMonth(1) | $dt->addMonths(1)
+$dt->addMonth(1) | $dt->subMonth(1) | $dt->addMonths(1)
 $dt->addYear() | $dt->addYears(5)
 $dt->addQuarter() | $dt->addQuarters(2)
 $dt->addCentury() | $dt->addCenturies(5) // 2512-01-31
@@ -210,6 +217,10 @@ $dt->isSameDay($dt2); // Same day of same month of same year
 $dt->isSameMonth($dt2)
 $dt->isSameYear($dt2)
 
+
+//IN Model
+$this->created_at->gt(now())
+
 $dt1->eq($dt2) | $dt1->equalTo($dt2) | $dt1 == $dt2
 $dt1->ne($dt2) | $dt1->notEqualTo($dt2) | $dt1 != $dt2
 $dt1->lt($dt2) | $dt1->lessThan($dt2) | $dt1->isBefore($dt2)
@@ -282,4 +293,25 @@ ss - 00 to 59
 # Meridiem
 a - am/pm
 A - AM/PM
+```
+
+## Time Travel
+
+```php
+Carbon::setTestNow(Carbon::now()->addDay());
+
+# Forward
+$this->travel(8)->years();
+$this->travel(8)->weeks();
+$this->travel(8)->days();
+$this->travel(8)->minutes();
+$this->travel(8)->hours();
+$this->travel(8)->seconds();
+$this->travel(8)->milliseconds();
+
+# Backward
+$this->travel(-1)->days();
+
+# Reset to actual current time
+$this->travelBack();
 ```

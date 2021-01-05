@@ -38,3 +38,6 @@ https://github.com/jenssegers/agent
 
 # Markdown
 https://packagist.org/packages/league/commonmark
+
+# Laravel N+1 Query Detector
+https://github.com/beyondcode/laravel-query-detector

@@ -129,4 +129,16 @@ class RouteServiceProvider extends ServiceProvider
             ->namespace($this->patientNamespace)
             ->group(base_path('routes/backEnd/patient.php'));
     }
+
+    public function configureRateLimiting()
+    {
+        // ->middleware('throttle:api');
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(3);
+            // or
+            return $request->user()->id == 1
+                ? Limit::none() // unlimited
+                : Limit::perMinute(3);
+        });
+    }
 }

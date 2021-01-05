@@ -25,11 +25,13 @@ Using Predis paired with phpiredis:
 
 ## Laravel Config
 .env
+
 ```php
 SESSION_DRIVER=redis
 ```
 
 config/database.php
+
 ```php
 'client' => env('REDIS_CLIENT', 'predis'), // phpredis
 ```
@@ -48,14 +50,15 @@ default port - 6379
 install redis.msi file
 
 ## Redis Cli
+
 ```php
 # start server
 redis-server
 # open redis cli
 redis-cli
 
-# check 
-ping 
+# check
+ping
 app()->make('redis')
 
 # commands
@@ -83,6 +86,7 @@ help [command:incr]
 https://redis.io/commands
 
 ### Form
+
 ```php
 # Custom functions
 function remember($key, $minutes, Closure $callback) {
@@ -106,7 +110,7 @@ class CacheableArticle implements Articles {
     public function __construct($articles) {
         $this->articles = $articles;
     }
-    public function all() 
+    public function all()
     {
         return Cache::remember('articles.all', 60 * 60, function() {
             return $this->articles->all();
@@ -134,6 +138,7 @@ Redis::setex('posts.all', 60, $posts);
 ```
 
 ### Cache pagination and query api
+
 ```php
 # issue
 // yourdomain.com/products?page=2&sort_by=price
@@ -156,6 +161,7 @@ return Cache::remember($fullUrl, $minutes, function () use ($data) {
 ```
 
 ### Get
+
 ```php
 $redis = Redis::connection();
 $redis->get('key');
@@ -166,12 +172,14 @@ Redis::dbSize(); // Return the number of keys in selected database.
 ```
 
 ### Set
+
 ```php
 Redis::set('posts.all', $posts);
 Redis::setex('posts.all', 60 * 60 * 24, $posts);
 ```
 
 ### Delete
+
 ```php
 Redis::del('key');
 Redis::executeRaw(["KEYS", "{$key}*"]); // delete matching string
@@ -180,26 +188,30 @@ if (Redis::zScore("articleViews", $id)) {}
 ```
 
 ### Check
+
 ```php
 Redis::exists('articles.all')
 ```
 
 ### Increment/Decrement
+
 ```php
 $visits = Redis::incr("article:$id:visits");
 $visits = Redis::incrBy("article:$id:visits", 5);
 ```
 
 ### L - list
+
 ```php
 LPUSH
 LPOP
 LINDEX
-LINSERT 
+LINSERT
 LRANGE
 ```
 
 ### z - sort
+
 ```php
 Redis::zadd('trending_article', 50, 'test'); // just add item
 Redis::zadd('recent_article', time(), 'test'); // just add item
@@ -209,7 +221,7 @@ Redis::zcard('trending_article'); // count no of items
 Redis::zincrBy('trending_article', 1, $article); // create key if not exist and increment
 
 # z-sort, remove range of items
-Redis::zremrangebyrank('trending_article'); 
+Redis::zremrangebyrank('trending_article');
 
 App\Article::hydrate(array_map('json_decode', $trendings));
 // fetching same order
@@ -217,6 +229,7 @@ collect($ids)->map(function($id) { return App\Article::find($id); });
 ```
 
 ### h - hash, m - multiple
+
 ```php
 $user1Stats = [ 'a' => 10, 'b' => 20, 'c' => 30 ];
 
@@ -231,14 +244,15 @@ Redis::hincrby('user.1.stats', 'favorites', 1)
 
 ## Use redis Cache Drive in Laravel:
 .env
+
 ```php
 CACHE_DRIVER=redis
 ```
 
 ```php
-return Cache::remember('posts.all', 60 * 60 * 24, function () { 
-    return Post::all(); 
-}); 
+return Cache::remember('posts.all', 60 * 60 * 24, function () {
+    return Post::all();
+});
 
 get laravel:key
 ```

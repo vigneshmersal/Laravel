@@ -11,7 +11,8 @@
 @endsection
 
 if (view()->exists('custom.page')) { }
-return view()->first(['custom.dashboard', 'dashboard'], $data);
+# if page1 blade not exist, dashboard will be loaded
+return view()->first(['page1', 'dashboard'], $data);
 ```
 
 ### Extend section
@@ -104,7 +105,7 @@ Blade::include('includes.input', 'input'); // @input(['type' => 'email'])
 
 ## script
 
-```javascript
+```php
 // array
 var app = <?php echo json_encode($array); ?>;
 var app = @json($array);
@@ -154,7 +155,7 @@ if ($errors->has('email')) { }
 @if ($errors->any())
 @error('title')
 ```
-## Condition & looping
+## Condition
 
 ```php
 true - collect()
@@ -198,75 +199,6 @@ false - collect()
 
 @guest('admin')
 @endguest
-
-# while
-@while (true)
-@endwhile
-
-# switch
-@switch($i)
-	@case(1)
-		@break
-	@default
-@endswitch
-
-# for
-@for ($i = 0; $i < 10; $i++)
-@endfor
-
-# forelse
-@forelse ($users as $user)
-@empty
-@endforelse
-
-# foreach
-@foreach ($users as $each)
-	{{ $loop->index + $users->firstItem() }} // row id -> index(0) + modal
-
-	@if($loop->first)
-	@endif
-
-	@continue
-	@continue($whenCondition) // @continue($user->type == 1)
-
-	@break
-	@break($whenCondition)
-
-	@if ($loop->last)
-	@endif
-
-	@foreach ($user->posts as $post)
-        @if ($loop->parent->first) // nested loop
-        @endif
-    @endforeach
-@endforeach
-
-# css - split each row has 3 columns
-@foreach ($collection->chunk(3) as $chunk)
-    <div class="row">
-        @foreach ($chunk as $product)
-            <div class="col-xs-4">{{ $product->name }}</div>
-        @endforeach
-    </div>
-@endforeach
-```
-
-## Looping Variable
-```php
-$loop->count // total iterations
-
-$loop->index // (starts at 0)
-$loop->iteration // (starts at 1)
-$loop->first // when first iteration start
-
-$loop->remaining // get remaing iteration count
-$loop->even	// when even iteration occures
-$loop->odd	// when odd iteration occures
-
-$loop->last	// when the last iteration occur
-
-$loop->depth // The nesting level of the current loop iteration
-$loop->parent
 ```
 
 ## AppServiceProvider

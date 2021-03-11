@@ -1,0 +1,10 @@
+<snippet>
+	<content><![CDATA[
+redirect()->route('${1:path}')->with('success', 'Profile updated successfully');
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>redirect</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.php</scope>
+	<description>Snippet:redirect()->route()</description>
+</snippet>

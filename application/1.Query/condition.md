@@ -84,8 +84,8 @@ $q->orWhere(['b' => 2, 'c' => 3]);
 ->when(true, function ($q) { return $q->where('key', 'val'); });
 
 # if/else
-->when(condition, 
-    function($c){ return $c->push(4); }, 
+->when(condition,
+    function($c){ return $c->push(4); },
     function ($c) { return $c->push(3); });
 ```
 
@@ -94,4 +94,17 @@ $q->orWhere(['b' => 2, 'c' => 3]);
 ->unless($status, $callback, $default);
 ->unlessEmpty($status, $callback, $default);
 ->unlessNotEmpty($status, $callback, $default);
+```
+
+## doesntHave
+```php
+$posts = App\Post::doesntHave('comments')->get();
+
+$posts = App\Post::whereDoesntHave('comments', function (Builder $query) {
+    $query->where('content', 'foo');
+})->get();
+
+Product::doesntHave('categories')->ordoesntHave('countries')->get();
+Product::whereDoesntHave('categories', function($q){ })
+	->orWhereDoesntHave('countries', function($q){ })->get();
 ```

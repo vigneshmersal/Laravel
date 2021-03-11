@@ -3,6 +3,7 @@
 * `CLI` - Command Line Interface
 * `ctrl+alt+t` - opening terminal in linux machine
 * `ctrl+shift+t` - open new tab
+* nano ~/.bashrc
 
 ## combine two commands
 > ls ; pwd - (`;`) - if the 1st CMD fails , 2nd CMD will run
@@ -219,6 +220,8 @@ Gut Merge
 - *ps -C [programName]* - list of all the programs related to the program
 - *ps aux | grep php* - search php processes
 
+> `grep [word] [file]` - search word (case sensitive by default)
+
 > `top` - system information (refresh every 3sec)
 - *i* - show only running processes
 - *k* - Ask PID for close the process
@@ -305,3 +308,10 @@ example:
 		- Bcast - broadcast ip address
 		- Rx packages
 		- Tx packages
+
+## Compress Zip
+> `tar -cvf test.tar test` - compress folder and convert to tar file
+	here cvf (create verbose file)
+- *tar -xvf test.tar* - uncompress or extract tar file to folder
+- *tar -czvf test.tar.gz test* - compress and create tar.gz file
+- *tar -xzvf test.tar.gz test* - uncompress tar.gz file

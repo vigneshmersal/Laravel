@@ -38,6 +38,9 @@ ALTER TABLE `redirects`
 COMMIT;
 ```
 
+## length
+> CHAR_LENGTH('column')
+
 
 ## import to windows
 C:/xampp/mysql/bin > mysql.exe -u root -p `database_name` < `path/file.sql`

@@ -1,0 +1,15 @@
+<snippet>
+	<content><![CDATA[
+/*
+|--------------------------------------------------------------------------
+| Scope extract query
+|--------------------------------------------------------------------------
+ */
+public function scopeAdmin($query) { return \$query->where("role", "admin"); }
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>scopeQuery</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.php</scope>
+	<descriptin>Snippet:model scope query</descriptin>
+</snippet>

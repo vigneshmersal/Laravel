@@ -1,0 +1,10 @@
+<snippet>
+	<content><![CDATA[
+public function ${1:mockQuestions}() { return \$this->hasMany(${2:MockQuestion}::class); }
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>hasMany</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.php</scope>
+	<description>Snippet:hasMany()</description>
+</snippet>

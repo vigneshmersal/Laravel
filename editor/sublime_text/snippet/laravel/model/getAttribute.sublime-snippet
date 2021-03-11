@@ -1,0 +1,11 @@
+<snippet>
+	<content><![CDATA[
+public function getActiveAttribute() { return \$this->status == 1 ? 'Active' : 'InActive'; }
+public function getStatusSelectAttribute() { return self::STATUS_SELECT[\$this->status] ?? ''; }
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>getAttribute</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.php</scope>
+	<description>Snippet:Eloquent getAttribute</description>
+</snippet>

@@ -1,6 +1,9 @@
 # Tailwind
 https://github.com/tailwindcomponents/dashboard
 
+## Free Templates
+https://blocks.wickedtemplates.com/right-headers
+
 ## Config
 tailwind.config.js
 > npx tailwindcss init

@@ -1,0 +1,23 @@
+<snippet>
+	<content><![CDATA[
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\ModelTrait;
+use Helper;
+use Carbon\Carbon;
+
+use SoftDeletes, ModelTrait;
+
+public \$table = '';
+
+protected \$dates = [
+	'created_at',
+	'updated_at',
+	'deleted_at',
+];
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>modeldefault</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.php</scope>
+	<description>Snippet:Model Default</description>
+</snippet>

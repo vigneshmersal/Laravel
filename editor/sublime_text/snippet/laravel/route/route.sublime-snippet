@@ -1,0 +1,14 @@
+<snippet>
+	<content><![CDATA[
+Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
+
+	Route::get('dashboard', 'Doctor\DoctorController@dashboard')->name('dashboard');
+
+});
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>route</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.php</scope>
+	<description>Snippet:route code</description>
+</snippet>

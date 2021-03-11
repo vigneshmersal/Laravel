@@ -12,6 +12,7 @@ https://packagist.org/packages/backpack/crud
 https://quickadminpanel.com
 https://packagist.org/packages/appzcoder/crud-generator
 https://github.com/CrestApps/laravel-code-generator
+https://github.com/maddhatter/laravel-view-generator/blob/master/src/MakeViewCommand.php
 
 # own code
 https://github.com/victoryoalli/laravel-code-generator
@@ -41,3 +42,6 @@ https://packagist.org/packages/league/commonmark
 
 # Laravel N+1 Query Detector
 https://github.com/beyondcode/laravel-query-detector
+
+# Image resize
+https://packagist.org/packages/intervention/image

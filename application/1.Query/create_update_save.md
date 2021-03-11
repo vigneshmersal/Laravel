@@ -1,19 +1,35 @@
 ## Create Update
 
 ```php
+$user = new User;
+$user->name = $name;
+$user->save();
+
 Model::fill(['column'=>'val'])->save();
+
 Model::create(['column' => 'val']);
+
+// disable timestamp
 $model->save(['timestamps' => false]);
+```
+
+## Update
+```php
 $model->update(); // It will return affected rows
 
+$model->update(['column' => 'val']);
+```
+
+## updateOrCreate
+```php
 // chk if k/v exist - update, else create
-Model::updateOrCreate(['k'=>'v'],['k1'=>'v1']); 
+Model::updateOrCreate(['k'=>'v'],['k1'=>'v1']);
 ```
 
 ## Insert
-```
+```php
 // manually add 'created_at,updated_at' => now()->toDateTimeString()
-Model::insert([]); 
+Model::insert([]);
 Model::insertGetId($array);
 ```
 

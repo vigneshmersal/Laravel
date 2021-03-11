@@ -229,4 +229,12 @@ Blade::if('env', function ($environment) {
 @endenv
 ```
 
+## permission
+```php
+@can([])
+@canany([])
+@if(Gate::check('permission1') || Gate::check('permission2'))
+@if(auth()->user()->hasAnyPermission(['permission1','permission2']))
+```
+
 

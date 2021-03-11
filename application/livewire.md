@@ -68,8 +68,8 @@ Route group
 > wire:[event] = "fun({{ $todo->id }}, '{{ $todo->name }}')"
 
 > wire:model="var"  - default 150ms
->> `wire:model.debounce.500ms="var"` - change request time
->> `wire:model.lazy="var"` - request will be send only when u click away
+>> `wire:model.debounce.500ms="name"` - change livewire ajax request time
+>> `wire:model.lazy="var"` - request will be send only when u click away(loss focus)
 
 > wire:click
 

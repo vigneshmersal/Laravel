@@ -81,6 +81,13 @@ class event {
 	}
 
 	ver allIframes = document.getElementsByTagName("iframe");
+
+	// $(document).on('keypress',function(e) {
+		console.log(e.which);
+		if(e.which == 13) // enter
+		if(e.which == 110) // n
+		if(e.which == 112) // p
+	// });
 }
 
 class iframe {
@@ -385,6 +392,10 @@ class forms {
 	submit(id) { $(id).submit(); }
 
 	confirm() { if (!confirm('Confirm?')) return false; }
+	prompt() {
+		var person = prompt("Please enter your name", "Harry Potter");
+  		if (person != null) {}
+  	}
 }
 
 class jses {

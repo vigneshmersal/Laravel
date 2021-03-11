@@ -41,7 +41,11 @@ Route::view('/', 'welcome', ['name' => 'Taylor']);
 Route::any('/', 'Controller@index');
 Route::match(['get', 'post'], '/', 'Controller@index');
 Route::redirect('/here', '/there');
+
+/* ---------------locale--------------- */
 Route::get('/{locale}/posts', '')->middleware('locale'); // pass default value
+Route::group('/', function(){ return redirect()->route('home', app()->getLocale()); })
+Route::group(['prefix'=>'{locale}', 'where'=>['locale'=>'[a-zA-Z]{2}']], function(){})
 
 /*
 |--------------------------------------------------------------------------

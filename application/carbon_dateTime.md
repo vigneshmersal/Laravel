@@ -5,6 +5,12 @@ https://carbon.nesbot.com/docs/
 
 `use Carbon\Carbon;`
 
+## strtotime
+```php
+strtotime("2021-01-08 14:32:31"); // 1610116351
+Carbon::parse(1610116351) // 2021-01-08 14:32:31
+```
+
 ## select
 ```php
 selectRaw("

@@ -22,3 +22,41 @@
 - show page (borderless)
 - create/edit page - (row split), (select2 remove), (remove user)
 - pamfs
+
+## Form Field Types:
+text
+textarea
+password
+email
+number
+date
+datetime
+time
+radio
+select
+file
+
+## Migration Field Types:
+string
+char
+varchar
+date
+datetime
+time
+timestamp
+text
+mediumtext
+longtext
+json
+jsonb
+binary
+integer
+bigint
+mediumint
+tinyint
+smallint
+boolean
+decimal
+double
+float
+enum

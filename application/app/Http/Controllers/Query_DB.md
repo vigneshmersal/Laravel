@@ -44,8 +44,8 @@ collect(['a'=>1])->mergeRecursive(['a'=>2,'b'=>3]); // ['a'=>[1,2],'b'=>3]
 # set val whereever by position
 collect([1,2,3,4])->splice($pos=2,$size=1,$newItems=[5,6]); // [1,2,5,6,4]
 
-# copy to new collection
-$collectionB = $collectionA->collect(); // copy - return new instance
+# copy to new collect
+$collectB = $collectA->collect(); // copy - return new instance
 ```
 
 ## array
@@ -54,7 +54,7 @@ $users->each->delete();
 $users->each->markAsVip();
 
 # foreach
-collection([1,2])->each(function ($item, $key) { return false; }); // stop iteration by return false;
+collect([1,2])->each(function ($item, $key) { return false; }); // stop iteration by return false;
 collect([['John',35],['Jane',33]])->eachSpread(function ($name, $age) { }); // nested foreach loop
 
 # split array by condition
@@ -64,22 +64,22 @@ list($less,$more)=collect([1,2,3])->partition(function($i){ return $i<2; }); // 
 collect(['k'=>'v'])->flip(); // ['v'=>'k']
 
 # split single array to multiple array
-$collection->chunk($number)->toArray() //  [[1, 2, 3, 4], [5, 6, 7]]
+$collect->chunk($number)->toArray() //  [[1, 2, 3, 4], [5, 6, 7]]
 User::chunk(100, function ($users) {
     foreach ($users as $user) {
         $q->push($user);
     }
 });
-$collection->split($number)->toArray() //  [[1, 2, 3, 4], [5, 6, 7]]
+$collect->split($number)->toArray() //  [[1, 2, 3, 4], [5, 6, 7]]
 
 # join multiple array to single array
-$collapsed = $collection->collapse(); // chunk to flat [1,2,3,4,5,6,7]
+$collapsed = $collect->collapse(); // chunk to flat [1,2,3,4,5,6,7]
 
 # counts the occurrences of each values
-$collection->countBy(); // [ val1 => 2, val2 => 3 ]
+$collect->countBy(); // [ val1 => 2, val2 => 3 ]
 
 # countBy - matching format on each values
-$collection->countBy(function ($each) { return substr(strrchr($each, "@"), 1); }); // ['gmail.com' => 2, 'yahoo.com' => 1]
+$collect->countBy(function ($each) { return substr(strrchr($each, "@"), 1); }); // ['gmail.com' => 2, 'yahoo.com' => 1]
 
 # return the differences
 collect([1, 2, 3])->diff([2]); // [1, 3]
@@ -90,15 +90,15 @@ collect(['color' => 'orange'])->diffAssoc(['color' => 'yellow']); // ['color'=>'
 collect([1, 2, 3])->intersect([2]); // [2]
 collect(['one' => 10])->intersectByKeys(['one'=>2]); // ['one'=>10]
 
-# filter collection
+# filter collect
 collect([ 1,null,false,'',0,[] ])->filter(); // [1]
 collect([1,2])->filter(function ($v, $k) { return $v > 1; }); // [2]
 collect([1,2])->reject(function($v, $k){ return $v>1; }); // [1]
 
 # modify each values
 collect([['k'=>'v']])->flatMap(function ($eachValue) { return strtoupper($eachValue); }); // ['k'=>V]
-collect([1,2])->transform(function($item, $key){ return $item*2; }); // [2,4] - modifies the collection
-collect([1,2])->map(function($item, $key){ return $item*2; }); // [2,4] - returns a new instance, does not modify the original collection
+collect([1,2])->transform(function($item, $key){ return $item*2; }); // [2,4] - modifies the collect
+collect([1,2])->map(function($item, $key){ return $item*2; }); // [2,4] - returns a new instance, does not modify the original collect
 // After Eloquent query you can modify rows
 $users = User::where('role_id', 1)->get()->map(function (User $user) {
     $user->some_column = some_function($user);
@@ -109,7 +109,7 @@ collect(['c1'=>1,'c2'=>2],['c1'=>1,'c2'=>3])->mapToGroups(function ($item, $key)
 collect(['c1'=>1,'c2'=>2],['c1'=>1,'c2'=>3])->mapWithKeys(function ($item, $key) { return [$item['c1']=>$item['c2']]; }); // [ 1=>3 ] - convert values to key=>val pair (but val will be replaced if the key already exis)
 
 # reduce
-collect([1,2,3])->pipe(function($collection) { return $collection->sum(); }); // 6
+collect([1,2,3])->pipe(function($collect) { return $collect->sum(); }); // 6
 collect([1,2,3])->reduce(function($carry, $item){ return $carry + $item; }); // 6
 collect([1,2,3])->reduce(function($carry, $item){ return $carry + $item; }, $initial=4); // 10
 
@@ -177,7 +177,7 @@ User::withCount('posts')->withCount([
 ->toSql();
 ->toJson(); // '{"name":"Desk", "price":200}'
 ->toArray(); // [['name' => 'Desk', 'price' => 200]]
-->newCollection();
+->newcollect();
 
 # convert array to string
 collect([1,2])->implode(','); // '1,2'
@@ -213,25 +213,25 @@ collect(['a','b','c','d','e','f'])->nth($nth=2,$start=1); // ['b','d','f']
 collect([1, 2])->crossJoin(['a', 'b']); // [ [1, 'a'], [1, 'b'], [2, 'a'], [2, 'b'] ]
 ```
 
-## Collection
+## collect
 ```php
 # create
-$collection = collect([1, 2, 3]);
+$collect = collect([1, 2, 3]);
 
 # get (city=>no_of_times)
 array_count_values($products->pluck('city')->toArray()); // [1=>5,2=>7]
 
-# pass collection as foreach and return new array
+# pass collect as foreach and return new array
 return collect(['a'=>1])->map(function ($v, $k) { return ['id' => $k]; }); // ['a'=>['id'=>'a']]
 return collect(['a'=>1])->map(function ($v, $k) { return ['id' => $k]; })->values(); // [['id'=>'a']]
 
-# extending macros // Call: $upper = $collection->toUpper();
-Collection::macro('toUpper', function () {
+# extending macros // Call: $upper = $collect->toUpper();
+collect::macro('toUpper', function () {
     return $this->map(function ($value) { return Str::upper($value); });
 });
 
-# run no of times and create a new collection
-Collection::times(5, function($n) { return $n*9; }); // [9,18,27,36,45]
+# run no of times and create a new collect
+collect::times(5, function($n) { return $n*9; }); // [9,18,27,36,45]
 ```
 
 ## class

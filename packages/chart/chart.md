@@ -52,10 +52,15 @@ $chart->labels($users->keys()) // ->labels(['Success', 'Fail'])
     ->loader(true)
     ->loaderColor("#22292F")
     ->title($title, $font_size = 14, $color = '#666', $bold = true, $font_family = "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif")
+    ->color("rgb(255, 99, 132)")
+    ->backgroundcolor("rgb(255, 99, 132)")
+    ->fill(false)
+    ->linetension(0.1)
+    ->dashed([5])
     ->options([
     	'color' => '#ff0000',
     	'backgroundColor' => '',
-    	'backgroundColor' => [ '#ff6384', '#36a2eb' ],
+    	'backgroundColor' => [ '#ff6384', '#36a2eb' ], // rgb(255, 99, 132)
         'fill' => 'true',
         'borderColor' => '#51C1C0',
         'borderColor' => [],

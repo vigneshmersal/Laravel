@@ -1,0 +1,19 @@
+<snippet>
+	<content><![CDATA[
+protected \$fillable = [
+	'status', 
+	'user_id',
+	'created_by', 
+	'updated_by', 
+	'deleted_by',
+	'created_at',
+	'updated_at',
+	'deleted_at',
+];
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>fillable</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.php</scope>
+	<description>Snippet:Modal fillable code</description>
+</snippet>

@@ -164,6 +164,7 @@ $var = [
 	'date',
 	'date_equals:date',
 	'before:date',
+	'before:-10 years',
 	'before_or_equal:date',
 	'after:tomorrow',
 	'after_or_equal:date',
@@ -174,7 +175,7 @@ $var = [
 	'dimensions:min_width=100,max_width:200,min_height=200,max_height:400,width:500,height:500,ratio:3/2,ratio:1.5',
 	Rule::dimensions()->minWidth(100)->maxWidth(200)->minHeight(300)->maxHeight(500)->width(500)->height(500)->ratio(3 / 2)->ratio(1.5),
 	'mimetypes:video/avi,video/mpeg,video/quicktime',
-	'mimes:jpeg,bmp,png',
+	'mimes:jpeg,bmp,png,pdf',
 	'size:512',
 
 	# Regular expression

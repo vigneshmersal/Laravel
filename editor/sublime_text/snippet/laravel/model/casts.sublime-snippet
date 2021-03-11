@@ -1,0 +1,12 @@
+<snippet>
+	<content><![CDATA[
+protected \$casts = [ 
+	'${1:from}' => '${2:datetime}'
+];
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>casts</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.php</scope>
+	<description>Snippet:Modal casts</description>
+</snippet>

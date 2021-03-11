@@ -52,7 +52,7 @@ $('#form').submit(function(e) {
 
     {!! Form::token() !!}
 
-    {!! Form::label($for="email", $text="EMail", []) !!}
+    {!! Form::label($for="email", $text="EMail", ['class'=>'required']) !!}
 
     {!! Form::text($name, $value, []) !!}
     {!! Form::text('name', old('name', $user->name ?? null), [
@@ -105,7 +105,15 @@ $('#form').submit(function(e) {
         <br><img class="img-fluid" width="200" height="200" src="{{ asset('img/'.$user->image) }}" alt="User profile">
     @endif
 
-    {!! Form::number($name, $value, []) !!}
+    {{ Form::number($name, $value, [
+        'id'=>'nik',
+        'min'=>'1',
+        'max'=>'999999',
+        'class'=>'form-control @error('nik') is-invalid @enderror',
+        'class' => 'form-control' . ($errors->has('nik') ? ' is-invalid' : null),
+        'placeholder'=>'E.g: 1234',
+        'required'
+    ]) }}
 
     {!! Form::date($name, \Illuminate\Support\Carbon::now(), []) !!}
     {!! Form::date('dob', old('dob', $user->dob ?? null), [

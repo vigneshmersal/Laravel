@@ -1,6 +1,7 @@
 # [Datatable](https://yajrabox.com/docs/laravel-datatables/master/installation)
 
 - https://datatables.yajrabox.com/fluent/custom-filter
+- https://datatables.yajrabox.com/starter
 
 ## Installation
 [https://github.com/yajra/laravel-datatables](https://github.com/yajra/laravel-datatables)

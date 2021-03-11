@@ -1,0 +1,19 @@
+<snippet>
+	<content><![CDATA[
+Route::resource('user', 'User\UserController', [
+	'only' => ['index', 'create', 'store', 'show'],
+	'except' => ['edit', 'update',  'destroy'],
+	'names' => [
+        	'index' => 'faq',
+        	'store' => 'faq.new',
+        	// etc...
+    	],
+	'as' => 'prefix'
+]);
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>resource</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.php</scope>
+	<description>Snippet:Route resource</description>
+</snippet>

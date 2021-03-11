@@ -14,7 +14,7 @@ list crons
 command
 > * * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
 // or
-> * * * * * php /path-to-your-project/artisan schedule:run >> /dev/null 2>&1
+> * * * * * php /var/www/console.guidely.in/htdocs/artisan schedule:run >> /dev/null 2>&1
 
 local
 > php artisan schedule:run
@@ -90,6 +90,8 @@ Artisan::queue('email:send 1 --queue=default'); // queue
 
 // interval
 ->days([0, 3]);
+->days([1,2,3,4,5,6])->at('8:00');
+->days(range(1,6))->at('8:00');
 ->between('7:00', '22:00');
 ->unlessBetween('23:00', '4:00');
 
@@ -162,7 +164,7 @@ $name = $this->choice('What is your name?', ['Taylor', 'Dayle'], $defaultIndex =
 $name = $this->choice($question,[$choices],$default,$maxAttempts = null,$allowMultipleSelections = false);
 ```
 
-## Progress Bars
+## Console Progress Bars
 ```php
 $users = App\User::all();
 $bar = $this->output->createProgressBar(count($users));

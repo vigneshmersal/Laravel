@@ -41,6 +41,8 @@
 - sublimeLinter
 - HTML/CSS/JS Prettify
 - Javascript Completions
+- laravel blade autocomplete
+- laravel blade spacer - {{ }}, {{{ }}}, {!! !!}
 ### Edit Package Files
 > `PackageResourceViewer` - modify packages
 ### Theme Packages
@@ -64,10 +66,15 @@
 ### User Setting
 ```php
 {
+	"index_files": false,
+	"folder_exclude_patterns": [
+		"node_modules",
+		"vendor",
+		".idea",
+	],
 	"bold_folder_labels": true,
 	"color_scheme": "Packages/Material Theme/schemes/Material-Theme.tmTheme",
 	"ensure_newline_at_eof_on_save": true,
-	"font_face": "Operator Mono Book",
 	"font_options":
 	[
 		"gray_antialias",
@@ -77,6 +84,7 @@
 	"ignored_packages":
 	[
 		"Markdown",
+		"MarkdownEditing",
 		"MarkdownPreview",
 		"Terminal",
 		"Vintage"
@@ -86,8 +94,8 @@
 		"draw_normal",
 		"draw_active"
 	],
-	"line_padding_bottom": 8,
-	"line_padding_top": 8,
+	"line_padding_bottom": 7,
+	"line_padding_top": 7,
 	"margin": 0,
 	"material_theme_accent_bright": true,
 	"material_theme_bold_tab": true,

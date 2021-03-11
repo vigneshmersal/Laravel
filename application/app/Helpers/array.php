@@ -13,3 +13,19 @@ function arrayMerge($array) {
 function arrayMergeAnyWhere($array) {
 	return [ 'a' , 'b', $array, 'c' ];
 }
+
+public function menuTree($menu)
+{
+	$menuAry = [];
+	foreach ($menu as $sub) {
+		$block = [];
+		if (isset($sub->title)) {
+			$block['id']   = $sub->id;
+			$block['name'] = $sub->title;
+			$block['url']  = $sub->link;
+			if ($sub->childs()->count()) $block['submenu'] = $this->arrangeMenu($sub->childs);
+			$menuAry[] = $block;
+		}
+	}
+	return $menuAry;
+}

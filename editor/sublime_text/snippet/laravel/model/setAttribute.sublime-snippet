@@ -1,0 +1,15 @@
+<snippet>
+	<content><![CDATA[
+/*
+|--------------------------------------------------------------------------
+| Set method
+|--------------------------------------------------------------------------
+*/
+public function setNameAttribute(\$v) { \$this->attributes['name'] = strtolower(\$v); }
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>setAttribute</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.php</scope>
+	<description>Snippet:setAttribute</description>
+</snippet>

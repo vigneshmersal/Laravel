@@ -1,0 +1,31 @@
+<snippet>
+	<content><![CDATA[
+\$.ajax({
+    url: "{{ route('${1:home}') }}",
+    type: '${2:POST}',
+    data: {${3}: ${3}},
+    dataType: 'xml, json, script, html',
+    error: function () {
+    	alert('An error has occurred.Please Try Again');
+    },
+    success: function (data) {
+        if (data=='1') {
+            window.location.href = "{{ route('home') }}";
+        } else {
+            alert('Please Check Your Login details.');
+        }
+    }
+}).done(function() {
+	console.log("success");
+}).fail(function() {
+	console.log("error");
+}).always(function() {
+	console.log("complete");
+});
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>ajax1</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+	<description>Snippet: Ajax code</description>
+</snippet>

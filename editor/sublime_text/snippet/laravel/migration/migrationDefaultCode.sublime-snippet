@@ -1,0 +1,16 @@
+<snippet>
+	<content><![CDATA[
+\$table->integer('status')->default(1);
+
+\$table->integer('created_by')->default(1);
+\$table->integer('updated_by')->nullable();
+\$table->integer('deleted_by')->nullable();
+\$table->timestamps();
+\$table->softDeletes();
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>migrationDefaultCode</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.php</scope>
+	<description>Snippet:Migration default code</description>
+</snippet>

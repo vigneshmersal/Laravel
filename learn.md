@@ -60,6 +60,7 @@ https://laravel-news.com/
 https://www.itsolutionstuff.com
 https://codezen.io/category/laravel/
 https://divinglaravel.com/
+https://tutsforweb.com/
 
 ### learn by videos
 https://vimeo.com/showcase/laracononline

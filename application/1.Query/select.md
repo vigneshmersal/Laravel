@@ -1,10 +1,15 @@
 
+# change column name
+```php
+->select('email', 'email as user_email')
+```
+
 # Custom new field - Subquery Selects
 ```php
-# 1.model cast 
+# 1.model cast
 $protected $casts = [ 'last_posted_at' => 'date' ];
 # 2. withcast
-$query->withCasts([ 
+$query->withCasts([
     'last_posted_at' => 'date',
     'last_posted_at' => UserCode::class, // custom cast
 ]);
@@ -81,13 +86,11 @@ $customers = Customer::with('company')
     ->orderByName()
     ->paginate();
 
-public function lastInteraction()
-{
+public function lastInteraction() {
     return $this->hasOne(Interaction::class, 'id', 'last_interaction_id');
 }
 
-public function scopeWithLastInteraction($query)
-{
+public function scopeWithLastInteraction($query) {
     $query->addSubSelect('last_interaction_id', Interaction::select('id')
         ->whereRaw('customer_id = customers.id')
         ->latest()

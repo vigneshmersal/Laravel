@@ -1,0 +1,10 @@
+<snippet>
+	<content><![CDATA[
+-vendor/,-node_modules/,-storage/,-bootstrap/,-config/,-public/,-tests/,guidely/
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>find</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.php</scope>
+	<description>Snippet:ctrl+shift+f: Find exclude</description>
+</snippet>

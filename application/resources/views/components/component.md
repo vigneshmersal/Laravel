@@ -4,6 +4,7 @@ Create
 > php artisan make:component Card
 
 Use
+
 ```php
 <x-card src="img.png" :src="$image">
     Blade Rocks
@@ -12,6 +13,7 @@ Use
 ```
 
 - resources/views/components/card.blade.php
+
 ```php
 @props(['src'])
 
@@ -23,6 +25,7 @@ Use
 ```
 
 Pass All attributes
+
 ```php
 <x-card class="card bg-white"></x-card>
 
@@ -30,8 +33,13 @@ Pass All attributes
 ```
 
 Merge attribute values to existing attribute
+
 ```php
 <x-card class="bg-white"></x-card>
 
 <div {{ $attributes->merge(['class' => 'card']) }}>
 ```
+
+## Folder
+App\View\Components\Inputs\Button.php
+<x-inputs.button/>

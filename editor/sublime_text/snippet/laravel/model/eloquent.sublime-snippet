@@ -1,0 +1,15 @@
+<snippet>
+	<content><![CDATA[
+/*
+|--------------------------------------------------------------------------
+| Eloquent relationship
+|--------------------------------------------------------------------------
+*/
+public function user() { return \$this->belongsTo('App\User'); }
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>eloquent</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.php</scope>
+	<description>Snippet:eloquent</description>
+</snippet>

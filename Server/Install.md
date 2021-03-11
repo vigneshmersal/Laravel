@@ -17,5 +17,8 @@ Navigate in your home directory,
 update
 > /usr/local/bin/composer self-update
 
-
-
+## softwares
+> github desktop
+> vscode
+> docker
+> composer

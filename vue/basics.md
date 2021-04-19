@@ -1,5 +1,25 @@
 # Vue
 
+https://github.com/sdras/intro-to-vue
+
+## Install
+### Vue chrome devtools
+    - https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?hl=en
+### Vue 3
+    - https://chrome.google.com/webstore/detail/vuejs-devtools/ljjemllljcmogpfapbkkighbhhppjdbg
+### codepen debugger
+    - https://chrome.google.com/webstore/detail/codopen/agnkphdgffianchpipdbkeaclfbobaak
+### Vetur
+    https://marketplace.visualstudio.com/items?itemName=octref.vetur
+### Vue VSCode Snippets
+    https://marketplace.visualstudio.com/items?itemName=sdras.vue-vscode-snippets
+### Vue VS Code Extension Pack
+    - https://marketplace.visualstudio.com/items?itemName=sdras.vue-vscode-extensionpack
+### Vue Online Editor
+    - https://codepen.io/pen/editor/vue
+
+---
+
 ## HTML
 ```php
 <div id="app"></div
@@ -72,3 +92,10 @@ Vue.component( 'example-component', require('./components/ExampleComponent.vue')
 ## Run
 watch continues changes: `npm run watch`
 compile: `npm run dev`
+
+```js
+Vue.createApp(App).mount("#app");
+```
+
+# computed 
+Usage: filter based on user input

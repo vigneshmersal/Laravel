@@ -72,6 +72,16 @@ selectRaw('year(created_at) year, monthname(created_at) monthname, count(*) data
     DB::raw('MONTH(created_at) month'))
 ->groupby('year','month')
 
+->selectRaw("
+  DATE(created_at) date, 
+  DATE_FORMAT(created_at, '%Y-%m-%e') date,
+  DATE_FORMAT(created_at, '%a') as weekday, 
+  DATE_FORMAT(created_at, '%e') as day, 
+  DATE_FORMAT(created_at, '%b') as monthname, 
+  DATE_FORMAT(created_at, '%Y') as year, 
+  EXTRACT(MONTH FROM created_at) AS month, 
+")
+
 ->groupBy(function($item, $key) {
     return Carbon::parse($item['date'])->format('Y');
     return Carbon::parse($val->date)->format('d');

@@ -19,6 +19,9 @@ foreach( App\Model::cursor() as $each ) { }
 Question::all();
 Question::cursor(10000, function($questions){});
 
+cursor() - It takes less time, Uses more memory
+chunk(1000) - Uses less memory , It takes longer
+
 # instead of passing hole response, get used data's only in array format
 User::all(); // bulk
 User::get()->toArray(); // hole column

@@ -120,8 +120,8 @@ command=sudo php /var/www/laravel/artisan queue:work --tries=3 --daemon
 > supervisorctl
     - stop all
     - start all
-> php artisan queue:restart
 > sudo supervisorctl start laravel-worker:*
+> php artisan queue:restart
 
 ## Redis
 ```php

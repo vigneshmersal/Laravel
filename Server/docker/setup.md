@@ -6,6 +6,8 @@ https://docs.microsoft.com/en-us/windows/wsl/install-win10
 
 Check wsl version
 > wsl -l -v
+stop 
+> wsl --unregister docker-desktop
 
 ## WSL2
 Doc link: 

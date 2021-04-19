@@ -30,7 +30,13 @@ protected $casts = [
 
 public function setSectionAttribute($value)
 {
-	$this->attributes['section'] = json_encode($value);
+	if($value) {
+		$data = [];
+		foreach(array_values($value) as $val) {
+			if($val['name']) $data[] = $val;
+		}
+		$this->attributes['section'] = json_encode($data);
+	}
 }
 ```
 
@@ -73,7 +79,7 @@ testSection.blade.php
 	<div class="row">
 		<div class="col-md-2 col-xs-12 form-group">
 			<label class="col-xs-12 required"> Section </label>
-			<input class="form-control col-xs-12 addsectn text_div" name="section[{{$rid}}][name]" value="{{ old('section[$rid][name]', $section['name'] ?? null) }}" placeholder="" required="required" type="text">
+			<input class="form-control col-xs-12 addsectn text_div" name="section[{{$rid}}][name]" value="{{ old('section[$rid][name]', $section['name'] ?? null) }}" placeholder="" required type="text">
 		</div>
 	</div>
 	<div class="col-xs-12 text-right">
@@ -83,24 +89,10 @@ testSection.blade.php
 	</div>
 	{!! Form::hidden('rowSections[]', $rid, []) !!}
 </div>
-```
 
-create.blade.php
-
-```php
-<div class="form-group">
-	<div class="col-xs-12 form-group text-right">
-		<button onclick="addRow()" style="margin-bottom:10px;" type="button" class="btn btn-success btn-xs">Add More</button>
-	</div>
-
-	<div class="section_div">
-		@component('components.testSection', ['rid' => 1])
-		@endcomponent
-	</div>
-</div>
-```
-
-```js
+@once
+@push('script')
+<script>
 function addRow() {
 	var rid = $('.section_box').length + 1;
 	$.ajax({
@@ -116,21 +108,46 @@ function addRow() {
 function removeRow(id) {
 	$('#seccount'+id).remove();
 }
+</script>
+@endpush
+@endonce
+```
+
+create.blade.php
+
+```php
+<div class="card">
+	<div class="card-header">
+		<b>Question/Answer</b>
+		<button onclick="addRow()" type="button" class="btn btn-success btn-xs float-right">Add More</button>
+	</div>
+
+	<div class="card-body section_div">
+		@component('components.meta.question', ['rid' => 1])
+		@endcomponent
+	</div>
+</div>
 ```
 
 edit.blade.php
 
 ```php
-<div id="addsections" class="form-group">
-	<div class="col-xs-12 form-group text-right">
-		<button onclick="addRow()" style="margin-bottom:10px;" type="button" class="btn btn-success btn-xs">Add More</button>
+<div class="card">
+	<div class="card-header">
+		<b>Question/Answer</b>
+		<button onclick="addRow()" type="button" class="btn btn-success btn-xs float-right">Add More</button>
 	</div>
 
-	<div class="section_div">
-		@foreach ($mockTest->section as $key => $section)
-			@component('components.mockTestSection', ['rid' => $key, 'section' => $section])
+	<div class="card-body section_div">
+		@if(isset($metaDetail) && isset($metaDetail->question) && count($metaDetail->question))
+			@foreach($metaDetail->question as $key => $question)
+				@component('components.meta.question', ['rid' => $key, 'question' => $question])
+				@endcomponent
+			@endforeach
+		@else
+			@component('components.meta.question', ['rid' => 1])
 			@endcomponent
-		@endforeach
+		@endif
 	</div>
 </div>
 ```
@@ -138,14 +155,20 @@ edit.blade.php
 show.blade.php
 
 ```php
-<table>
-	<tr>
-		<th><b>Name</b></th>
-	</tr>
-	@foreach($model->section as $key => $section)
-		<tr>
-			<td>{{ $section['name'] }}</td>
-		</tr>
-	@endforeach
-</table>
+<tr>
+	<td colspan="2">
+		<table class="w-100">
+			<tr>
+				<th><b>Question</b></th>
+				<th><b>Answer</b></th>
+			</tr>
+			@foreach($metaDetail->question as $key => $section)
+				<tr>
+					<td>{{ $section['ques'] ?? null }}</td>
+					<td>{{ $section['ans'] ?? null }}</td>
+				</tr>
+			@endforeach
+		</table>
+	</td>
+</tr>
 ```

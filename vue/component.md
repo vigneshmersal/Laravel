@@ -24,15 +24,18 @@ Vue.component('my-component', {
 		}
 	},
 	computed: { // return cached val untill dependencies change
-		fullName: function () {
+		fullName() {
 			return this.firstName + ' ' + this.lastName
 		}
 	},
 	watch: { // called when the field changes value
-		firstName: function (value, oldValue) { ... }
+		firstName(newValue, oldValue) { ... }
 	},
 	methods: { ... },
 	template: '<span>{{ message }}</span>', // use `backtick` for multiline
 })
 
+app.component('first', {
+	template: '<p>Hi</p>'
+});
 ```

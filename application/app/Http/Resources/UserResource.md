@@ -81,6 +81,10 @@ class User extends JsonResource
                 return PostResource::collection($this->posts);
             }),
 
+			// get response 
+			$product = new ProductResource($this->product);
+			$status = $product->response()->getData(true)['data']['user']['purchase']['status'];
+
 			// Conditional Pivot Information
 			'expires_at' => $this->whenPivotLoaded('role_user', function () {
 				return $this->pivot->expires_at;

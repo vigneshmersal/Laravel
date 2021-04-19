@@ -36,7 +36,8 @@ class UserController extends Controller
         // response's headers
         return (new UserResource(User::find(1)))->response()->header('X-Value', 'True');
 
-        return ModelResource::collection($model)->response()->getData(true);
+        $data=ModelResource::collection($model)->response()->getData(true);
+        $data->response()->getData(true)['data']['user'];
 
         return response($users, 200);
         return response()->noContent(); // "ok" 204 status code "No content"

@@ -1,125 +1,144 @@
-route
-
+# route
 ```php
-public function getBox(Request $request)
+Route::get('blog-sidebar/get-tag', 'BlogSidebarController@getTag')->name('blog-sidebars.getTag');
+Route::get('blog-sidebar/get-tag-sub', 'BlogSidebarController@getTagSub')->name('blog-sidebars.getTagSub');
+```
+
+# controller
+```php
+public function getTag(Request $request)
 {
-	$html = view("components.menu.box", ['bid' => $request->bid])->render();
+	$html = view("admin.blogSidebar.tag_dynamic", ['bid' => $request->bid])->render();
 	return ['html' => $html];
 }
 
-public function getLevel1(Request $request)
+public function getTagSub(Request $request)
 {
-	$html = view("components.menu.level1", ['bid' => $request->bid, 'l1_id' => $request->l1_id])->render();
+	$html = view("admin.blogSidebar.tag_sub", ['bid' => $request->bid, 'sub_id' => $request->sub_id])->render();
 	return ['html' => $html];
 }
 ```
 
-create.blade.php
-
+# tag.blade.php
 ```php
-<div class="form-group">
-    <div class="col-xs-12 form-group">
-        <button onclick="addBox()" style="margin-bottom:5px;" type="button" class="btn btn-success btn-xs">Add More</button>
-    </div>
+<div class="card">
+	<div class="card-header">
+		<b>Tags</b>
+		<button onclick="addTag()" type="button" class="btn btn-success btn-xs float-right">Add More</button>
+	</div>
 
-    <div class="box_div">
-        @component('components.menu.box', ['bid' => 1])
-        @endcomponent
-    </div>
+	<div class="card-body">
+		<div class="form-check">
+			<div class="tag_div">
+				@if(isset($record->tag))
+					@foreach ($record->tag as $tag)
+						@component('admin.blogSidebar.tag_dynamic', ['bid' => $loop->index+1, 'tag' => $tag])
+						@endcomponent
+					@endforeach
+				@else
+					@component('admin.blogSidebar.tag_dynamic', ['bid' => 1])
+					@endcomponent
+				@endif
+			</div>
+		</div>
+	</div>
 </div>
 ```
 
-box.blade.php
-
+# tag_dynamic.blade.php
 ```php
-<div class="box" id="box_{{$bid}}">
+<div class="tag" id="tag_{{$bid}}">
 	<div class="row">
-		<div class="col-md-6 form-group">
-			<label class="required"> Title </label>
-			<input class="form-control" name="box[{{$bid}}][title]" value="" required="required" type="text">
+		<div class="col-md-5 form-group">
+			<x-crud.label value="Title" />
+			<input class="form-control" name="tag[{{$bid}}][title]" value="{{ $tag['title'] ?? null }}" type="text">
 		</div>
-		<div class="col-md-6 form-group">
-			<label class="required"> URL </label>
-			<input class="form-control" name="box[{{$bid}}][url]" value="" required="required" type="text">
+		<div class="col-md-5 form-group">
+			<x-crud.label value="Order" />
+			<input class="form-control" name="tag[{{$bid}}][order]" value="{{ $tag['order'] ?? null }}" type="text">
+		</div>
+		<div class="col-md-2 flex align-items-center">
+			@if($bid > 1)
+				<button onclick='removeTag("{{$bid}}")' type="button" class="btn btn-danger btn-xs">
+					{{-- <i class="c-sidebar-nav-icon fa-fw fa-remove fas text-red-400"></i> --}}
+					Remove
+				</button> &emsp;
+			@endif
+			<button onclick='addTagSub("{{$bid}}")' type="button" class="btn btn-info btn-xs">Add Tags</button>
 		</div>
 	</div>
 
-	<div class="text-right categRemove">
-		@if($bid > 1)
-			<button onclick='removeBox("{{$bid}}")' style="margin-bottom:10px;" type="button" class="btn btn-danger btn-xs">Remove</button>
+	<div class="tag_{{ $bid }}">
+		@if(isset($tag['sub']))
+			@foreach ($tag['sub'] as $sub)
+				@component('admin.blogSidebar.tag_sub', ['bid' => $bid, 'sub_id' => $loop->index+1, 'sub' => $sub])
+				@endcomponent
+			@endforeach
+		@else
+			@component('admin.blogSidebar.tag_sub', ['bid' => $bid, 'sub_id' => 1])
+			@endcomponent
 		@endif
-		<button onclick='addL1("{{$bid}}")' style="margin-bottom:10px;" type="button" class="btn btn-info btn-xs">Add Menu</button>
-	</div>
-
-	<div class="box_{{ $bid }}">
-
 	</div>
 </div>
 
 @once
 @push('script')
 <script>
-	function addBox() {
-		var bid = $('.box').length + 1;
+	function addTag() {
+		var bid = $('.tag').length + 1;
 		$.ajax({
 			type: 'GET',
-			url: '{{ route('admin.menu.getBox') }}',
+			url: '{{ route('admin.blog-sidebars.getTag') }}',
 			data: { bid: bid },
 			success: function(res) {
-				$(".box_div").append(res.html);
+				$(".tag_div").append(res.html);
 			}
 		});
 	}
 
-	function addL1(bid) {
-		var l1_id = $('.l1_'+bid).length + 1;
+	function removeTag(bid) {
+		$('#tag_'+bid).remove();
+	}
+
+	function addTagSub(bid) {
+		var sub_id = $('.tag_sub_'+bid).length + 1;
 		$.ajax({
 			type: 'GET',
-			url: '{{ route('admin.menu.getLevel1') }}',
-			data: { bid: bid, l1_id: l1_id },
+			url: '{{ route('admin.blog-sidebars.getTagSub') }}',
+			data: { bid: bid, sub_id: sub_id },
 			success: function(res) {
-				$(".box_"+bid).append(res.html);
+				$(".tag_"+bid).append(res.html);
 			}
 		});
 	}
 
-	function removeBox(bid) {
-		$('#box_'+bid).remove();
-	}
-
-	function removeL1(bid, l1_id) {
-		$('#l1_'+bid+'_'+l1_id).remove();
+	function removeTagSub(bid, sub_id) {
+		$('#tag_sub_'+bid+'_'+sub_id).remove();
 	}
 </script>
 @endpush
 @endonce
 ```
 
-level1.blade.php
-
+# tag_sub.blade.php
 ```php
-<div class="row l1_{{$bid}} l1_{{$bid}}_{{$l1_id}}" id="l1_{{$bid}}_{{$l1_id}}">
+<div class="row tag_sub_{{$bid}} tag_sub_{{$bid}}_{{$sub_id}}" id="tag_sub_{{$bid}}_{{$sub_id}}">
 	<div class="col-md-1 form-group"></div>
 
 	<div class="col-md-5 form-group">
-		<label class="required"> Title </label>
-		<input class="form-control" name="box[{{$bid}}][{{$l1_id}}][title]" value="" required="required" type="text">
+		{{-- <label class="required"> Title </label> --}}
+		<input class="form-control" name="tag[{{$bid}}][sub][{{$sub_id}}][title]" value="{{ $sub['title'] ?? null }}" required type="text" placeholder="Title">
 	</div>
 
 	<div class="col-md-5 form-group">
-		<label class="required"> URL </label>
-		<input class="form-control" name="box[{{$bid}}][{{$l1_id}}][url]" value="" required="required" type="text">
+		{{-- <label class="required"> URL </label> --}}
+		<input class="form-control" name="tag[{{$bid}}][sub][{{$sub_id}}][url]" value="{{ $sub['url'] ?? null }}" required type="text" placeholder="Link">
 	</div>
 
-	<div class="col-md-1 form-group">
-		@if($l1_id > 1)
-			<label for=""></label>
-			<button onclick='removeL1("{{$bid}}", "{{$l1_id}}")' type="button" class="btn btn-danger btn-xs">Remove</button>
+	<div class="col-md-1 flex align-items-center">
+		@if($sub_id > 1)
+			<button onclick='removeTagSub("{{$bid}}", "{{$sub_id}}")' type="button" class="btn btn-danger btn-xs">Remove</button>
 		@endif
 	</div>
-</div>
-
-<div class="box_l1_{{ $bid }}">
-
 </div>
 ```

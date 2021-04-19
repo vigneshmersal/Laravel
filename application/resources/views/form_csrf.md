@@ -109,8 +109,8 @@ $('#form').submit(function(e) {
         'id'=>'nik',
         'min'=>'1',
         'max'=>'999999',
-        'class'=>'form-control @error('nik') is-invalid @enderror',
-        'class' => 'form-control' . ($errors->has('nik') ? ' is-invalid' : null),
+        'class'=>"form-control @error('nik') is-invalid @enderror",
+        'class'=>'form-control'.($errors->has('order') ? ' is-invalid' : null),
         'placeholder'=>'E.g: 1234',
         'required'
     ]) }}

@@ -13,6 +13,9 @@
 // show specific package
 > composer show nesbot/carbon
 
+## clear
+> composer clearcache
+
 ## Update laravel installer 4.X
 1. `composer global require "laravel/installer:^4.0"`
     - (or) `composer global require "laravel/homestead=~7.0" --with-all-dependencies`

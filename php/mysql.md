@@ -1,5 +1,8 @@
 # Mysql
 
+## Check new version
+https://www.apachefriends.org/download.html
+
 For multilanguage set `utf8_unicode_ci`
 
 ## Explain query
@@ -175,4 +178,15 @@ port=8111
 ```
 
 ## Error: MySQL shutdown unexpectedly.
+https://stackoverflow.com/questions/18022809/xampp-mysql-shutdown-unexpectedly
+```php
+my.ini -> 3- change client port and server port - 4000
 
+Go to C:\xampp\mysql\backup.
+Copy all files.
+Paste them into C:\xampp\mysql\data.
+If Windows asks you to replace some files, replace them.
+If your XAMPP Control Panes is active close it.
+Go to C:\xampp and find xampp-control, run it.
+Start Apache, start MySQL.
+```

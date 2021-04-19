@@ -56,3 +56,17 @@ collect([ ['a'=>6,'b'=>2],['a'=>5,'b'=>2] ])->unique($column='b');
 # By multiple custom
 unique(function($item){ return $item['col1'].$item['col2']; });
 ```
+
+```php
+$products = SoldProducts::whereIn('export_invoice_id', $export_invoice_ids)
+    ->groupBy('product_id')
+    ->join('images', 'product.image_id', '=', 'images.id')
+    ->select([
+        'products.id',
+        'products.product_id',
+        DB::raw('sum(products.quantity) AS quantity'),
+        DB::raw('(sum(products.sold_price) / count(*)) AS sold_price'),
+        'images.image'
+    ])
+    ->get();
+```

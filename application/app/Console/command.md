@@ -90,15 +90,15 @@ Artisan::queue('email:send 1 --queue=default'); // queue
 
 // interval
 ->days([0, 3]);
-->days([1,2,3,4,5,6])->at('8:00');
+->days([0,1,2,3,4,5,6])->at('8:00');
 ->days(range(1,6))->at('8:00');
 ->between('7:00', '22:00');
 ->unlessBetween('23:00', '4:00');
 
 // condition
 ->environments($env); ->environments(['staging', 'production']);
-->when(Closure);
-->skip(function () {});
+->when(function () { return true; });
+->skip(function () { return true; });
 
 // time zone
 ->timezone('America/New_York')

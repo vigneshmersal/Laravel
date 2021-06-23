@@ -4,6 +4,13 @@
 ->select('email', 'email as user_email')
 ```
 
+# From subquery
+```php
+DB::table(function($query) {
+    $query->selectRaw('sum(amount) as total')->from('donations')->groupBy('user_id');
+}, 'donations')->avg('total');
+```
+
 # Custom new field - Subquery Selects
 ```php
 # 1.model cast

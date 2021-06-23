@@ -16,6 +16,10 @@ class UserController extends AnotherClass
             return $next($request);
         });
 
+        $this->middleware('can:create,App\User')->only('create');
+        $this->middleware('can:update,user')->only('edit');
+        $this->middleware('can:delete,user')->only('destroy');
+
         # authorize resource controller
         $this->authorizeResource(Post::class, 'post');
 

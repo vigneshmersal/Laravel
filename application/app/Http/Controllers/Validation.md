@@ -198,6 +198,7 @@ $var = [
 'required_if:anotherfield.*', // chk another field present
 Rule::requiredIf(true), // field will validate only true
 Rule::requiredIf(function () use ($request) { return true; }),
+'required_unless:anotherfield,value',
 
 # required with & with_all & without & without_all
 'required_with:foo,bar,...', // present & not empty -only- if any other fields are  present

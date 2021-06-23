@@ -40,6 +40,7 @@ ddd($someVar)
 19.58
 ```
 
+# Controller
 ```php
 DB::flushQueryLog();
 

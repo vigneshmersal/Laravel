@@ -29,6 +29,9 @@
 4. upgrade new version
     - `composer global update`
 
+Php extension issues,
+> composer install --ignore-platform-reqs
+
 ## composer Commands
 - `composer outdated` - It will show all packages compared to new version.
     + `composer outdated --direct`

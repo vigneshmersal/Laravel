@@ -1,6 +1,11 @@
 # Laravel 5 Full Calendar Helper
 [![http://fullcalendar.io](http://fullcalendar.io)](http://fullcalendar.io)
 
+https://www.webslesson.info/2021/03/how-to-implement-fullcalendar-in-laravel-8-using-ajax.html
+
+https://github.com/rcvioleta/fullcalendar-with-laravel-and-vue/blob/master/resources/js/components/CalendarComponent.vue
+
+https://www.youtube.com/playlist?list=PLm0kCoXE9i0eJm8RwEIpx98-u8vdnLR84
 ## Installing
 Package
 

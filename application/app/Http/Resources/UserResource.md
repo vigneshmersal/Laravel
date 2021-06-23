@@ -28,6 +28,12 @@ class User extends JsonResource
 
     protected $api;
 
+	// pass additional data
+	Model::get()->map(function ($post) {
+		$post['url'] = 'http://your.url/here';
+		return $post;
+	});
+
     public function api($value){
         $this->api = $value;
         return $this;

@@ -201,6 +201,12 @@ $dt->isNextWeek()
 $dt->isNextMonth()
 $dt->isNextYear()
 
+# loop
+use Carbon\CarbonPeriod;
+$period = CarbonPeriod::create('2018-06-14', '2018-06-20');
+foreach ($period as $date) { echo $date->format('Y-m-d'); }
+$dates = $period->toArray();
+
 # day
 $dt->isMonday() | isTuesday() | isWednesday() | isThursday() |
 isFriday() | isSaturday() | isSunday()

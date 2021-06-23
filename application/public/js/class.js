@@ -349,16 +349,166 @@ class loges {
 }
 
 class momentes {
-	constructor() { this.value = 0; }
+	// Today
+		// day
+		moment().startOf('day'); || moment().endOf('day');
+		moment().startOf('hour'); || moment().endOf('hour');
+		// live time
+		moment().format();  // 2021-06-03T10:29:32+05:30
+		moment().calendar(); // Today at 10:33 AM
 
-	get val() { return this.value; }
+	// startOf // endOf
+	moment().startOf('year'); 
+	moment().startOf('quarter');
+	moment().startOf('month');
+	moment().startOf('week');
+	moment().startOf('isoWeek'); 
+	moment().startOf('day');
+	moment().startOf('date');
+	moment().startOf('hour');
+	moment().startOf('minute');
+	moment().startOf('second');
+	moment().firstDayOfWeek();
+	moment().firstDayOfYear();
 
-	format( date , from = "YYYY-MM-DD" , to = "YYYY-MM-DD" ) { this.value = moment( date , from ).format( to ); return this; }
+	// array - [year, month, day, hour, minute, second, millisecond]
+	moment([2010, 1, 14, 15, 25, 50, 125]); // February 14th, 3:25:50.125 PM
 
-	startOfTheDay() { return moment().startOf('day'); }
-	endOfTheDay() { return moment().endOf('day'); }
+	// format
+	// timestamp
+	X - timestamp
+	// year
+	YYYY - 2014, YY - 14
+	// Month
+	M - 1 , MM - 01 , MMM - Jan , MMMM - January
+	// Week
+	w - 1 ,  WW - 53
+	// Day
+	D - 1 , DD - 01 , Do - 1st ,  DDD - 365 , DDDD - 365
+	// Hour
+	(0 to 23) H - 0 , HH - 23
+	(1 to 24) k - 1, kk - 24
+	(1 to 12) h - 1 , hh - 12
+	// minute
+	m - 0, mm - 59
+	// second
+	s - 0 , ss - 59
+	// am pm
+	a - am , A - AM
+	moment("2021-6-3").format('dddd, MMMM Do YYYY, h:mm:ss a'); // "Thursday, June 3rd 2021, 12:00:00 am"
+	moment("2021-6-3").format("DD MMM YY hh:mm:ss"); // 03 Jun 21 12:00:00
+	moment("2021-6-3").format("MM"); // 06
+	moment().format("ddd, hA");                       // "Sun, 3PM"
+	moment( "2021-6-3" , from = "YYYY-MM-DD" ).format( to = "YYYY-MM-DD" );
+	moment().format("[Today is] dddd");  // "Today is Sunday"
+	// by locale
+	moment().format('LT');   // 10:36 AM // h:mm A
+	moment().format('LTS');  // 10:36:22 AM // h:mm:ss A
+	moment().format('L');    // 06/03/2021 // MM/DD/YYYY
+	moment().format('l');    // 6/3/2021 // M/D/YYYY
+	moment().format('LL');   // June 3, 2021 // MMMM Do YYYY
+	moment().format('ll');   // Jun 3, 2021 // MMM D YYYY
+	moment().format('LLL');  // June 3, 2021 10:36 AM // MMMM Do YYYY LT
+	moment().format('lll');  // Jun 3, 2021 10:36 AM // MMM D YYYY LT
+	moment().format('LLLL'); // Thursday, June 3, 2021 10:36 AM // dddd, MMMM Do YYYY LT
+	moment().format('llll'); // Thu, Jun 3, 2021 10:37 AM // ddd, MMM D YYYY LT
 
-	fromNow( date , format = "YYYY-MM-DD" ) { return moment( date , format ).fromNow(); }
+	// locale
+	moment.locale();         // en
+
+	// time difference
+	moment("20111031", "YYYYMMDD").fromNow(); // 10 years ago
+	moment().startOf('day').fromNow();        // 10 hours ago
+	moment().endOf('day').fromNow();          // in 14 hours
+	moment().startOf('hour').fromNow();       // 32 minutes ago
+	moment([2007, 0, 29]).toNow(); // in 4 years
+	moment([2007, 0, 29]).toNow(true); // 4 years
+	moment("2007-01-28").to("2007-01-29") // "in a day"
+	moment("2007-01-29").diff("2007-01-28") // 86400000
+	a.diff(b, 'days') // 1
+	a.diff(b, 'years');       // 1
+
+	// add | subtract
+	moment().add(1, 'day');
+	moment().subtract(1, 'day');
+	moment().subtract(10, 'days').calendar(); // 05/24/2021
+	moment().add(1, 'days').calendar();       // Tomorrow at 10:33 AM
+	moment().add(1, 'month');
+	moment().add(10, 'months');
+	moment().add(1, 'second');
+	moment().subtract(1, 'seconds');
+	moment().add(1.5, 'months')
+	moment().subtract(1.5, 'months')
+	moment().add(.7, 'years')
+	moment().subtract(.7, 'years') 
+
+	// check
+	moment("not a real date").isValid(); // false
+	moment('2010-10-20').isBefore('2010-10-21'); // true
+	moment('2010-10-20').isBefore('2011-01-01', 'year'); // true
+	moment('2010-10-20').isSame('2010-10-20'); // true
+	moment('2010-10-20').isSame('2010-01-01', 'year');  // true
+	moment('2010-01-01').isSame('2011-01-01', 'month'); // false, different year
+	moment('2010-01-01').isSame('2010-02-01', 'day');   // false, different month
+	moment('2010-10-20').isAfter('2010-10-19'); // true
+	moment('2010-10-20').isAfter('2010-01-01', 'year'); // false
+	moment('2010-10-20').isSameOrBefore('2010-10-21');  // true
+	moment('2010-10-20').isSameOrBefore('2011-01-01', 'year'); // true
+	moment('2010-10-20').isSameOrAfter('2010-10-21'); // false
+	moment('2010-10-20').isSameOrAfter('2009-12-31', 'year'); // true
+	moment('2010-10-20').isBetween('2010-10-19', '2010-10-25'); // true
+	moment('2010-10-20').isBetween('2010-01-01', '2012-01-01', 'year'); // false
+	moment().isLeapYear();
+	moment.isMoment(new Date()) // false
+	moment.isDate(new Date()); // true
+
+	// get
+	moment().get('year'); // month,date,hour,minute,second,millisecond
+	moment().year()
+	moment().month()
+	moment().week();
+	moment().day();
+	moment().date();
+	moment().hour();
+	moment().minute();
+	moment().second();
+	moment().millisecond();
+	moment().weekday();
+	moment().dayOfYear(); // 154
+	moment().isoWeek(); // 22
+	moment().quarter(); // 2
+	moment().valueOf(); // 1318874398806
+	moment().daysInMonth(); // no of days in a month
+	moment().toArray(); // [2013, 1, 4, 14, 40, 16, 154];
+	moment().toObject()  // {years: 2015,months: 6,date: 26,hours: 1,minutes: 53,seconds: 14,milliseconds: 600 }
+	moment().toString() // "Sat Apr 30 2016 16:59:46 GMT-0500"
+
+	//set
+	moment().set('year', 2013);
+	moment().set('month', 3);  // April
+	moment().set('date', 1);
+	moment().set('hour', 13);
+	moment().set('minute', 20);
+	moment().set('second', 30);
+	moment().set('millisecond', 123);
+	moment().set({'year': 2013, 'month': 3});
+	var d2 = d1.clone();
+
+	// calendar
+	moment().months(); // ['January', .. , 'December']
+	moment().calendar(); // Today at 10:33 AM
+	moment().weekdays(3); // 'Wednesday'
+	moment().weekdays();
+	moment().weekdaysShort();
+	moment().monthsShort(); // ['jan.', 'feb.']
+	moment().subtract(5, 'hours').short(); // 5h ago
+
+	// time travel
+	moment().day(-7); // last Sunday (0 - 7)
+	moment().day(0); // this Sunday (0)
+	moment().day(7); // next Sunday (0 + 7)
+	moment().day(10); // next Wednesday (3 + 7)
+	moment().day("Sunday");
 }
 
 class datetimepickers {

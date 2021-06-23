@@ -11,6 +11,9 @@ class UsersTableSeeder extends Seeder
 	 */
 	public function run()
 	{
+		// laravel8
+		User::factory(10)->create();
+
 		# Admin seed
 		$cities = collect(City::all()->modelKeys());
 		factory(User::class, 1)->create([

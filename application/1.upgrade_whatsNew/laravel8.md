@@ -1,6 +1,9 @@
 # Laravel 8 whats New
 https://jetstream.laravel.com/1.x/features/teams.html#introduction
 https://github.com/laravel/jetstream
+
+https://github.com/aschmelyun/laravel-auth-videos
+
 ## Features
 	- Two factor authentication - recovery code valid only once
 	- Avatar upload - ui avatar

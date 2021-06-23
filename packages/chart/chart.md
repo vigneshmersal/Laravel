@@ -47,10 +47,14 @@ $users = Candidate::selectRaw("
 $chart = new LatestUsers;
 $chart->labels($users->keys()) // ->labels(['Success', 'Fail'])
     ->dataset('New Users', 'line', $users->values())
+    ->dataset('My dataset 2', 'doughnut', [4, 3, 2, 1]);
     ->height(400)
     ->width(100)
     ->loader(true)
     ->loaderColor("#22292F")
+	->displaylegend(false)
+	->barwidth(0.0)
+	->minimalist(true)
     ->title($title, $font_size = 14, $color = '#666', $bold = true, $font_family = "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif")
     ->color("rgb(255, 99, 132)")
     ->backgroundcolor("rgb(255, 99, 132)")
@@ -65,6 +69,7 @@ $chart->labels($users->keys()) // ->labels(['Success', 'Fail'])
         'borderColor' => '#51C1C0',
         'borderColor' => [],
         'borderWidth' => '10',
+		'type' => 'bar',
         'tooltip' => [
         	'show' => true // or false,
     	],
@@ -97,5 +102,5 @@ return view('home', compact('chart'));
 ---
 
 ## Type of charts
-line, area, bar, pie
+'type' => 'bar', // area, line, radar, pie, polarArea, bubble, scatter
 

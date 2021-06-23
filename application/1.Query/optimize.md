@@ -1,5 +1,6 @@
 ## optimize
 ```php
+round(memory_get_peak_usage() / 1024 / 1024)
 return 'Memory Usage: '.round(xdebug_peak_memory_usage()/1048576, $precision=2) . 'MB';
 
 # Instead of create()

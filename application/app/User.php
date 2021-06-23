@@ -108,6 +108,14 @@ class User extends Authenticatable implements MustVerifyEmail // vereify by emai
 		// User::filter(['type'])->get();
 		if( isset($filters['type']) ){ $query->where('type', '=', $filters['type']); }
 	}
+	public function scopeFilter($query, array $filters)
+    {
+		// Post::latest()->filter(request(['search']))->get()
+        $query->when($filters['search'] ?? false, fn($query, $search) =>
+            $query
+                ->where('title', 'like', '%' . $search . '%')
+                ->orWhere('body', 'like', '%' . $search . '%'));
+    }
 
 	/*
 	|--------------------------------------------------------------------------
@@ -123,7 +131,7 @@ class User extends Authenticatable implements MustVerifyEmail // vereify by emai
 	public function getIsAdminAttribute() {
 		return $this->roles()->where('id', 1)->exists();
 	}
-	 public function getEmailVerifiedAtAttribute($value)
+	public function getEmailVerifiedAtAttribute($value)
 	{
 		return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format(config('panel.date_format') . ' ' . config('panel.time_format')) : null;
 	}

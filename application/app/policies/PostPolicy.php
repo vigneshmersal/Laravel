@@ -25,7 +25,10 @@ class PostPolicy
 	*/
 	public function viewAny(User $user, Post $post)
 	{
-  		return true;
+  		// return true;
+		//   instead of return true/false
+		//   you can pass custom messages
+		return $this->deny('You are not permitted for this page.');
 	}
 
 	/**
@@ -33,6 +36,7 @@ class PostPolicy
 	*/
 	public function view(User $user, Post $post)
 	{
+		return $user->permissions()->contains('create-user');
   		return $user->hasPermissionTo('view-users');
 	}
 

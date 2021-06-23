@@ -33,7 +33,19 @@ if (Gate::any(['update-post', 'delete-post'], $post)) { }
 if (Gate::none(['update-post', 'delete-post'], $post)) { }
 
 # Throw an AuthorizationException if the action is not authorized
-Gate::authorize('update-post', $post);
+try { Gate::authorize('update-post', $post); }
+catch(AuthorizationException $e) { $message = $e->getMessage(); }
+
+Gate::define('edit-settings', function (User $user) {
+    return $user->isAdmin ? Response::allow() : Response::deny('You must be an administrator.');
+});
+
+$response = Gate::inspect('edit-settings');
+if ($response->allowed()) { }
+else { echo $response->message(); }
+
+// redirect to home page 
+return throw new HttpResponseException(new RedirectResponse('/'));
 ```
 
 # Policy

@@ -42,6 +42,13 @@ https://packagist.org/packages/league/commonmark
 
 # Laravel N+1 Query Detector
 https://github.com/beyondcode/laravel-query-detector
+clockwork
 
 # Image resize
 https://packagist.org/packages/intervention/image
+
+# Tinker
+https://github.com/spatie/laravel-web-tinker
+
+# sweet alert
+https://realrashid.github.io/sweet-alert/install

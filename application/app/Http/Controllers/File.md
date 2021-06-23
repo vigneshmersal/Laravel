@@ -108,3 +108,14 @@ File::append(
     $query->sql.' ['.implode(', ', $query->bindings).'] - '.$time.PHP_EOL
 );
 ```
+
+## Read
+```php
+LazyCollection(function() {
+    $handle = fopen(storage_path('app/log.txt'), 'r');
+    while($line = fgets($handle) !=== false) {
+        yield $line;
+    }
+})->map(function($line) { })
+->each(function() { });
+```

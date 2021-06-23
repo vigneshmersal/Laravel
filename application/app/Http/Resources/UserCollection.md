@@ -12,6 +12,20 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 // php artisan make:resource UserCollection
 class PostCollection extends ResourceCollection
 {
+    // pass additional value
+    // (new UserResourceCollection($user))->foo('bar');
+    protected $foo;
+
+    public function foo($value){
+        $this->foo = $value;
+        return $this;
+    }
+
+    public function toArray($request){
+        return $this->collection->map(function(UserResource $resource) use($request){
+            return $resource->foo($this->foo)->toArray($request);
+    })->all();
+
 	/**
      * The resource that this resource collects.
      * Customizing Resource Class Path

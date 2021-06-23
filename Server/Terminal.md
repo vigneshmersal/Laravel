@@ -220,7 +220,8 @@ Gut Merge
 - *ps -C [programName]* - list of all the programs related to the program
 - *ps aux | grep php* - search php processes
 
-> `grep [word] [file]` - search word (case sensitive by default)
+> `grep -i -n [searchWord] [file]` - search word (case sensitive by default) (-i case insensitive) (-n line number)
+- *grep "searchtext" file.txt* - example
 
 > `top` - system information (refresh every 3sec)
 - *i* - show only running processes

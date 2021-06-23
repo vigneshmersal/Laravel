@@ -12,6 +12,11 @@ use Faker\Generator as Faker;
 | factory('App\User', 2)->create();
 */
 
+// laravel8
+[
+    'user_id' => User::factory(),
+]
+
 $factory->define(User::class, function (Faker $faker) {
     $name = $faker->name;
     return [

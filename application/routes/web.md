@@ -35,7 +35,11 @@ Before Laravel 7 -> /vendor/laravel/framework/src/illuminate/Routing/Router.php
 */
 Route::get('/posts/{post}/comments/{comment?}', function ($postId, $commentId = '1') {
 	//
-})->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
+})
+->where(['id' => '[0-9]+', 'name' => '[A-Z_\-]+'])
+->whereAlpha('name')
+->whereAlphaNumeric('name')
+->whereNumber('id');
 
 Route::view('/', 'welcome', ['name' => 'Taylor']);
 Route::any('/', 'Controller@index');
